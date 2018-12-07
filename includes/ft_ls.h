@@ -3,5 +3,6 @@
 typedef struct 	s_args 
 {
 	int 		argc;
-	char* 		argv;
+	char** 		argv;
+	bool		buff[127];
 } 				t_args;
