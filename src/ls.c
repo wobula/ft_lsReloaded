@@ -91,6 +91,20 @@ void	print_args(t_args *meta)
 
 bool	validate_opts(t_args *meta)
 {
+	int x;
+
+	x = -1;
+	while (++x < 127)
+	{
+		if (meta->opts[x] == true)
+		{
+			if ((OPT_CHECK(x)) == false)
+			{
+				INVALID_OPT(x);
+				return (false);
+			}
+		}
+	}
 	return (true);
 }
 
@@ -112,9 +126,5 @@ int 	main(int argc, char **argv)
 
 	preprocessor(&meta, argv, argc);
 	ft_printf("\nend");
-	if (OPT_CHECK('c') == true)
-		ft_printf("\n\ntrue\n\n");
-	else
-		ft_printf("\n\nfalse\n\n");
 	return (0);
 }
