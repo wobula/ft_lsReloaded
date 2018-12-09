@@ -22,3 +22,5 @@ typedef struct 	s_args
 	char**		args;
 	bool		opts[127];
 } 				t_args;
+
+bool 	preprocessor(t_args *meta, char **argv, int argc);
