@@ -26,12 +26,28 @@
 
 # define BUFF_SIZE 32
 
-typedef struct		s_list
+typedef struct				s_list
 {
-	void			*content;
-	size_t			content_size;
-	struct s_list	*next;
-}					t_list;
+	void					*content;
+	size_t					content_size;
+	struct s_list			*next;
+}							t_list;
+
+typedef struct s_memnode	t_memnode;
+typedef struct s_heap_man	t_heap_man;
+
+struct						s_memnode
+{
+	void					*ptr;
+	t_memnode				*prev;
+	t_memnode				*next;
+};
+
+struct						s_heap_man
+{
+	t_memnode				*first;
+	t_memnode				*last;
+};
 
 int					ft_printf(const char *format, ...);
 int					ft_dprintf(int fd, const char *format, ...);
@@ -57,6 +73,14 @@ void				*ft_memchr(const void *s, int c, size_t n);
 void				*ft_memmove(void *dst, const void *src, size_t len);
 void				*ft_memalloc(size_t size);
 int					ft_memcmp(const void *s1, const void *s2, size_t n);
+
+void				*ft_hmalloc(size_t size);
+void				*ft_hmemalloc(size_t size);
+char				*ft_hstrdup(char *hstr);
+char				*ft_hstrndup(char *hstr, size_t size);
+int					ft_hfree(void *ptr);
+int					ft_heap_clear(void);
+t_heap_man			*ft_heap_singleton(void);
 
 void				ft_putchar(char c);
 void				ft_putnbr(int nbr);
