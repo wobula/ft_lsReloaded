@@ -89,12 +89,17 @@ void	get_folder_info(t_args *meta)
     closedir(dir);
 }
 
+void	processor(t_args *meta)
+{
+	get_folder_info(&meta);
+}
+
 int 	main(int argc, char **argv)
 {
 	t_args meta;
 
 	preprocessor(&meta, argv, argc);
-	get_folder_info(&meta);
+	processor(&meta);
 	ft_printf("\nend");
 	return (0);
 }
