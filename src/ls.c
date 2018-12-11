@@ -50,10 +50,58 @@ perror("stat");
 exit(EXIT_FAILURE);
 }*/
 
+void	print_type(mode_t st_mode)
+{
+	int bits;
+
+	bits = (st_mode & S_IFMT);
+	if (bits == S_IFDIR)
+		write(1, "d", 1);
+	else if (bits == S_IFCHR)
+	{
+		write(1, "c", 1);
+		return ;
+	}
+	else if (bits == S_IFBLK)
+	{
+		write(1, "b", 1);
+		return ;
+	}
+	else if (bits == S_IFLNK)
+		write(1, "l", 1);
+	else if (bits == S_IFSOCK)
+		write(1, "s", 1);
+	else if (bits == S_IFIFO)
+		write(1, "f", 1);
+	else
+		write(1, "-", 1);
+}
+
+void	print_perms(mode_t st_mode)
+{
+	print_type(st_mode);
+
+	//user
+    ft_printf("%c", (st_mode & S_IRUSR ? 'r' : '-')); //read
+    ft_printf("%c", (st_mode & S_IWUSR ? 'w' : '-')); //write
+    ft_printf("%c", (st_mode & S_IXUSR ? 'x' : '-')); //execute
+
+    //group
+    ft_printf("%c", (st_mode & S_IRGRP ? 'r' : '-')); //read
+    ft_printf("%c", (st_mode & S_IWGRP ? 'w' : '-')); //write
+    ft_printf("%c", (st_mode & S_IXGRP ? 'x' : '-')); //execute
+
+    //wtf?
+    ft_printf("%c", (st_mode & S_IROTH ? 'r' : '-')); //read
+    ft_printf("%c", (st_mode & S_IWOTH ? 'w' : '-')); //write
+    ft_printf("%c", (st_mode & S_IXOTH ? 'x' : '-')); //execute
+}
+
 void	get_file_info(t_args *meta)
 {
 	struct stat sb;
 	struct passwd *pwd;
+	struct group *gwd;
 	int x;
 
 	if ((x = lstat(meta->args[0], &sb)) == -1)
@@ -73,8 +121,12 @@ void	get_file_info(t_args *meta)
 	    default:       printf("unknown?\n");                break;
     }
     pwd = getpwuid(sb.st_uid);
-    ft_printf("user: %s\n", pwd->pw_name);
-    ft_printf("group: %s\n", pw->pw_group);
+    gwd = getgrgid(pwd->pw_gid);
+   	ft_printf("user: %s\n", pwd->pw_name);
+    ft_printf("group: %s\n", gwd->gr_name);
+    ft_printf("size: %jd\n", sb.st_size);
+    ft_printf("permissions: ");
+    print_perms(sb.st_mode);
 }
 
 void	get_folder_info(t_args *meta)
