@@ -12,6 +12,14 @@
 				 (x) == 'l' ? true :\
 				 (x) == 't' ? true : false\
 
+#define FILE_CHECK(x)\
+				 (x) == S_IFDIR ? 'd' :\
+				 (x) == S_IFREG ? '-' :\
+				 (x) == S_IFLNK ? 'l' :\
+				 (x) == S_IFSOCK ? 's' :\
+				 (x) == S_IFIFO ? 'f' :\
+				 (x) == S_IFCHR ? 'c' : 'b'\
+
 #define INVALID_OPT(x)\
 				 	ft_printf("ls invalid option -- '%c'\n", x);\
 				 	ft_printf("Try 'ls --dumbass' for more information.\n");\
@@ -25,5 +33,10 @@ typedef struct 	s_args
 	char**		args;
 	bool		opts[127];
 } 				t_args;
+
+typedef struct 	s_file
+{
+	char		protection[11];
+}				t_file;
 
 bool 	preprocessor(t_args *meta, char **argv, int argc);

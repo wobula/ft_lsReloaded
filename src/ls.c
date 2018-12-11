@@ -50,51 +50,35 @@ perror("stat");
 exit(EXIT_FAILURE);
 }*/
 
-void	print_type(mode_t st_mode)
+void	print_type(t_file *data, mode_t st_mode)
 {
 	int bits;
 
 	bits = (st_mode & S_IFMT);
-	if (bits == S_IFDIR)
-		write(1, "d", 1);
-	else if (bits == S_IFCHR)
-	{
-		write(1, "c", 1);
-		return ;
-	}
-	else if (bits == S_IFBLK)
-	{
-		write(1, "b", 1);
-		return ;
-	}
-	else if (bits == S_IFLNK)
-		write(1, "l", 1);
-	else if (bits == S_IFSOCK)
-		write(1, "s", 1);
-	else if (bits == S_IFIFO)
-		write(1, "f", 1);
-	else
-		write(1, "-", 1);
+	data->protection[0] = FILE_CHECK(bits);
 }
 
-void	print_perms(mode_t st_mode)
+void	print_perms(t_file *data, mode_t st_mode)
 {
-	print_type(st_mode);
+	print_type(data, st_mode);
 
 	//user
-    ft_printf("%c", (st_mode & S_IRUSR ? 'r' : '-')); //read
-    ft_printf("%c", (st_mode & S_IWUSR ? 'w' : '-')); //write
-    ft_printf("%c", (st_mode & S_IXUSR ? 'x' : '-')); //execute
+    data->protection[1] = st_mode & S_IRUSR ? 'r' : '-';
+    data->protection[2] = st_mode & S_IWUSR ? 'w' : '-';
+    data->protection[3] = st_mode & S_IXUSR ? 'x' : '-';
 
     //group
-    ft_printf("%c", (st_mode & S_IRGRP ? 'r' : '-')); //read
-    ft_printf("%c", (st_mode & S_IWGRP ? 'w' : '-')); //write
-    ft_printf("%c", (st_mode & S_IXGRP ? 'x' : '-')); //execute
+    data->protection[4] = st_mode & S_IRGRP ? 'r' : '-';
+    data->protection[5] = st_mode & S_IWGRP ? 'w' : '-';
+    data->protection[6] = st_mode & S_IXGRP ? 'x' : '-';
 
     //wtf?
-    ft_printf("%c", (st_mode & S_IROTH ? 'r' : '-')); //read
-    ft_printf("%c", (st_mode & S_IWOTH ? 'w' : '-')); //write
-    ft_printf("%c", (st_mode & S_IXOTH ? 'x' : '-')); //execute
+    data->protection[7] = st_mode & S_IROTH ? 'r' : '-';
+    data->protection[8] = st_mode & S_IWOTH ? 'w' : '-';
+    data->protection[9] = st_mode & S_IXOTH ? 'x' : '-';
+    data->protection[10] = '\0';
+
+    ft_printf("perms: %s\n", data->protection);
 }
 
 void	get_file_info(t_args *meta)
@@ -102,6 +86,7 @@ void	get_file_info(t_args *meta)
 	struct stat sb;
 	struct passwd *pwd;
 	struct group *gwd;
+	t_file data;
 	int x;
 
 	if ((x = lstat(meta->args[0], &sb)) == -1)
@@ -125,8 +110,7 @@ void	get_file_info(t_args *meta)
    	ft_printf("user: %s\n", pwd->pw_name);
     ft_printf("group: %s\n", gwd->gr_name);
     ft_printf("size: %jd\n", sb.st_size);
-    ft_printf("permissions: ");
-    print_perms(sb.st_mode);
+    print_perms(&data, sb.st_mode);
 }
 
 void	get_folder_info(t_args *meta)
