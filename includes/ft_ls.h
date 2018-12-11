@@ -7,6 +7,7 @@
 				 (x) == 'R' ? true :\
 				 (x) == 'a' ? true :\
 				 (x) == 'r' ? true :\
+				 (x) == 'l' ? true :\
 				 (x) == 't' ? true : false\
 
 #define INVALID_OPT(x)\

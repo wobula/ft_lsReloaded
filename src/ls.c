@@ -91,14 +91,17 @@ void	get_folder_info(t_args *meta)
 
 void	processor(t_args *meta)
 {
-	get_folder_info(&meta);
+	get_folder_info(meta);
 }
 
 int 	main(int argc, char **argv)
 {
 	t_args meta;
 
-	preprocessor(&meta, argv, argc);
+	if (preprocessor(&meta, argv, argc) == false)
+	{
+		return (1);
+	}
 	processor(&meta);
 	ft_printf("\nend");
 	return (0);
