@@ -1,5 +1,6 @@
 #include <sys/stat.h>
 #include <dirent.h>
+#include <pwd.h>
 #include "../libft/includes/libft.h"
 
 #define OPT_CHECK(x)\

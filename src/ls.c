@@ -53,6 +53,7 @@ exit(EXIT_FAILURE);
 void	get_file_info(t_args *meta)
 {
 	struct stat sb;
+	struct passwd *pwd;
 	int x;
 
 	if ((x = lstat(meta->args[0], &sb)) == -1)
@@ -71,6 +72,9 @@ void	get_file_info(t_args *meta)
 	    case S_IFSOCK: printf("socket\n");                  break;
 	    default:       printf("unknown?\n");                break;
     }
+    pwd = getpwuid(sb.st_uid);
+    ft_printf("user: %s\n", pwd->pw_name);
+    ft_printf("group: %s\n", pw->pw_group);
 }
 
 void	get_folder_info(t_args *meta)
@@ -91,7 +95,7 @@ void	get_folder_info(t_args *meta)
 
 void	processor(t_args *meta)
 {
-	get_folder_info(meta);
+	get_file_info(meta);
 }
 
 int 	main(int argc, char **argv)
