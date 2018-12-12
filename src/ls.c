@@ -60,14 +60,7 @@ void	get_file_name(t_file *data, char *file)
 	char *ptr;
 
 	ptr = ft_strchrrev(file, '\\');
-	if (ptr == NULL)
-	{
-		data->file = file;
-	}
-	else
-	{
-		data->file = ptr;
-	}
+	data->file = (ptr == null) ? file : ptr;
 }
 
 void	get_file_info(char *file)
