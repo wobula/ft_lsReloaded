@@ -56,6 +56,7 @@ LIBFT = libft/ft_bzero.c \
 	   libft/ft_strncat.c \
 	   libft/ft_strlcat.c \
 	   libft/ft_strchr.c \
+	   libft/ft_strchrrev.c \
 	   libft/ft_strrchr.c \
 	   libft/ft_strstr.c \
 	   libft/ft_strnstr.c \

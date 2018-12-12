@@ -51,20 +51,36 @@ void	print_file(t_file *data)
     ft_printf("%s ", data->group);
     ft_printf("%lld ", (long long)data->size);
     ft_printf("%lld ", (long long)data->hlinks);
-    ft_printf("%.12s", data->last_mod_eng + 4);
+    ft_printf("%.12s ", data->last_mod_eng + 4);
+    ft_printf("%s\n", data->file);
 }
 
-void	get_file_info(t_args *meta)
+void	get_file_name(t_file *data, char *file)
+{
+	char *ptr;
+
+	ptr = ft_strchrrev(file, '\\');
+	if (ptr == NULL)
+	{
+		data->file = file;
+	}
+	else
+	{
+		data->file = ptr;
+	}
+}
+
+void	get_file_info(char *file)
 {
 	struct stat sb;
 	t_file data;
 
-	if (lstat(meta->args[0], &sb) == -1)
+	if (lstat(file, &sb) == -1)
 	{
 		ft_printf("Error");
 		return ;
 	}
-
+	get_file_name(&data, file);
     get_perms(&data, sb.st_mode);
     get_time(&data, sb.st_mtime);
     get_user_details(&data, sb.st_uid, sb.st_gid);
@@ -92,7 +108,7 @@ void	get_folder_info(t_args *meta)
 
 void	processor(t_args *meta)
 {
-	get_file_info(meta);
+	get_file_info(meta->args[0]);
 }
 
 int 	main(int argc, char **argv)
@@ -104,6 +120,5 @@ int 	main(int argc, char **argv)
 		return (1);
 	}
 	processor(&meta);
-	ft_printf("\nend");
 	return (0);
 }

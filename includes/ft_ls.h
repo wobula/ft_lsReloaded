@@ -38,6 +38,7 @@ typedef struct 		s_args
 typedef struct 		s_file
 {
 	char			protection[11];
+	char			*file;
 	char			*user;
 	char			*group;
 	char			*last_mod_eng;
