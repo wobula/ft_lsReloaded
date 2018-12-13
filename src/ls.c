@@ -75,15 +75,17 @@ void	get_file_name(t_file *data, char *file)
 	data->file = (ptr == NULL) ? file : ptr;
 }
 
-void	get_file_info(char *file)
+t_file	get_info(char *file)
 {
 	struct stat sb;
 	t_file data;
 
+	data.valid = true;
 	if (lstat(file, &sb) == -1)
 	{
+		data.valid = false;
 		ft_printf("Error");
-		return ;
+		return (data);
 	}
 	get_file_name(&data, file);
 	get_perms(&data, sb.st_mode);
@@ -93,6 +95,7 @@ void	get_file_info(char *file)
 	get_links(&data, sb.st_nlink);
 
 	print_file(&data);
+	return (data);
 }
 
 void	get_folder_info(t_args *meta)
@@ -113,7 +116,14 @@ void	get_folder_info(t_args *meta)
 
 void	processor(t_args *meta)
 {
-	get_file_info(meta->args[0]);
+	int x;
+
+	x = -1;
+	while (meta->args[++x] != 0)
+	{
+		if (get_info(meta->args[x]).valid == false)
+			break;
+	}
 }
 
 int 	main(int argc, char **argv)
