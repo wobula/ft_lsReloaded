@@ -28,6 +28,7 @@ void	get_perms(t_file *data, mode_t st_mode)
 	data->protection[8] = st_mode & S_IWOTH ? 'w' : '-';
 	data->protection[9] = st_mode & S_IXOTH ? 'x' : '-';
 	data->protection[10] = '\0';
+	data->folder = data->protection[0] == 'd' ? true : false;
 }
 
 void	get_time(t_file *data, time_t last_mod)
@@ -85,48 +86,71 @@ void	get_data(t_file *data, struct stat *sb, char *file)
 	get_links(data, sb->st_nlink);
 }
 
-t_file	get_info(char *file)
+t_file	get_file_info(t_file *data, struct stat *sb, char *file)
 {
-	struct stat sb;
-	t_file data;
+	// struct stat sb;
 
-	data.valid = true;
-	if (lstat(file, &sb) == -1)
-	{
-		data.valid = false;
-		return (data);
-	}
+	// data->valid = true;
+	// if (lstat(file, &sb) == -1)
+	// {
+	// 	data.valid = false;
+	// 	return (data);
+	// }
 
-	get_data(&data, &sb, file);
-	print_file(&data);
-	return (data);
+	get_data(data, sb, file);
+	print_file(data);
+	return (*data);
 }
 
-void	get_folder_info(t_args *meta)
+void	get_folder_info(t_file *data, struct stat *sb, char *input)
 {
-	DIR *dir;
-	struct dirent *dent;
-	char buffer[50];
+	DIR 	*dir;
+	struct 	dirent *dent;
+	char 	buffer[50];
 
-	strcpy(buffer, meta->args[0]);
-	dir = opendir(buffer);   //this part
+	strcpy(buffer, input);
+	dir = opendir(buffer);
 	if(dir != NULL)
 	{
 		while((dent = readdir(dir)) != NULL)
-			ft_printf("%s\n", dent->d_name);
+		{
+			get_file_info(data, sb, dent->d_name);
+		}
 	}
 	closedir(dir);
+}
+
+void	process_user_input(char *input)
+{
+	struct stat sb;
+	t_file 		data;
+
+	data.valid = true;
+	if (lstat(input, &sb) == -1)
+	{
+		data.valid = false;
+		return ;
+	}
+	if (S_ISDIR(sb.st_mode) == true)
+	{
+		get_folder_info(&data, &sb, input);
+	}
+	else
+	{
+		get_file_info(&data, &sb, input);
+	}
 }
 
 void	processor(t_args *meta)
 {
 	int x;
+	struct stat sb;
 
 	x = -1;
 	while (meta->args[++x] != 0)
 	{
-		if (get_info(meta->args[x]).valid == false)
-			break;
+		process_user_input(meta->args[x]);
+		ft_printf("\n");
 	}
 }
 

@@ -38,6 +38,7 @@ typedef struct 		s_args
 typedef struct 		s_file
 {
 	bool			valid;
+	bool			folder;
 	char			protection[11];
 	char			*file;
 	char			*user;
