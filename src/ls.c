@@ -75,6 +75,16 @@ void	get_file_name(t_file *data, char *file)
 	data->file = (ptr == NULL) ? file : ptr;
 }
 
+void	get_data(t_file *data, struct stat *sb, char *file)
+{
+	get_file_name(data, file);
+	get_perms(data, sb->st_mode);
+	get_time(data, sb->st_mtime);
+	get_user_details(data, sb->st_uid, sb->st_gid);
+	get_size(data, sb->st_size);
+	get_links(data, sb->st_nlink);
+}
+
 t_file	get_info(char *file)
 {
 	struct stat sb;
@@ -84,16 +94,10 @@ t_file	get_info(char *file)
 	if (lstat(file, &sb) == -1)
 	{
 		data.valid = false;
-		ft_printf("Error");
 		return (data);
 	}
-	get_file_name(&data, file);
-	get_perms(&data, sb.st_mode);
-	get_time(&data, sb.st_mtime);
-	get_user_details(&data, sb.st_uid, sb.st_gid);
-	get_size(&data, sb.st_size);
-	get_links(&data, sb.st_nlink);
 
+	get_data(&data, &sb, file);
 	print_file(&data);
 	return (data);
 }
