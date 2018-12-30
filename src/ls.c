@@ -76,33 +76,46 @@ void	get_file_name(t_file *data, char *file)
 	data->file = (ptr == NULL) ? file : ptr;
 }
 
-void	get_data(t_file *data, struct stat *sb, char *file)
+t_file	get_data(struct stat *sb, char *file)
 {
-	get_file_name(data, file);
-	get_perms(data, sb->st_mode);
-	get_time(data, sb->st_mtime);
-	get_user_details(data, sb->st_uid, sb->st_gid);
-	get_size(data, sb->st_size);
-	get_links(data, sb->st_nlink);
+	t_file data;
+
+	get_file_name(&data, file);
+	get_perms(&data, sb->st_mode);
+	get_time(&data, sb->st_mtime);
+	get_user_details(&data, sb->st_uid, sb->st_gid);
+	get_size(&data, sb->st_size);
+	get_links(&data, sb->st_nlink);
+	return (data);
 }
 
-t_file	get_file_info(t_file *data, struct stat *sb, char *file)
+t_file_vector	*make_new_vector(int file_count)
 {
-	// struct stat sb;
+	t_file_vector	*files;
 
-	// data->valid = true;
-	// if (lstat(file, &sb) == -1)
-	// {
-	// 	data.valid = false;
-	// 	return (data);
-	// }
-
-	get_data(data, sb, file);
-	print_file(data);
-	return (*data);
+	files = (t_file_vector*)ft_hmalloc(sizeof(t_file_vector));
+	files->file_count = file_count;
+	if (file_count > 0)
+	{
+		files->vector = (t_file_vector**)ft_hmalloc(sizeof(t_file_vector*) * (file_count + 1));
+	}
+	else
+	{
+		files->vector = NULL;
+	}
+	return (files);
 }
 
-void	get_folder_info(t_file *data, struct stat *sb, char *input)
+t_file_vector	*get_file_info(struct stat *sb, char *file)
+{
+	t_file_vector *this;
+
+	this = make_new_vector(0);
+	this->info = get_data(sb, file);
+	return (this);
+}
+
+/*void			get_folder_info(t_file *data, struct stat *sb, char *input)
 {
 	DIR 	*dir;
 	struct 	dirent *dent;
@@ -114,43 +127,63 @@ void	get_folder_info(t_file *data, struct stat *sb, char *input)
 	{
 		while((dent = readdir(dir)) != NULL)
 		{
-			get_file_info(data, sb, dent->d_name);
+			get_file_info(sb, dent->d_name);
 		}
 	}
 	closedir(dir);
-}
+}*/
 
-void	process_user_input(char *input)
+t_file_vector	*process_user_input(char *input)
 {
+	t_file_vector *this;
 	struct stat sb;
-	t_file 		data;
 
-	data.valid = true;
 	if (lstat(input, &sb) == -1)
 	{
-		data.valid = false;
-		return ;
+		return (NULL);
 	}
 	if (S_ISDIR(sb.st_mode) == true)
 	{
-		get_folder_info(&data, &sb, input);
+		//get_folder_info(&data, &sb, input);
 	}
 	else
 	{
-		get_file_info(&data, &sb, input);
+		this = get_file_info(&sb, input);
 	}
+
+	return (this);
+}
+
+void		add_file_to_vector(t_file_vector *vector, t_file_vector *file)
+{
+
+}
+
+t_processor	processor_constructor(t_args *meta)
+{
+	t_processor file_info;
+
+	file_info.args = meta;
+	file_info.x = -1;
+	file_info.arg_vector = make_new_vector(file_info.args->arg_count);
+	return (file_info);
 }
 
 void	processor(t_args *meta)
 {
+	t_processor	file_info;
+	t_file_vector *tmp;
 	int x;
 	struct stat sb;
 
+	file_info = processor_constructor(meta);
 	x = -1;
 	while (meta->args[++x] != 0)
 	{
-		process_user_input(meta->args[x]);
-		ft_printf("\n");
+		ft_printf("Processing file: %s\n", meta->args[x]);
+		tmp = process_user_input(meta->args[x]);
+
+		//ft_printf("\n");
 	}
 }
 

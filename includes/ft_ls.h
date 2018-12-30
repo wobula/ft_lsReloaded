@@ -51,4 +51,18 @@ typedef struct 		s_file
 	time_t			last_modified;
 }					t_file;
 
+typedef struct 			file_vector
+{
+	t_file 				info;
+	int 				file_count;
+	struct file_vector 	**vector;		
+}						t_file_vector;
+
+typedef struct 		s_processor
+{
+	int 				x;
+	struct s_args		*args;	
+	struct file_vector 	*arg_vector;	
+}						t_processor;
+
 bool 	preprocessor(t_args *meta, char **argv, int argc);
