@@ -65,4 +65,9 @@ typedef struct 		s_processor
 	struct file_vector 	*arg_vector;	
 }						t_processor;
 
-bool 	preprocessor(t_args *meta, char **argv, int argc);
+bool 			preprocessor(t_args *meta, char **argv, int argc);
+
+t_file			get_data(struct stat *sb, char *file);
+
+t_file_vector	*make_new_vector(int file_count);
+t_file_vector	*add_file_to_vector(t_file_vector *folder, t_file_vector *file);
