@@ -102,8 +102,31 @@ bool		get_arg_data(t_args *meta, t_data *files)
 	x = -1;
 	while (++x < files->arg_count)
 	{
-		ft_printf("Processing file: %s\n", meta->args[x]);
 		files->vector[x] = process_arg(meta->args[x]);
+	}
+}
+
+void		print_folder(t_vector *folder)
+{
+	int x;
+
+	x = -1;
+	while (++x < folder->count)
+	{
+		print_file(&folder->sub_vector[x]->info);
+	}
+}
+
+void		print_data(t_data *files)
+{
+	int x = -1;
+	while (++x < files->arg_count)
+	{
+		if (files->vector[x]->folder == false)
+			print_file(&files->vector[x]->info);
+		else
+			print_folder(files->vector[x]);
+		ft_putchar('\n');
 	}
 }
 
@@ -113,11 +136,7 @@ bool		processor(t_args *meta)
 
 	processor_constructor(meta, &files);
 	get_arg_data(meta, &files);
-	int x = -1;
-	while (++x < files.arg_count)
-	{
-		print_file(&files.vector[x]->info);
-	}
+	print_data(&files);
 }
 
 int 		main(int argc, char **argv)
