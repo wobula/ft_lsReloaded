@@ -59,6 +59,7 @@ typedef struct 			s_data
 
 typedef struct 			s_vector
 {
+	bool				invalid;
 	bool				folder;
 	int 				count;
 	char				*name;
@@ -70,4 +71,5 @@ bool 					preprocessor(t_args *meta, char **argv, int argc);
 
 t_file					get_data(struct stat *sb, char *file);
 
+t_vector 				*make_new_vector(char *name, bool folder);
 void					add_to_vector(t_vector *folder, t_vector *add);

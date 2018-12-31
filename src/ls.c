@@ -30,6 +30,7 @@ t_vector	*get_file_info(struct stat *sb, char *file)
 	t_vector *tmp;
 
 	tmp = (t_vector*)ft_hmalloc(sizeof(t_vector));
+	tmp->folder = false;
 	tmp->info = get_data(sb, file);
 	return (tmp);
 }
@@ -45,9 +46,8 @@ void		get_dir_contents(struct stat *sb, t_vector *folder)
 	{
 		while((dent = readdir(dir)) != NULL)
 		{
-			tmp = (t_vector*)ft_hmalloc(sizeof(t_vector));
+			tmp = make_new_vector(dent->d_name, false);
 			tmp->info = get_data(sb, dent->d_name);
-			print_file(&tmp->info);
 			add_to_vector(folder, tmp);
 		}
 	}
@@ -58,18 +58,15 @@ t_vector	*get_folder_info(struct stat *sb, char *input)
 {
 	t_vector 	*folder;
 
-	folder = (t_vector*)ft_hmalloc(sizeof(t_vector));
-	folder->folder = true;
-	folder->name = input;
+	folder = make_new_vector(input, true);
 	folder->info = get_data(sb, folder->name);
-	print_file(&folder->info);
 	get_dir_contents(sb, folder);
 	return (folder);
 }
 
 t_vector	*process_arg(char *input)
 {
-	t_vector *this;
+	t_vector 	*this;
 	struct stat sb;
 
 	if (lstat(input, &sb) == -1)
@@ -92,7 +89,7 @@ t_vector	*process_arg(char *input)
 
 void		processor_constructor(t_args *meta, t_data *files)
 {
-	files->vector = (t_vector**)ft_hmalloc(sizeof(t_vector) * meta->arg_count + 1);
+	files->vector = (t_vector**)ft_hmalloc(sizeof(t_vector*) * meta->arg_count + 1);
 	files->vector[meta->arg_count] = 0;
 	files->arg_count = meta->arg_count;
 }
@@ -100,13 +97,13 @@ void		processor_constructor(t_args *meta, t_data *files)
 bool		get_arg_data(t_args *meta, t_data *files)
 {
 	int x;
+	t_vector *tmp;
 
 	x = -1;
 	while (++x < files->arg_count)
 	{
 		ft_printf("Processing file: %s\n", meta->args[x]);
 		files->vector[x] = process_arg(meta->args[x]);
-		print_file(&files->vector[x]->info);
 	}
 }
 
@@ -116,6 +113,11 @@ bool		processor(t_args *meta)
 
 	processor_constructor(meta, &files);
 	get_arg_data(meta, &files);
+	int x = -1;
+	while (++x < files.arg_count)
+	{
+		print_file(&files.vector[x]->info);
+	}
 }
 
 int 		main(int argc, char **argv)
