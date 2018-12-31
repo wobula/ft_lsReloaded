@@ -12,7 +12,9 @@
 
 #include "../includes/ft_ls.h"
 
-void	print_file(t_file *data)
+t_vector	*process_arg(char *input);
+
+void		print_file(t_file *data)
 {
 	ft_printf("%s ", data->protection);
 	ft_printf("%s ", data->user);
@@ -25,27 +27,41 @@ void	print_file(t_file *data)
 
 t_vector	*get_file_info(struct stat *sb, char *file)
 {
-	ft_printf("Get file info here\n");
-	return (NULL);
+	t_vector *tmp;
+	tmp = (t_vector*)ft_hmalloc(sizeof(t_vector));
+	tmp->info = get_data(sb, file);
+	return (tmp);
 }
 
-t_vector	*get_folder_info(struct stat *sb, char *input)
+void		get_dir_contents(struct stat *sb, t_vector *folder)
 {
-	DIR 	*dir;
-	struct 	dirent *dent;
-	char 	buffer[50];
-	t_vector *folder = NULL;
+	DIR 			*dir;
+	struct dirent 	*dent;
+	t_vector		*tmp;
 
-	strcpy(buffer, input);
-	dir = opendir(buffer);
+	dir = opendir(folder->name);
 	if(dir != NULL)
 	{
 		while((dent = readdir(dir)) != NULL)
 		{
 			ft_printf("Add files to a vector here.\n");
+			tmp = (t_vector*)ft_hmalloc(sizeof(t_vector));
+			tmp->info = get_data(sb, dent->d_name);
+			print_file(&tmp->info);
 		}
 	}
 	closedir(dir);
+}
+
+t_vector	*get_folder_info(struct stat *sb, char *input)
+{
+	t_vector 	*folder;
+
+	folder = (t_vector*)ft_hmalloc(sizeof(t_vector));
+	folder->folder = true;
+	folder->name = input;
+	folder->info = get_data(sb, folder->name);
+	get_dir_contents(sb, folder);
 	return (folder);
 }
 
@@ -70,19 +86,35 @@ t_vector	*process_arg(char *input)
 	return (this);
 }
 
-void		processor(t_args *meta)
+void		processor_constructor(t_args *meta, t_data *files)
+{
+	files->vector = (t_vector**)ft_hmalloc(sizeof(t_vector) * meta->arg_count + 1);
+	files->vector[meta->arg_count] = 0;
+	files->arg_count = meta->arg_count;
+}
+
+bool		get_arg_data(t_args *meta, t_data *files)
 {
 	int x;
 
 	x = -1;
-	while (++x < meta->arg_count)
+	while (++x < files->arg_count)
 	{
-		ft_printf("Getting arg: %s\n", meta->args[x]);
-		ft_printf("\n");
+		ft_printf("Processing file: %s\n", meta->args[x]);
+		files->vector[x] = process_arg(meta->args[x]);
+		print_file(&files->vector[x]->info);
 	}
 }
 
-int 	main(int argc, char **argv)
+bool		processor(t_args *meta)
+{
+	t_data files;
+
+	processor_constructor(meta, &files);
+	get_arg_data(meta, &files);
+}
+
+int 		main(int argc, char **argv)
 {
 	t_args meta;
 
