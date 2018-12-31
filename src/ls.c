@@ -92,7 +92,7 @@ t_processor	processor_constructor(t_args *meta)
 
 	file_info.args = meta;
 	file_info.x = -1;
-	file_info.arg_vector = make_new_vector(file_info.args->arg_count);
+	file_info.arg_vector = make_new_vector(0);
 	return (file_info);
 }
 
@@ -101,14 +101,14 @@ t_file_vector *get_arg_information(t_processor *file_info)
 	t_file_vector *tmp;
 	struct stat sb;
 	int x = -1;
-
 	while (++x < file_info->args->arg_count)
 	{
 		tmp = process_user_input(file_info->args->args[x]);
-		add_file_to_vector(file_info->arg_vector, tmp);
+		file_info->arg_vector = add_file_to_vector(file_info->arg_vector, tmp);
 	}
+	ft_printf("file info count: %d\n", file_info->arg_vector->file_count);
 
-	return (tmp);
+	return (file_info->arg_vector);
 }
 
 void		processor(t_args *meta)
