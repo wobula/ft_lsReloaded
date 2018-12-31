@@ -51,23 +51,23 @@ typedef struct 		s_file
 	time_t			last_modified;
 }					t_file;
 
-typedef struct 			file_vector
+typedef struct 			s_data
 {
-	t_file 				info;
-	int 				file_count;
-	struct file_vector 	**vector;		
-}						t_file_vector;
+	int 				arg_count;
+	struct s_vector 	**vector;		
+}						t_data;
 
-typedef struct 		s_processor
+typedef struct 			s_vector
 {
-	int 				x;
-	struct s_args		*args;	
-	struct file_vector 	*arg_vector;	
-}						t_processor;
+	bool				folder;
+	int 				count;
+	struct s_file		info;
+	struct s_vector		**sub_vector;
+}						t_vector;
 
 bool 			preprocessor(t_args *meta, char **argv, int argc);
 
 t_file			get_data(struct stat *sb, char *file);
 
-t_file_vector	*make_new_vector(int file_count);
-t_file_vector	*add_file_to_vector(t_file_vector *folder, t_file_vector *file);
+t_vector	*make_new_vector(int file_count);
+t_vector	*add_file_to_vector(t_vector *folder, t_vector *file);
