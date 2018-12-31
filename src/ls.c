@@ -96,7 +96,7 @@ t_processor	processor_constructor(t_args *meta)
 	return (file_info);
 }
 
-t_file_vector *get_arg_information(t_processor *file_info)
+void	get_arg_information(t_processor *file_info)
 {
 	t_file_vector *tmp;
 	struct stat sb;
@@ -107,8 +107,6 @@ t_file_vector *get_arg_information(t_processor *file_info)
 		file_info->arg_vector = add_file_to_vector(file_info->arg_vector, tmp);
 	}
 	ft_printf("file info count: %d\n", file_info->arg_vector->file_count);
-
-	return (file_info->arg_vector);
 }
 
 void		processor(t_args *meta)
@@ -119,16 +117,16 @@ void		processor(t_args *meta)
 	struct stat sb;
 
 	file_info = processor_constructor(meta);
-	tmp = get_arg_information(&file_info);
+	get_arg_information(&file_info);
 	x = -1;
-	while (meta->args[++x] != 0)
+	while (++x < file_info.arg_vector->file_count)
 	{
 		ft_printf("Printing arg: %s\n", meta->args[x]);
-		if (tmp->vector[x]->file_count == 1)
-			print_file(&(tmp->vector[x]->info));
+		if (file_info.arg_vector->vector[x]->file_count == 1)
+			print_file(&(file_info.arg_vector->vector[x]->info));
 		else
 		{
-			print_folder(tmp->vector[x]);
+			print_folder(file_info.arg_vector->vector[x]);
 		}
 		ft_printf("\n");
 	}
