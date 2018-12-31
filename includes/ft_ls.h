@@ -25,6 +25,8 @@
 				 	ft_printf("ls invalid option -- '%c'\n", x);\
 				 	ft_printf("Try 'ls --dumbass' for more information.\n");\
 
+#define OPT_L(x) (x[108]) == true ? true : false\
+
 typedef struct 			s_args 
 {
 	int 				argc;
