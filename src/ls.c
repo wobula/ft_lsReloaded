@@ -28,6 +28,7 @@ void		print_file(t_file *data)
 t_vector	*get_file_info(struct stat *sb, char *file)
 {
 	t_vector *tmp;
+
 	tmp = (t_vector*)ft_hmalloc(sizeof(t_vector));
 	tmp->info = get_data(sb, file);
 	return (tmp);
@@ -44,10 +45,10 @@ void		get_dir_contents(struct stat *sb, t_vector *folder)
 	{
 		while((dent = readdir(dir)) != NULL)
 		{
-			ft_printf("Add files to a vector here.\n");
 			tmp = (t_vector*)ft_hmalloc(sizeof(t_vector));
 			tmp->info = get_data(sb, dent->d_name);
-			print_file(&tmp->info);
+			print_file(tmp->info);
+			add_to_vector(folder, tmp);
 		}
 	}
 	closedir(dir);
@@ -61,6 +62,7 @@ t_vector	*get_folder_info(struct stat *sb, char *input)
 	folder->folder = true;
 	folder->name = input;
 	folder->info = get_data(sb, folder->name);
+	print_file(folder->info);
 	get_dir_contents(sb, folder);
 	return (folder);
 }
@@ -77,10 +79,12 @@ t_vector	*process_arg(char *input)
 	if (S_ISDIR(sb.st_mode) == true)
 	{
 		this = get_folder_info(&sb, input);
+		this->folder = true;
 	}
 	else
 	{
 		this = get_file_info(&sb, input);
+		this->folder = false;
 	}
 
 	return (this);
@@ -102,7 +106,7 @@ bool		get_arg_data(t_args *meta, t_data *files)
 	{
 		ft_printf("Processing file: %s\n", meta->args[x]);
 		files->vector[x] = process_arg(meta->args[x]);
-		print_file(&files->vector[x]->info);
+		print_file(files->vector[x]->info);
 	}
 }
 

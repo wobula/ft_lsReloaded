@@ -65,15 +65,16 @@ void	get_file_name(t_file *data, char *file)
 	data->file = (ptr == NULL) ? file : ptr;
 }
 
-t_file	get_data(struct stat *sb, char *file)
+t_file	*get_data(struct stat *sb, char *file)
 {
-	t_file data;
+	t_file *data;
 
-	get_file_name(&data, file);
-	get_perms(&data, sb->st_mode);
-	get_time(&data, sb->st_mtime);
-	get_user_details(&data, sb->st_uid, sb->st_gid);
-	get_size(&data, sb->st_size);
-	get_links(&data, sb->st_nlink);
+	data = (t_file*)ft_hmalloc(sizeof(t_file));
+	get_file_name(data, file);
+	get_perms(data, sb->st_mode);
+	get_time(data, sb->st_mtime);
+	get_user_details(data, sb->st_uid, sb->st_gid);
+	get_size(data, sb->st_size);
+	get_links(data, sb->st_nlink);
 	return (data);
 }
