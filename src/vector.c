@@ -29,13 +29,11 @@ void	add_to_vector(t_vector *folder, t_vector *add)
 	folder->count++;
 }
 
-t_vector 	*make_new_vector(char *name, bool folder)
+t_vector 	*make_new_vector()
 {
 	t_vector *tmp;
 
 	tmp = (t_vector*)ft_hmalloc(sizeof(t_vector));
-	tmp->name = name;
-	tmp->folder = folder;
 	tmp->sub_vector = NULL;
 	tmp->count = 0;
 	return (tmp);

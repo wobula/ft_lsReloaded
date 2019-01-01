@@ -28,7 +28,11 @@ void	get_perms(t_file *data, mode_t st_mode)
 	data->protection[8] = st_mode & S_IWOTH ? 'w' : '-';
 	data->protection[9] = st_mode & S_IXOTH ? 'x' : '-';
 	data->protection[10] = '\0';
-	data->folder = data->protection[0] == 'd' ? true : false;
+}
+
+void	get_folder_value(t_file *data)
+{
+	data->folder = FILE_OR_FOLDER(data->protection);
 }
 
 void	get_time(t_file *data, time_t last_mod)
@@ -62,7 +66,7 @@ void	get_file_name(t_file *data, char *file)
 	char *ptr;
 
 	ptr = ft_strchrrev(file, '\\');
-	data->file = (ptr == NULL) ? file : ptr;
+	data->name = (ptr == NULL) ? file : ptr;
 }
 
 t_file	get_data(struct stat *sb, char *file)
@@ -75,5 +79,6 @@ t_file	get_data(struct stat *sb, char *file)
 	get_user_details(&data, sb->st_uid, sb->st_gid);
 	get_size(&data, sb->st_size);
 	get_links(&data, sb->st_nlink);
+	get_folder_value(&data);
 	return (data);
 }

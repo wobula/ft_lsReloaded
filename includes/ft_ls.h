@@ -25,7 +25,9 @@
 				 	ft_printf("ls invalid option -- '%c'\n", x);\
 				 	ft_printf("Try 'ls --dumbass' for more information.\n");\
 
-#define OPT_L(x) (x[108]) == true ? true : false\
+#define OPT_L(x) (x[108]) == true ? true : false
+#define OPT_R(x) (x[82]) == true ? true : false
+#define FILE_OR_FOLDER(x) (x[0]) == 'd' ? true : false
 
 typedef struct 			s_args 
 {
@@ -42,7 +44,7 @@ typedef struct 			s_file
 	bool				valid;
 	bool				folder;
 	char				protection[11];
-	char				*file;
+	char				*name;
 	char				*user;
 	char				*group;
 	char				*last_mod_eng;
@@ -61,10 +63,7 @@ typedef struct 			s_data
 
 typedef struct 			s_vector
 {
-	bool				invalid;
-	bool				folder;
 	int 				count;
-	char				*name;
 	struct s_file		info;
 	struct s_vector		**sub_vector;
 }						t_vector;
@@ -72,6 +71,7 @@ typedef struct 			s_vector
 bool 					preprocessor(t_args *meta, char **argv, int argc);
 
 t_file					get_data(struct stat *sb, char *file);
+void					print_data(t_args *meta, t_data *files);
 
-t_vector 				*make_new_vector(char *name, bool folder);
+t_vector 				*make_new_vector();
 void					add_to_vector(t_vector *folder, t_vector *add);

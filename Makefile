@@ -22,6 +22,7 @@ SRC = ./src/ls.c \
 	  ./src/preprocessor.c \
 	  ./src/vector.c \
 	  ./src/get_data.c \
+	  ./src/print.c \
 
 COMPILE = $(GCC) $(FLAGS) $(SRC) $(HEADERS) $(LIBFTHEAD) $(LIBFT) -shared -o $(NAME) -g
 TEST_MAIN = $(GCC) $(FLAGS) $(HEADERS) $(LINK) $(LIBFT) $(SRC) -o $(NAME) ./libft/*.o -g
