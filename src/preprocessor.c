@@ -93,7 +93,7 @@ static void		extract_args(t_args *meta)
 static void		handler_args(t_args *meta)
 {
 	meta->arg_count = meta->argc - meta->opt_count - 1;
-	meta->args = (char**)ft_memalloc(sizeof(char*) * meta->arg_count + 1);
+	meta->args = (char**)ft_hmalloc(sizeof(char*) * (meta->arg_count + 1));
 	meta->args[meta->arg_count] = 0;
 	extract_args(meta);	
 }
@@ -110,33 +110,40 @@ static void		print_args(t_args *meta)
 	}
 }
 
-static void 	preprocessor_constructor(t_args *meta, t_vector *files, char **argv, int argc)
+static void 	preprocessor_constructor(t_args *meta, char **argv, int argc)
 {
 	meta->argv = argv;
 	meta->argc = argc;
-	meta->opt_count = 0;
 	meta->arg_count = 0;
+	meta->args = NULL;
+	meta->opt_count = 0;
 	ft_bzero(meta->opts, 127);
-	files->vector = NULL;
-	files->count = 0;
 }
 
-bool 			preprocessor(t_args *meta, t_vector *files, char **argv, int argc)
+static bool		validate_args(t_args *meta)
 {
-	preprocessor_constructor(meta, files, argv, argc);
+	int 		x;
+	struct stat sb;
+
+	x = -1;
+	while (++x < meta->arg_count)
+	{
+		if (lstat(meta->args[x], &sb) == -1)
+		{
+			INVALID_FILE(meta->args[x]);
+			return (false);
+		}
+	}
+}
+
+bool 			preprocessor(t_args *meta, char **argv, int argc)
+{
+	preprocessor_constructor(meta, argv, argc);
 	handler_options(meta);
 	if (!validate_opts(meta))
 		return (false);
 	handler_args(meta);
-	//if (!validate_args(meta))
-	//	return (false);
+	if (!validate_args(meta))
+		return (false);
 	return (true);
 }
-
-/*void		processor_constructor(t_args *meta, t_data *files)
-{
-	files->vector = (t_vector**)ft_hmalloc(sizeof(t_vector*) * meta->arg_count + 1);
-	files->vector[meta->arg_count] = 0;
-	files->arg_count = meta->arg_count;
-}
-*/

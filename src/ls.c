@@ -116,7 +116,7 @@ int 		main(int argc, char **argv)
 	t_args 		meta;
 	t_vector 	files;
 
-	if (preprocessor(&meta, &files, argv, argc) == false)
+	if (preprocessor(&meta, argv, argc) == false)
 	{
 		return (1);
 	}

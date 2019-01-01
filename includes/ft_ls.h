@@ -25,6 +25,8 @@
 				 	ft_printf("ls invalid option -- '%c'\n", x);\
 				 	ft_printf("Try 'ls --dumbass' for more information.\n");\
 
+#define INVALID_FILE(x) ft_printf("ls: cannot access '%s': No such file or directory\n", x)
+
 #define OPT_L(x) (x->opts[108]) == true ? true : false
 #define OPT_R(x) (x->opts[82]) == true ? true : false
 #define VECTOR_FOLDER_CHECK(z) (z->info.folder) == true ? true : false
@@ -64,7 +66,7 @@ typedef struct 			s_vector
 	struct s_vector		**vector;
 }						t_vector;
 
-bool 					preprocessor(t_args *meta, t_vector *files, char **argv, int argc);
+bool 					preprocessor(t_args *meta, char **argv, int argc);
 
 t_file					get_data(struct stat *sb, char *file);
 void					print_data(t_args *meta, t_vector *files);
