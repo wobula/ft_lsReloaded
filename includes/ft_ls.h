@@ -25,8 +25,10 @@
 				 	ft_printf("ls invalid option -- '%c'\n", x);\
 				 	ft_printf("Try 'ls --dumbass' for more information.\n");\
 
-#define OPT_L(x) (x[108]) == true ? true : false
-#define OPT_R(x) (x[82]) == true ? true : false
+#define OPT_L(x) (x->opts[108]) == true ? true : false
+#define OPT_R(x) (x->opts[82]) == true ? true : false
+#define VECTOR_FOLDER_CHECK(z) (z->info.folder) == true ? true : false
+#define RECURSIVE_CHECK(x, y) ((OPT_R(x)) && VECTOR_FOLDER_CHECK(y)) == true ? true : false
 #define FILE_OR_FOLDER(x) (x[0]) == 'd' ? true : false
 
 typedef struct 			s_args 

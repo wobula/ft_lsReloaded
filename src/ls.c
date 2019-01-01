@@ -81,15 +81,25 @@ void		processor_constructor(t_args *meta, t_data *files)
 	files->arg_count = meta->arg_count;
 }
 
+void		recurse(t_vector *folder)
+{
+	ft_printf("Inside recurse\n");
+	ft_printf("Outside recurse\n");
+}
+
 bool		get_arg_data(t_args *meta, t_data *files)
 {
-	int x;
-	t_vector *tmp;
+	int 		x;
 
 	x = -1;
 	while (++x < files->arg_count)
 	{
 		files->vector[x] = process_arg(meta->args[x]);
+		if (RECURSIVE_CHECK(meta, files->vector[x]) == true)
+		{
+			ft_printf("RECURSIVE MODE ACTIVE for %s\n", files->vector[x]->info.name);
+			recurse(files->vector[x]);
+		}
 	}
 }
 
@@ -99,7 +109,7 @@ bool		processor(t_args *meta)
 
 	processor_constructor(meta, &files);
 	get_arg_data(meta, &files);
-	print_data(meta, &files);
+	//print_data(meta, &files);
 }
 
 int 		main(int argc, char **argv)

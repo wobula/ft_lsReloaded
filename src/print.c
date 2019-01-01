@@ -76,7 +76,7 @@ void		print_data(t_args *meta, t_data *files)
 	x = -1;
 	while (++x < files->arg_count)
 	{
-		if (OPT_L(meta->opts) == true)
+		if (OPT_L(meta) == true)
 		{			
 			print_wide(files->vector[x]);
 		}
