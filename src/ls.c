@@ -105,7 +105,7 @@ bool		get_arg_data(t_args *meta, t_vector *files)
 
 bool		processor(t_args *meta, t_vector *files)
 {
-
+	ft_printf("INSIDE PROCESSOR\n");
 	processor_constructor(meta, files);
 	get_arg_data(meta, files);
 	//print_data(meta, &files);

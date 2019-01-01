@@ -134,6 +134,7 @@ static bool		validate_args(t_args *meta)
 			return (false);
 		}
 	}
+	return (true);
 }
 
 bool 			preprocessor(t_args *meta, char **argv, int argc)
