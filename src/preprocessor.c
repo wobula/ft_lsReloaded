@@ -12,15 +12,6 @@
 
 #include "../includes/ft_ls.h"
 
-static void 	preprocessor_constructor(t_args *meta, char **argv, int argc)
-{
-	meta->argv = argv;
-	meta->argc = argc;
-	meta->opt_count = 0;
-	meta->arg_count = 0;
-	ft_bzero(meta->opts, 127);
-}
-
 static void		extract_opt(t_args *meta, char *arg)
 {
 	int x;
@@ -119,14 +110,33 @@ static void		print_args(t_args *meta)
 	}
 }
 
-bool 			preprocessor(t_args *meta, char **argv, int argc)
+static void 	preprocessor_constructor(t_args *meta, t_vector *files, char **argv, int argc)
 {
-	preprocessor_constructor(meta, argv, argc);
+	meta->argv = argv;
+	meta->argc = argc;
+	meta->opt_count = 0;
+	meta->arg_count = 0;
+	ft_bzero(meta->opts, 127);
+	files->vector = NULL;
+	files->count = 0;
+}
+
+bool 			preprocessor(t_args *meta, t_vector *files, char **argv, int argc)
+{
+	preprocessor_constructor(meta, files, argv, argc);
 	handler_options(meta);
 	if (!validate_opts(meta))
 		return (false);
 	handler_args(meta);
-	//print_opts(meta);
-	//print_args(meta);
+	//if (!validate_args(meta))
+	//	return (false);
 	return (true);
 }
+
+/*void		processor_constructor(t_args *meta, t_data *files)
+{
+	files->vector = (t_vector**)ft_hmalloc(sizeof(t_vector*) * meta->arg_count + 1);
+	files->vector[meta->arg_count] = 0;
+	files->arg_count = meta->arg_count;
+}
+*/

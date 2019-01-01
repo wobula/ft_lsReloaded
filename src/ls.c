@@ -74,11 +74,11 @@ t_vector	*process_arg(char *input)
 	return (this);
 }
 
-void		processor_constructor(t_args *meta, t_data *files)
+void		processor_constructor(t_args *meta, t_vector *files)
 {
 	files->vector = (t_vector**)ft_hmalloc(sizeof(t_vector*) * meta->arg_count + 1);
 	files->vector[meta->arg_count] = 0;
-	files->arg_count = meta->arg_count;
+	files->count = meta->arg_count;
 }
 
 void		recurse(t_vector *folder)
@@ -87,12 +87,12 @@ void		recurse(t_vector *folder)
 	ft_printf("Outside recurse\n");
 }
 
-bool		get_arg_data(t_args *meta, t_data *files)
+bool		get_arg_data(t_args *meta, t_vector *files)
 {
 	int 		x;
 
 	x = -1;
-	while (++x < files->arg_count)
+	while (++x < files->count)
 	{
 		files->vector[x] = process_arg(meta->args[x]);
 		if (RECURSIVE_CHECK(meta, files->vector[x]) == true)
@@ -103,23 +103,23 @@ bool		get_arg_data(t_args *meta, t_data *files)
 	}
 }
 
-bool		processor(t_args *meta)
+bool		processor(t_args *meta, t_vector *files)
 {
-	t_data files;
 
-	processor_constructor(meta, &files);
-	get_arg_data(meta, &files);
+	processor_constructor(meta, files);
+	get_arg_data(meta, files);
 	//print_data(meta, &files);
 }
 
 int 		main(int argc, char **argv)
 {
-	t_args meta;
+	t_args 		meta;
+	t_vector 	files;
 
-	if (preprocessor(&meta, argv, argc) == false)
+	if (preprocessor(&meta, &files, argv, argc) == false)
 	{
 		return (1);
 	}
-	processor(&meta);
+	processor(&meta, &files);
 	return (0);
 }

@@ -17,15 +17,15 @@ void	add_to_vector(t_vector *folder, t_vector *add)
 	t_vector tmp;
 	int x;
 
-	tmp.sub_vector = (t_vector**)ft_hmalloc(sizeof(t_vector*) * (folder->count + 1 + 1));
-	tmp.sub_vector[folder->count + 1] = 0;
+	tmp.vector = (t_vector**)ft_hmalloc(sizeof(t_vector*) * (folder->count + 1 + 1));
+	tmp.vector[folder->count + 1] = 0;
 	x = -1;
 	while (++x < folder->count)
 	{
-		tmp.sub_vector[x] = folder->sub_vector[x];
+		tmp.vector[x] = folder->vector[x];
 	}
-	tmp.sub_vector[x] = add;
-	folder->sub_vector = tmp.sub_vector;
+	tmp.vector[x] = add;
+	folder->vector = tmp.vector;
 	folder->count++;
 }
 
@@ -34,7 +34,7 @@ t_vector 	*make_new_vector()
 	t_vector *tmp;
 
 	tmp = (t_vector*)ft_hmalloc(sizeof(t_vector));
-	tmp->sub_vector = NULL;
+	tmp->vector = NULL;
 	tmp->count = 0;
 	return (tmp);
 }
