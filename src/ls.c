@@ -21,42 +21,50 @@ void		processor_constructor(t_args *meta, t_vector *files)
 	files->count = meta->arg_count;
 }
 
-t_vector	*get_file_info(struct stat *sb, char *file)
+t_vector	*get_file_info(char *file)
 {
 	t_vector *tmp;
 
 	tmp = (t_vector*)ft_hmalloc(sizeof(t_vector));
 	tmp->count = 0;
-	tmp->info = get_data(sb, file);
+	tmp->info = get_data(file);
 	return (tmp);
 }
 
-void		get_dir_contents(struct stat *sb, t_vector *folder)
+// TODO: FIX THIS PATHING BS
+
+void		get_dir_contents(t_vector *folder)
 {
 	DIR 			*dir;
 	struct dirent 	*dent;
 	t_vector		*tmp;
+	char			*path = "libft/";
 
-	dir = opendir(folder->info.name);
+	dir = opendir(folder->info->name);
 	if(dir != NULL)
 	{
 		while((dent = readdir(dir)) != NULL)
 		{
 			tmp = make_new_vector();
-			tmp->info = get_data(sb, dent->d_name);
+			path = ft_strxjoin(path, dent->d_name, 0);
+			ft_printf("getting data on: %s\n", path);
+			tmp = get_file_info(path);
+			free(path);
+			path = "libft/";
+			print_file(tmp->info);
 			add_to_vector(folder, tmp);
 		}
 	}
 	closedir(dir);
 }
 
-t_vector	*get_folder_info(struct stat *sb, char *input)
+t_vector	*get_folder_info(char *input)
 {
 	t_vector 	*folder;
 
 	folder = make_new_vector(input, true);
-	folder->info = get_data(sb, input);
-	get_dir_contents(sb, folder);
+	folder->info = get_data(input);
+	get_dir_contents(folder);
 	return (folder);
 }
 
@@ -67,9 +75,9 @@ t_vector	*get_file_folder_info(char *input)
 	lstat(input, &sb);
 	if (S_ISDIR(sb.st_mode) == true)
 	{
-		return (get_folder_info(&sb, input));
+		return (get_folder_info(input));
 	}
-	return (get_file_info(&sb, input));
+	return (get_file_info(input));
 }
 
 void		recurse(t_vector *folder)

@@ -30,19 +30,19 @@ void		print_folder(t_vector *folder)
 	x = -1;
 	while (++x < folder->count)
 	{
-		print_file(&folder->vector[x]->info);
+		print_file(folder->vector[x]->info);
 	}
 }
 
 void		print_wide(t_vector *files)
 {
-	if (files->info.folder == true)
+	if (files->info->folder == true)
 	{
 		print_folder(files);
 	}
 	else
 	{
-		print_file(&files->info);
+		print_file(files->info);
 	}
 }
 
@@ -53,19 +53,19 @@ void		print_folder_simple(t_vector *folder)
 	x = -1;
 	while (++x < folder->count)
 	{
-		ft_printf("%s\n", folder->vector[x]->info.name);
+		ft_printf("%s\n", folder->vector[x]->info->name);
 	}
 }
 
 void		print_simple(t_vector *file)
 {
-	if (file->info.folder == true)
+	if (file->info->folder == true)
 	{
 		print_folder_simple(file);
 	}
 	else
 	{
-		ft_printf("%s\n", file->info.name);
+		ft_printf("%s\n", file->info->name);
 	}
 }
 
