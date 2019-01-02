@@ -35,6 +35,7 @@ LIBFT = libft/ft_bzero.c \
 	   libft/ft_hmemalloc.c \
 	   libft/ft_hstrdup.c \
 	   libft/ft_hstrndup.c \
+	   libft/ft_hstrjoin.c \
 	   libft/ft_hfree.c \
 	   libft/ft_heap_clear.c \
 	   libft/ft_putchar.c \

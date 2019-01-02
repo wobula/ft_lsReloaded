@@ -49,6 +49,7 @@ typedef struct 			s_file
 	bool				folder;
 	char				protection[11];
 	char				*name;
+	char				*path;
 	char				*user;
 	char				*group;
 	char				*last_mod_eng;
@@ -68,7 +69,7 @@ typedef struct 			s_vector
 
 bool 					preprocessor(t_args *meta, char **argv, int argc);
 
-t_file					*get_data(char *file);
+t_file					*get_data(char *path, char *file);
 void					print_data(t_args *meta, t_vector *files);
 void					print_file(t_file *data);
 

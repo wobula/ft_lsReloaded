@@ -21,68 +21,58 @@ void		processor_constructor(t_args *meta, t_vector *files)
 	files->count = meta->arg_count;
 }
 
-t_vector	*get_file_info(char *file)
+t_vector	*get_file_info(char *path, char *file)
 {
 	t_vector *tmp;
 
 	tmp = (t_vector*)ft_hmalloc(sizeof(t_vector));
 	tmp->count = 0;
-	tmp->info = get_data(file);
+	tmp->info = get_data(path, file);
 	return (tmp);
 }
-
-// TODO: FIX THIS PATHING BS
 
 void		get_dir_contents(t_vector *folder)
 {
 	DIR 			*dir;
 	struct dirent 	*dent;
 	t_vector		*tmp;
-	char			*path = "libft/";
+	char			*path;
 
-	dir = opendir(folder->info->name);
+	path = (folder->info->path == NULL) ? folder->info->name : folder->info->path;
+	dir = opendir(path);
 	if(dir != NULL)
 	{
 		while((dent = readdir(dir)) != NULL)
 		{
 			tmp = make_new_vector();
-			path = ft_strxjoin(path, dent->d_name, 0);
-			tmp = get_file_info(path);
-			free(path);
-			path = "libft/";
+			tmp = get_file_info(folder->info->path, dent->d_name);
 			add_to_vector(folder, tmp);
 		}
 	}
 	closedir(dir);
 }
 
-t_vector	*get_folder_info(char *input)
+t_vector	*get_folder_info(char *path, char *input)
 {
 	t_vector 	*folder;
 
-	folder = make_new_vector(input, true);
-	folder->info = get_data(input);
+	folder = make_new_vector();
+	folder->info = get_data(path, input);
 	get_dir_contents(folder);
 	return (folder);
 }
 
-t_vector	*get_file_folder_info(char *input)
+t_vector	*get_file_folder_info(char *path, char *input)
 {
 	struct stat sb;
+	char		*file;
 
 	lstat(input, &sb);
 	if (S_ISDIR(sb.st_mode) == true)
 	{
-		return (get_folder_info(input));
+		return (get_folder_info(path, input));
 	}
-	return (get_file_info(input));
-}
-
-void		recurse(t_vector *folder)
-{
-	ft_printf("Inside recurse\n");
-	int x = -1;
-	ft_printf("Outside recurse\n");
+	return (get_file_info(path, input));
 }
 
 bool		get_args_data(t_vector *files, char **args)
@@ -92,7 +82,7 @@ bool		get_args_data(t_vector *files, char **args)
 	x = -1;
 	while (++x < files->count)
 	{
-		files->vector[x] = get_file_folder_info(args[x]);
+		files->vector[x] = get_file_folder_info(NULL, args[x]);
 	}
 }
 
@@ -100,11 +90,6 @@ bool		processor(t_args *meta, t_vector *files)
 {
 	processor_constructor(meta, files);
 	get_args_data(files, meta->args);
-	if ((OPT_R(meta)) == true)
-	{
-		ft_printf("RECURSIVE MODE ON\n");
-		//get_recurse_data();
-	}
 	print_data(meta, files);
 }
 

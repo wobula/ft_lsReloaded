@@ -78,6 +78,7 @@ void				*ft_hmalloc(size_t size);
 void				*ft_hmemalloc(size_t size);
 char				*ft_hstrdup(char *hstr);
 char				*ft_hstrndup(char *hstr, size_t size);
+char				*ft_hstrjoin(char *s1, char *s2);
 int					ft_hfree(void *ptr);
 int					ft_heap_clear(void);
 t_heap_man			*ft_heap_singleton(void);

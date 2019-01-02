@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_hstrxjoin.c                                     :+:      :+:    :+:   */
+/*   ft_hstrjoin.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "../includes/libft.h"
 
-char	*ft_hstrxjoin(char *s1, char *s2, size_t opt)
+char	*ft_hstrjoin(char *s1, char *s2)
 {
 	char*ptr;
 	int	x;
@@ -26,14 +26,5 @@ char	*ft_hstrxjoin(char *s1, char *s2, size_t opt)
 	ptr[x] = '\0';
 	ptr = ft_strcpy(ptr, s1);
 	ptr = ft_strcat(ptr, s2);
-	if (opt == 1)
-		free(s1);
-	else if (opt == 2)
-		free(s2);
-	else if (opt == 3)
-	{
-		free(s1);
-		free(s2);
-	}
 	return (ptr);
 }
