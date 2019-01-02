@@ -47,11 +47,9 @@ void		get_dir_contents(t_vector *folder)
 		{
 			tmp = make_new_vector();
 			path = ft_strxjoin(path, dent->d_name, 0);
-			ft_printf("getting data on: %s\n", path);
 			tmp = get_file_info(path);
 			free(path);
 			path = "libft/";
-			print_file(tmp->info);
 			add_to_vector(folder, tmp);
 		}
 	}
@@ -107,7 +105,7 @@ bool		processor(t_args *meta, t_vector *files)
 		ft_printf("RECURSIVE MODE ON\n");
 		//get_recurse_data();
 	}
-	//print_data(meta, files);
+	print_data(meta, files);
 }
 
 int 		main(int argc, char **argv)

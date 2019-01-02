@@ -66,7 +66,7 @@ void	get_file_name(t_file *data, char *file)
 	char *ptr;
 
 	ptr = ft_strchrrev(file, '\\');
-	data->name = (ptr == NULL) ? file : ptr;
+	data->name = (ptr == NULL) ? ft_hstrdup(file) : ptr;
 }
 
 t_file	*get_data(char *file)
