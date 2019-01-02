@@ -14,6 +14,13 @@
 
 t_vector	*process_arg(char *input);
 
+void		processor_constructor(t_args *meta, t_vector *files)
+{
+	files->vector = (t_vector**)ft_hmalloc(sizeof(t_vector*) * meta->arg_count + 1);
+	files->vector[meta->arg_count] = 0;
+	files->count = meta->arg_count;
+}
+
 t_vector	*get_file_info(struct stat *sb, char *file)
 {
 	t_vector *tmp;
@@ -53,62 +60,46 @@ t_vector	*get_folder_info(struct stat *sb, char *input)
 	return (folder);
 }
 
-t_vector	*process_arg(char *input)
+t_vector	*get_file_folder_info(char *input)
 {
-	t_vector 	*this;
 	struct stat sb;
 
-	if (lstat(input, &sb) == -1)
-	{
-		return (NULL);
-	}
+	lstat(input, &sb);
 	if (S_ISDIR(sb.st_mode) == true)
 	{
-		this = get_folder_info(&sb, input);
+		return (get_folder_info(&sb, input));
 	}
-	else
-	{
-		this = get_file_info(&sb, input);
-	}
-
-	return (this);
-}
-
-void		processor_constructor(t_args *meta, t_vector *files)
-{
-	files->vector = (t_vector**)ft_hmalloc(sizeof(t_vector*) * meta->arg_count + 1);
-	files->vector[meta->arg_count] = 0;
-	files->count = meta->arg_count;
+	return (get_file_info(&sb, input));
 }
 
 void		recurse(t_vector *folder)
 {
 	ft_printf("Inside recurse\n");
+	int x = -1;
 	ft_printf("Outside recurse\n");
 }
 
-bool		get_arg_data(t_args *meta, t_vector *files)
+bool		get_args_data(t_vector *files, char **args)
 {
 	int 		x;
 
 	x = -1;
 	while (++x < files->count)
 	{
-		files->vector[x] = process_arg(meta->args[x]);
-		if (RECURSIVE_CHECK(meta, files->vector[x]) == true)
-		{
-			ft_printf("RECURSIVE MODE ACTIVE for %s\n", files->vector[x]->info.name);
-			recurse(files->vector[x]);
-		}
+		files->vector[x] = get_file_folder_info(args[x]);
 	}
 }
 
 bool		processor(t_args *meta, t_vector *files)
 {
-	ft_printf("INSIDE PROCESSOR\n");
 	processor_constructor(meta, files);
-	get_arg_data(meta, files);
-	print_data(meta, files);
+	get_args_data(files, meta->args);
+	if ((OPT_R(meta)) == true)
+	{
+		ft_printf("RECURSIVE MODE ON\n");
+		//get_recurse_data();
+	}
+	//print_data(meta, files);
 }
 
 int 		main(int argc, char **argv)
