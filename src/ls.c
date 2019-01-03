@@ -13,12 +13,17 @@
 #include "../includes/ft_ls.h"
 
 t_vector	*process_arg(char *input);
+t_vector	*get_file_folder_info(t_args *meta, char *path, char *input);
 
-void		processor_constructor(t_args *meta, t_vector *files)
+t_vector	*vector_constructor(int count)
 {
-	files->vector = (t_vector**)ft_hmalloc(sizeof(t_vector*) * meta->arg_count + 1);
-	files->vector[meta->arg_count] = 0;
-	files->count = meta->arg_count;
+	t_vector *files;
+
+	files = (t_vector*)ft_hmalloc(sizeof(t_vector));
+	files->vector = (t_vector**)ft_hmalloc(sizeof(t_vector*) * (count + 1));
+	files->vector[count] = 0;
+	files->count = count;
+	return (files);
 }
 
 t_vector	*get_file_info(char *path, char *file)
@@ -31,7 +36,7 @@ t_vector	*get_file_info(char *path, char *file)
 	return (tmp);
 }
 
-void		get_dir_contents(t_vector *folder)
+t_vector	*get_dir_contents(t_vector *folder)
 {
 	DIR 			*dir;
 	struct dirent 	*dent;
@@ -50,6 +55,8 @@ void		get_dir_contents(t_vector *folder)
 		}
 	}
 	closedir(dir);
+	ft_printf("1File count for %s is %d\n", folder->info->name, folder->count);
+	return (folder);
 }
 
 t_vector	*get_folder_info(char *path, char *input)
@@ -58,50 +65,60 @@ t_vector	*get_folder_info(char *path, char *input)
 
 	folder = make_new_vector();
 	folder->info = get_data(path, input);
-	get_dir_contents(folder);
+	folder = get_dir_contents(folder);
+	ft_printf("2File count for %s is %d\n", folder->info->name, folder->count);
 	return (folder);
 }
 
-t_vector	*get_file_folder_info(char *path, char *input)
+t_vector	*get_file_folder_info(t_args *meta, char *path, char *input)
 {
 	struct stat sb;
-	char		*file;
+	t_vector 	*files;
 
 	lstat(input, &sb);
 	if (S_ISDIR(sb.st_mode) == true)
 	{
-		return (get_folder_info(path, input));
+		files = get_folder_info(path, input);
 	}
-	return (get_file_info(path, input));
+	else
+	{
+		files = get_file_info(path, input);
+	}
+	if (OPT_R(meta) == true)
+	{
+		//recurse(meta, files);
+	}
+	return (files);
 }
 
-bool		get_args_data(t_vector *files, char **args)
+bool		get_args_data(t_args *meta, t_vector *files, char **args)
 {
-	int 		x;
+	int x;
 
 	x = -1;
 	while (++x < files->count)
 	{
-		files->vector[x] = get_file_folder_info(NULL, args[x]);
+		files->vector[x] = get_file_folder_info(meta, NULL, args[x]);
 	}
 }
 
-bool		processor(t_args *meta, t_vector *files)
+bool		processor(t_args *meta)
 {
-	processor_constructor(meta, files);
-	get_args_data(files, meta->args);
+	t_vector *files;
+
+	files = vector_constructor(meta->arg_count);
+	get_args_data(meta, files, meta->args);
 	print_data(meta, files);
 }
 
 int 		main(int argc, char **argv)
 {
 	t_args 		meta;
-	t_vector 	files;
 
 	if (preprocessor(&meta, argv, argc) == false)
 	{
 		return (1);
 	}
-	processor(&meta, &files);
+	processor(&meta);
 	return (0);
 }

@@ -18,7 +18,7 @@ void		print_file(t_file *data)
 	ft_printf("%s ", data->user);
 	ft_printf("%s ", data->group);
 	ft_printf("%lld ", (long long)data->size);
-	ft_printf("%lld ", (long long)data->hlinks);
+	//ft_printf("%lld ", (long long)data->hlinks);
 	ft_printf("%.12s ", data->last_mod_eng + 4);
 	ft_printf("%s\n", data->name);
 }
