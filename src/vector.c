@@ -12,29 +12,61 @@
 
 #include "../includes/ft_ls.h"
 
-void	add_to_vector(t_vector *folder, t_vector *add)
+
+char		*get_full_path(char *path, char *file)
 {
-	t_vector tmp;
+	char *tmp;
+
+	if (path == NULL)
+		return (file);
+	tmp = ft_hstrjoin(path, "/");
+	tmp = ft_hstrjoin(tmp, file);
+	return (tmp);
+}
+
+t_vector	*new_vector(char *path, char *input)
+{
+	t_vector 	*file;
+
+	file = (t_vector*)ft_hmalloc(sizeof(t_vector));
+	file->name = input;
+	file->path = get_full_path(path, input);
+	file->info = get_data(file->path);
+	file->count = 0;
+	file->vector = NULL;
+	return (file);
+}
+
+t_vector	**new_vectors(int count)
+{
+	t_vector **files;
+
+	files = (t_vector**)ft_hmalloc(sizeof(t_vector) * (count + 1));
+	files[count] = 0;
+	return (files);
+}
+
+void	increment_vector(t_vector *folder, t_vector *new)
+{
+	t_vector **subfiles;
 	int x;
 
-	tmp.vector = (t_vector**)ft_hmalloc(sizeof(t_vector*) * (folder->count + 1 + 1));
-	tmp.vector[folder->count + 1] = 0;
 	x = -1;
+	subfiles = new_vectors(folder->count + 1);
 	while (++x < folder->count)
 	{
-		tmp.vector[x] = folder->vector[x];
+		subfiles[x] = folder->vector[x];
 	}
-	tmp.vector[x] = add;
-	folder->vector = tmp.vector;
+	subfiles[x] = new;
+	folder->vector = subfiles;
 	folder->count++;
 }
 
-t_vector 	*make_new_vector()
+void	add_to_vector(t_vector *folder, char *input)
 {
-	t_vector *tmp;
+	t_vector **subfiles;
+	t_vector *new;
 
-	tmp = (t_vector*)ft_hmalloc(sizeof(t_vector));
-	tmp->vector = NULL;
-	tmp->count = 0;
-	return (tmp);
+	new = new_vector(folder->path, input);
+	increment_vector(folder, new);
 }

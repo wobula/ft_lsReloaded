@@ -23,7 +23,7 @@
 
 #define INVALID_OPT(x)\
 				 	ft_printf("ls invalid option -- '%c'\n", x);\
-				 	ft_printf("Try 'ls --dumbass' for more information.\n");\
+				 	ft_printf("Try 'ls --halp meh' for more information.\n");\
 
 #define INVALID_FILE(x) ft_printf("ls: cannot access '%s': No such file or directory\n", x)
 
@@ -48,8 +48,6 @@ typedef struct 			s_file
 	bool				valid;
 	bool				folder;
 	char				protection[11];
-	char				*name;
-	char				*path;
 	char				*user;
 	char				*group;
 	char				*last_mod_eng;
@@ -62,16 +60,20 @@ typedef struct 			s_file
 
 typedef struct 			s_vector
 {
+	char				*name;
+	char				*path;
 	int 				count;
 	struct s_file		*info;
 	struct s_vector		**vector;
 }						t_vector;
 
 bool 					preprocessor(t_args *meta, char **argv, int argc);
+int						processor(t_args *meta);
 
-t_file					*get_data(char *path, char *file);
-void					print_data(t_args *meta, t_vector *files);
-void					print_file(t_file *data);
+t_file					*get_data(char *path);
+void					print_file(t_vector *file);
+void					print_data(t_args *meta, t_vector **files);
 
-t_vector 				*make_new_vector();
-void					add_to_vector(t_vector *folder, t_vector *add);
+t_vector				*new_vector(char *path, char *file);
+t_vector				**new_vectors(int count);
+void					add_to_vector(t_vector *folder, char *path);

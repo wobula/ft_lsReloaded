@@ -12,15 +12,15 @@
 
 #include "../includes/ft_ls.h"
 
-void		print_file(t_file *data)
+void		print_file(t_vector *file)
 {
-	ft_printf("%s ", data->protection);
-	ft_printf("%s ", data->user);
-	ft_printf("%s ", data->group);
-	ft_printf("%lld ", (long long)data->size);
+	ft_printf("%s ", file->info->protection);
+	ft_printf("%s ", file->info->user);
+	ft_printf("%s ", file->info->group);
+	ft_printf("%lld ", (long long)file->info->size);
 	//ft_printf("%lld ", (long long)data->hlinks);
-	ft_printf("%.12s ", data->last_mod_eng + 4);
-	ft_printf("%s\n", data->name);
+	ft_printf("%.12s ", file->info->last_mod_eng + 4);
+	ft_printf("%s\n", file->name);
 }
 
 void		print_folder(t_vector *folder)
@@ -30,19 +30,19 @@ void		print_folder(t_vector *folder)
 	x = -1;
 	while (++x < folder->count)
 	{
-		print_file(folder->vector[x]->info);
+		print_file(folder->vector[x]);
 	}
 }
 
-void		print_wide(t_vector *files)
+void		print_wide(t_vector *file)
 {
-	if (files->info->folder == true)
+	if (file->info->folder == true)
 	{
-		print_folder(files);
+		print_folder(file);
 	}
 	else
 	{
-		print_file(files->info);
+		print_file(file);
 	}
 }
 
@@ -53,7 +53,7 @@ void		print_folder_simple(t_vector *folder)
 	x = -1;
 	while (++x < folder->count)
 	{
-		ft_printf("%s\n", folder->vector[x]->info->name);
+		ft_printf("%s\n", folder->vector[x]->name);
 	}
 }
 
@@ -65,24 +65,24 @@ void		print_simple(t_vector *file)
 	}
 	else
 	{
-		ft_printf("%s\n", file->info->name);
+		ft_printf("%s\n", file->name);
 	}
 }
 
-void		print_data(t_args *meta, t_vector *files)
+void		print_data(t_args *meta, t_vector **files)
 {
 	int x;
 
 	x = -1;
-	while (++x < files->count)
+	while (files[++x] != 0)
 	{
 		if (OPT_L(meta) == true)
 		{			
-			print_wide(files->vector[x]);
+			print_wide(files[x]);
 		}
 		else
 		{
-			print_simple(files->vector[x]);
+			print_simple(files[x]);
 		}
 		ft_putchar('\n');
 	}

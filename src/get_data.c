@@ -61,40 +61,13 @@ void	get_links(t_file *data, nlink_t hlinks)
 	data->hlinks = (long long)hlinks;
 }
 
-void	get_file_name(t_file *data, char *file)
-{
-	char *ptr;
-
-	ptr = ft_strchrrev(file, '\\');
-	data->name = (ptr == NULL) ? ft_hstrdup(file) : ptr;
-}
-
-char	*get_complete_path(char *path, char *file)
-{
-	char *complete_path;
-
-	if (path == NULL)
-	{
-		return (file);
-	}
-	else
-	{
-		complete_path = ft_hstrjoin(path, "/");
-		complete_path = ft_hstrjoin(complete_path, file);
-	}
-	return (complete_path);
-}
-
-t_file	*get_data(char *path, char *file)
+t_file	*get_data(char *path)
 {
 	t_file 		*data;
 	struct stat sb;
-	char		*complete_path;
 
 	data = (t_file*)ft_hmalloc(sizeof(t_file));
-	data->path = get_complete_path(path, file);
-	lstat(data->path, &sb);
-	get_file_name(data, file);
+	lstat(path, &sb);
 	get_perms(data, sb.st_mode);
 	get_time(data, sb.st_mtime);
 	get_user_details(data, sb.st_uid, sb.st_gid);

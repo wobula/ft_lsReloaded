@@ -20,7 +20,7 @@ char	*ft_hstrjoin(char *s1, char *s2)
 	if (!s1 || !s2)
 		return (NULL);
 	x = ft_strlen(s1) + ft_strlen(s2);
-	ptr = (char *)ft_hmalloc(x + 1);
+	ptr = (char *)ft_hmemalloc(x + 1);
 	if (!ptr)
 		return (NULL);
 	ptr[x] = '\0';

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls.c                                            :+:      :+:    :+:   */
+/*   processor.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,14 +12,51 @@
 
 #include "../includes/ft_ls.h"
 
-int 		main(int argc, char **argv)
+t_vector	*get_dir_contents(t_vector *folder)
 {
-	t_args 		meta;
+	DIR 			*dir;
+	struct dirent 	*dent;
 
-	if (preprocessor(&meta, argv, argc) == false)
+	dir = opendir(folder->path);
+	if (dir != NULL)
 	{
-		return (1);
+		while ((dent = readdir(dir)) != NULL)
+		{
+			add_to_vector(folder, dent->d_name);
+		}
 	}
-	processor(&meta);
-	return (0);
+	closedir(dir);
+	return (folder);
+}
+
+t_vector **get_args(t_args *meta)
+{
+	t_vector **new;
+	int x;
+
+	new = new_vectors(meta->arg_count);
+	x = -1;
+	while (++x < meta->arg_count)
+	{
+		new[x] = new_vector(NULL, meta->args[x]);
+	}
+	return (new);
+}
+
+int 	processor(t_args *meta)
+{
+	t_vector **files;
+	int x;
+
+	files = get_args(meta);
+	x = -1;
+	while (files[++x] != 0)
+	{
+		get_dir_contents(files[x]);
+	}
+	print_data(meta, files);
+	//if (OPT_R(meta) == true)
+	//{
+	//	recursive_mode(files);
+	//}
 }
