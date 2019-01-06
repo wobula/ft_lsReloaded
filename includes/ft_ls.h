@@ -58,22 +58,22 @@ typedef struct 			s_file
 	time_t				last_modified;
 }						t_file;
 
-typedef struct 			s_vector
+typedef struct 			s_vec
 {
 	char				*name;
 	char				*path;
 	int 				count;
 	struct s_file		*info;
-	struct s_vector		**vector;
-}						t_vector;
+	struct s_vec		**vector;
+}						t_vec;
 
 bool 					preprocessor(t_args *meta, char **argv, int argc);
 int						processor(t_args *meta);
 
 t_file					*get_data(char *path);
-void					print_file(t_vector *file);
-void					print_data(t_args *meta, t_vector **files);
+void					print_file(t_vec *file);
+void					print_data(t_args *meta, t_vec **files);
 
-t_vector				*new_vector(char *path, char *file);
-t_vector				**new_vectors(int count);
-void					add_to_vector(t_vector *folder, char *path);
+t_vec					*new_vector(char *path, char *file);
+t_vec					**new_vectors(int count);
+void					add_to_vector(t_vec *folder, char *path);

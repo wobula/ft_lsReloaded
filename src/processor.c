@@ -12,7 +12,7 @@
 
 #include "../includes/ft_ls.h"
 
-t_vector	*get_dir_contents(t_vector *folder)
+t_vec	*get_dir_contents(t_vec *folder)
 {
 	DIR 			*dir;
 	struct dirent 	*dent;
@@ -29,9 +29,9 @@ t_vector	*get_dir_contents(t_vector *folder)
 	return (folder);
 }
 
-t_vector **get_args(t_args *meta)
+t_vec **get_args(t_args *meta)
 {
-	t_vector **new;
+	t_vec **new;
 	int x;
 
 	new = new_vectors(meta->arg_count);
@@ -45,7 +45,7 @@ t_vector **get_args(t_args *meta)
 
 int 	processor(t_args *meta)
 {
-	t_vector **files;
+	t_vec **files;
 	int x;
 
 	files = get_args(meta);

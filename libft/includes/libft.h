@@ -35,6 +35,8 @@ typedef struct				s_list
 
 typedef struct s_memnode	t_memnode;
 typedef struct s_heap_man	t_heap_man;
+typedef struct s_vheap_man	t_vheap_man;
+typedef struct s_vector		t_vector;
 
 struct						s_memnode
 {
@@ -47,6 +49,17 @@ struct						s_heap_man
 {
 	t_memnode				*first;
 	t_memnode				*last;
+};
+
+struct 						s_vheap_man
+{
+	//t_vector				*ptr;
+};
+
+struct 						s_vector
+{
+	int 					count;
+	void					**ptrs;
 };
 
 int					ft_printf(const char *format, ...);
@@ -82,6 +95,9 @@ char				*ft_hstrjoin(char *s1, char *s2);
 int					ft_hfree(void *ptr);
 int					ft_heap_clear(void);
 t_heap_man			*ft_heap_singleton(void);
+t_vheap_man			*ft_vheap_singleton(void);
+
+t_vector			*ft_make_vector(int size);
 
 void				ft_putchar(char c);
 void				ft_putnbr(int nbr);

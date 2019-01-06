@@ -24,11 +24,11 @@ char		*get_full_path(char *path, char *file)
 	return (tmp);
 }
 
-t_vector	*new_vector(char *path, char *input)
+t_vec		*new_vector(char *path, char *input)
 {
-	t_vector 	*file;
+	t_vec 	*file;
 
-	file = (t_vector*)ft_hmalloc(sizeof(t_vector));
+	file = (t_vec*)ft_hmalloc(sizeof(t_vec));
 	file->name = input;
 	file->path = get_full_path(path, input);
 	file->info = get_data(file->path);
@@ -37,18 +37,18 @@ t_vector	*new_vector(char *path, char *input)
 	return (file);
 }
 
-t_vector	**new_vectors(int count)
+t_vec	**new_vectors(int count)
 {
-	t_vector **files;
+	t_vec **files;
 
-	files = (t_vector**)ft_hmalloc(sizeof(t_vector) * (count + 1));
+	files = (t_vec**)ft_hmalloc(sizeof(t_vec) * (count + 1));
 	files[count] = 0;
 	return (files);
 }
 
-void	increment_vector(t_vector *folder, t_vector *new)
+void	increment_vector(t_vec *folder, t_vec *new)
 {
-	t_vector **subfiles;
+	t_vec **subfiles;
 	int x;
 
 	x = -1;
@@ -62,10 +62,10 @@ void	increment_vector(t_vector *folder, t_vector *new)
 	folder->count++;
 }
 
-void	add_to_vector(t_vector *folder, char *input)
+void	add_to_vector(t_vec *folder, char *input)
 {
-	t_vector **subfiles;
-	t_vector *new;
+	t_vec **subfiles;
+	t_vec *new;
 
 	new = new_vector(folder->path, input);
 	increment_vector(folder, new);

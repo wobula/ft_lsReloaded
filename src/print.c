@@ -12,7 +12,7 @@
 
 #include "../includes/ft_ls.h"
 
-void		print_file(t_vector *file)
+void		print_file(t_vec *file)
 {
 	ft_printf("%s ", file->info->protection);
 	ft_printf("%s ", file->info->user);
@@ -23,7 +23,7 @@ void		print_file(t_vector *file)
 	ft_printf("%s\n", file->name);
 }
 
-void		print_folder(t_vector *folder)
+void		print_folder(t_vec *folder)
 {
 	int x;
 
@@ -34,7 +34,7 @@ void		print_folder(t_vector *folder)
 	}
 }
 
-void		print_wide(t_vector *file)
+void		print_wide(t_vec *file)
 {
 	if (file->info->folder == true)
 	{
@@ -46,7 +46,7 @@ void		print_wide(t_vector *file)
 	}
 }
 
-void		print_folder_simple(t_vector *folder)
+void		print_folder_simple(t_vec *folder)
 {
 	int x;
 
@@ -57,7 +57,7 @@ void		print_folder_simple(t_vector *folder)
 	}
 }
 
-void		print_simple(t_vector *file)
+void		print_simple(t_vec *file)
 {
 	if (file->info->folder == true)
 	{
@@ -69,7 +69,7 @@ void		print_simple(t_vector *file)
 	}
 }
 
-void		print_data(t_args *meta, t_vector **files)
+void		print_data(t_args *meta, t_vec **files)
 {
 	int x;
 

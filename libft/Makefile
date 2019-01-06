@@ -22,6 +22,7 @@ LIBFT = libft/ft_bzero.c \
 	   libft/ft_isprint.c \
 	   libft/ft_toupper.c \
 	   libft/ft_tolower.c \
+	   libft/ft_make_vector.c \
 	   libft/ft_memset.c \
 	   libft/ft_memcpy.c \
 	   libft/ft_memccpy.c \
@@ -31,6 +32,7 @@ LIBFT = libft/ft_bzero.c \
 	   libft/ft_memalloc.c \
 	   libft/ft_memdel.c \
 	   libft/ft_heap_singleton.c \
+	   libft/ft_vheap_singleton.c \
 	   libft/ft_hmalloc.c \
 	   libft/ft_hmemalloc.c \
 	   libft/ft_hstrdup.c \
