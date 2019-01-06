@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_vheap_singleton.c                               :+:      :+:    :+:   */
+/*   ft_vecmake.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,14 +12,20 @@
 
 #include "../includes/libft.h"
 
-t_vheap_man	*ft_vheap_singleton(void)
+t_vector	*ft_vecmake(size_t size)
 {
-	static t_vheap_man	*vheap_man;
+	t_vector	*new;
+	size_t		x;
 
-	if (vheap_man == NULL)
+	new = ft_memalloc(sizeof(t_vector));
+	new->count = size;
+	x = 0;
+	new->ptrs = (void**)ft_memalloc(sizeof(void*) * (size + 1));
+	new->ptrs[size] = 0;
+	while (x < size)
 	{
-		vheap_man = ft_memalloc(sizeof(t_vheap_man));
-		return (vheap_man);
+		new->ptrs[x] = NULL;
+		x++;
 	}
-	return (vheap_man);
+	return (new);
 }

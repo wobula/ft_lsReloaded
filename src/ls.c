@@ -22,7 +22,23 @@ int 		main(int argc, char **argv)
 	}
 	processor(&meta);*/
 	t_vector *new;
+	int x;
 
-	new = ft_make_vector(4);
+	new = ft_vecmake(4);
+	x = -1;
+	while (++x < 4)
+	{
+		new->ptrs[x] = ft_strdup("sup");
+		ft_printf("%d: %s\n", x, new->ptrs[x]);
+	}
+	new = ft_vecexpand(new, 2);
+	ft_printf("%d: %s\n", 1, new->ptrs[1]);
+	new->ptrs[4] = ft_strdup("sup");
+	new->ptrs[5] = ft_strdup("sup");
+	x = -1;
+	while (new->ptrs[++x] != 0)
+	{
+		ft_printf("%s\n", new->ptrs[x]);
+	}
 	return (0);
 }

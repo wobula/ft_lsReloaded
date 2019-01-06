@@ -22,7 +22,6 @@ LIBFT = libft/ft_bzero.c \
 	   libft/ft_isprint.c \
 	   libft/ft_toupper.c \
 	   libft/ft_tolower.c \
-	   libft/ft_make_vector.c \
 	   libft/ft_memset.c \
 	   libft/ft_memcpy.c \
 	   libft/ft_memccpy.c \
@@ -85,6 +84,11 @@ LIBFT = libft/ft_bzero.c \
 	   libft/ft_lstadd.c \
 	   libft/ft_lstiter.c \
 	   libft/ft_lstmap.c \
+	   libft/ft_vecmake.c \
+	   libft/ft_vecexpand.c \
+	   libft/ft_vecgetptr.c \
+	   libft/ft_vecgetptr_dynamic.c \
+
 
 PRINTF = printf/ft_printf.c \
 		printf/ft_dprintf.c \

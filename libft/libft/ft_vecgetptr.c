@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_make_vector.c                               :+:      :+:    :+:   */
+/*   ft_vecgetptr.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,19 +12,9 @@
 
 #include "../includes/libft.h"
 
-t_vector	*ft_make_vector(int size)
+void	*ft_vecgetptr(t_vector *this, size_t get)
 {
-	t_vector	*new;
-	int			x;
-
-	new = ft_memalloc(sizeof(t_vector));
-	new->count = size;
-	x = -1;
-	new->ptrs = (void**)ft_memalloc(sizeof(void*) * (size + 1));
-	new->ptrs[size] = 0;
-	while (++x < size)
-	{
-		new->ptrs[x] = NULL;
-	}
-	return (new);
+	if (get >= this->count)
+		return (NULL);
+	return (this->ptrs[get]);
 }

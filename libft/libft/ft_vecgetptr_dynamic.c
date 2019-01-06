@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_vheap_singleton.c                               :+:      :+:    :+:   */
+/*   ft_vecgetptr_dynamic.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,14 +12,9 @@
 
 #include "../includes/libft.h"
 
-t_vheap_man	*ft_vheap_singleton(void)
+void	*ft_vecgetptr_dynamic(t_vector *this, size_t get)
 {
-	static t_vheap_man	*vheap_man;
-
-	if (vheap_man == NULL)
-	{
-		vheap_man = ft_memalloc(sizeof(t_vheap_man));
-		return (vheap_man);
-	}
-	return (vheap_man);
+	if (get >= this->count)
+		return (NULL);
+	return (NULL);
 }
