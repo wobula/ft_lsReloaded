@@ -20,7 +20,6 @@ void		*ft_vhmalloc(size_t size, size_t x)
 
 	if ((new = malloc(size + sizeof(t_memnode))) == NULL)
 		return (NULL);
-	ft_printf("Inside vhmalloc\n");
 	ptr = (char *)new + sizeof(t_memnode);
 	new->ptr = ptr;
 	new->next = NULL;
@@ -34,7 +33,6 @@ void		*ft_vhmalloc(size_t size, size_t x)
 	}
 	else
 	{
-		ft_printf("--vhmalloc else\n");
 		new->prev = heap_man->last;
 		heap_man->last->next = new;
 		heap_man->last = new;
