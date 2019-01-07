@@ -88,6 +88,7 @@ LIBFT = libft/ft_bzero.c \
 	   libft/ft_vecexpand.c \
 	   libft/ft_vecgetptr.c \
 	   libft/ft_vecgetptr_dynamic.c \
+	   libft/ft_vhmalloc.c \
 
 
 PRINTF = printf/ft_printf.c \

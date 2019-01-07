@@ -14,7 +14,7 @@
 
 void	**ft_vecgetptr_dynamic(t_vector *this, size_t get)
 {
-	size_t expand;
+	size_t 	expand;
 
 	if (get < this->count)
 		return (this->ptrs[get]);

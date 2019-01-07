@@ -14,6 +14,7 @@
 
 void	**ft_vecgetptr(t_vector *this, size_t get)
 {
+
 	if (get >= this->count)
 		return (NULL);
 	return (&this->ptrs[get]);
