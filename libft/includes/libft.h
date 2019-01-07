@@ -98,10 +98,10 @@ t_heap_man			*ft_heap_singleton(void);
 
 t_vheap_man			*ft_vheap_singleton(void);
 
-void				*ft_vecgetptr_dynamic(t_vector *this, size_t get);
-void				*ft_vecgetptr(t_vector *this, size_t get);
+void				**ft_vecgetptr_dynamic(t_vector *this, size_t get);
+void				**ft_vecgetptr(t_vector *this, size_t get);
 t_vector			*ft_vecmake(size_t size);
-t_vector			*ft_vecexpand(t_vector *this, size_t add);
+void				ft_vecexpand(t_vector **this, size_t add);
 
 void				ft_putchar(char c);
 void				ft_putnbr(int nbr);

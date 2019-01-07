@@ -12,27 +12,26 @@
 
 #include "../includes/libft.h"
 
-t_vector	*ft_vecexpand(t_vector *this, size_t count)
+void	ft_vecexpand(t_vector **this, size_t count)
 {
 	void		**ptrs;
 	size_t		total;
 	size_t		x;
 
-	total = this->count + count;
+	total = (*this)->count + count;
 	ptrs = (void**)ft_memalloc(sizeof(void*) * (total + 1));
 	ptrs[total] = 0;
 	x = 0;
-	do
+	do 
 	{
-		ptrs[x] = this->ptrs[x];
+		ptrs[x] = (*this)->ptrs[x];
 	}
-	while (++x < this->count);
+	while (++x < (*this)->count);
 	do
 	{
 		ptrs[x] = NULL;
 	} while (++x < total);
-	free(this->ptrs);
-	this->count = total;
-	this->ptrs = ptrs;
-	return (this);
+	free((*this)->ptrs);
+	(*this)->count = total;
+	(*this)->ptrs = ptrs;
 }

@@ -12,9 +12,13 @@
 
 #include "../includes/libft.h"
 
-void	*ft_vecgetptr_dynamic(t_vector *this, size_t get)
+void	**ft_vecgetptr_dynamic(t_vector *this, size_t get)
 {
-	if (get >= this->count)
-		return (NULL);
-	return (NULL);
+	size_t expand;
+
+	if (get < this->count)
+		return (this->ptrs[get]);
+	expand = get - this->count + 1;
+	ft_vecexpand(&this, expand);
+	return (&this->ptrs[get]);
 }

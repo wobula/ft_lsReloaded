@@ -23,6 +23,7 @@ int 		main(int argc, char **argv)
 	processor(&meta);*/
 	t_vector *new;
 	int x;
+	void **ptr;
 
 	new = ft_vecmake(4);
 	x = -1;
@@ -31,14 +32,22 @@ int 		main(int argc, char **argv)
 		new->ptrs[x] = ft_strdup("sup");
 		ft_printf("%d: %s\n", x, new->ptrs[x]);
 	}
-	new = ft_vecexpand(new, 2);
+	ft_vecexpand(&new, 2);
 	ft_printf("%d: %s\n", 1, new->ptrs[1]);
 	new->ptrs[4] = ft_strdup("sup");
 	new->ptrs[5] = ft_strdup("sup");
+	ptr = ft_vecgetptr_dynamic(new, 10);
+	new->ptrs[10] = ft_strdup("Hi mom\n");
+	ft_printf("expand: %s\n", new->ptrs[10]);
+	(*ptr) = (char*)ft_strdup("Yo momma\n");
 	x = -1;
-	while (new->ptrs[++x] != 0)
+	ft_printf("count %d\n", new->count);
+	while (++x < new->count)
 	{
-		ft_printf("%s\n", new->ptrs[x]);
+		if (new->ptrs[x] != NULL)
+			ft_printf("%d: %s\n", x, new->ptrs[x]);
+		else
+			ft_printf("%d: NULL\n", x);
 	}
 	return (0);
 }

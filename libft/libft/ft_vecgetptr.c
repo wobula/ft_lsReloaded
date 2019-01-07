@@ -12,9 +12,9 @@
 
 #include "../includes/libft.h"
 
-void	*ft_vecgetptr(t_vector *this, size_t get)
+void	**ft_vecgetptr(t_vector *this, size_t get)
 {
 	if (get >= this->count)
 		return (NULL);
-	return (this->ptrs[get]);
+	return (&this->ptrs[get]);
 }
