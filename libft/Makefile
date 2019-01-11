@@ -32,11 +32,13 @@ LIBFT = libft/ft_bzero.c \
 	   libft/ft_memdel.c \
 	   libft/ft_heap_singleton.c \
 	   libft/ft_vheap_singleton.c \
+	   libft/ft_vheap_clear.c \
 	   libft/ft_hmalloc.c \
 	   libft/ft_hmemalloc.c \
 	   libft/ft_hstrdup.c \
 	   libft/ft_hstrndup.c \
 	   libft/ft_hstrjoin.c \
+	   libft/ft_vhstrjoin.c \
 	   libft/ft_hfree.c \
 	   libft/ft_heap_clear.c \
 	   libft/ft_putchar.c \
@@ -89,6 +91,8 @@ LIBFT = libft/ft_bzero.c \
 	   libft/ft_vecgetptr.c \
 	   libft/ft_vecgetptr_dynamic.c \
 	   libft/ft_vhmalloc.c \
+	   libft/ft_vhmemalloc.c \
+	   libft/ft_vhstrdup.c \
 
 
 PRINTF = printf/ft_printf.c \

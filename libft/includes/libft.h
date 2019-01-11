@@ -94,12 +94,17 @@ void				*ft_hmemalloc(size_t size);
 char				*ft_hstrdup(char *hstr);
 char				*ft_hstrndup(char *hstr, size_t size);
 char				*ft_hstrjoin(char *s1, char *s2);
+char				*ft_vhstrdup(char *hstr, size_t channel);
+char				*ft_vhstrjoin(const char *s1, const char *s2, size_t channel);
 int					ft_hfree(void *ptr);
 int					ft_heap_clear(void);
 t_heap_man			*ft_heap_singleton(void);
 
-t_heap_man			*ft_vget_singleton(size_t vector);
-void				*ft_vhmalloc(size_t size, size_t node);
+t_heap_man			*ft_vget_singleton_node(size_t channel);
+t_vheap_man			*ft_vheap_singleton(void);
+void				*ft_vhmalloc(size_t size, size_t channel);
+void				*ft_vhmemalloc(size_t size, size_t channel);
+int					ft_vheap_clear(void);
 
 void				**ft_vecgetptr_dynamic(t_vector *this, size_t get);
 void				**ft_vecgetptr(t_vector *this, size_t get);

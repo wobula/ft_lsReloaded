@@ -37,7 +37,10 @@ void	get_folder_value(t_file *data)
 
 void	get_time(t_file *data, time_t last_mod)
 {
-	data->last_mod_eng = ctime(&last_mod);
+	char *tmp;
+
+	tmp = ctime(&last_mod);
+	data->last_mod_eng = ft_vhstrdup(tmp, 1);
 }
 
 void	get_user_details(t_file *data, uid_t user_id, gid_t group_id)
@@ -53,7 +56,7 @@ void	get_user_details(t_file *data, uid_t user_id, gid_t group_id)
 
 void	get_size(t_file *data, off_t size)
 {
-	data->size = size;
+	data->size = (long long)size;
 }
 
 void	get_links(t_file *data, nlink_t hlinks)
@@ -66,7 +69,7 @@ t_file	*get_data(char *path)
 	t_file 		*data;
 	struct stat sb;
 
-	data = (t_file*)ft_hmalloc(sizeof(t_file));
+	data = (t_file*)ft_vhmemalloc(sizeof(t_file), 1);
 	lstat(path, &sb);
 	get_perms(data, sb.st_mode);
 	get_time(data, sb.st_mtime);

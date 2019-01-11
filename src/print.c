@@ -12,8 +12,16 @@
 
 #include "../includes/ft_ls.h"
 
+/*void		get_padding(t_file *data)
+{
+	info->user_pad = info->max_user_length - ft_strlen(data->user);
+	info->group_pad = info->max_group_length - ft_strlen(data->group);
+	info->file_size_pad = info->
+}*/
+
 void		print_file(t_vec *file)
 {
+	//get_padding(file, info);
 	ft_printf("%s ", file->info->protection);
 	ft_printf("%s ", file->info->user);
 	ft_printf("%s ", file->info->group);
@@ -36,6 +44,8 @@ void		print_folder(t_vec *folder)
 
 void		print_wide(t_vec *file)
 {
+	int line_size;
+
 	if (file->info->folder == true)
 	{
 		print_folder(file);
@@ -71,9 +81,12 @@ void		print_simple(t_vec *file)
 
 void		print_data(t_args *meta, t_vec **files)
 {
+	int max_line_size;
 	int x;
 
 	x = -1;
+	/*if (OPT_L(meta) == true)
+		get_padding_info(files);*/
 	while (files[++x] != 0)
 	{
 		if (OPT_L(meta) == true)

@@ -19,8 +19,8 @@ char		*get_full_path(char *path, char *file)
 
 	if (path == NULL)
 		return (file);
-	tmp = ft_hstrjoin(path, "/");
-	tmp = ft_hstrjoin(tmp, file);
+	tmp = ft_vhstrjoin(path, "/", 1);
+	tmp = ft_vhstrjoin(tmp, file, 1);
 	return (tmp);
 }
 
@@ -28,7 +28,7 @@ t_vec		*new_vector(char *path, char *input)
 {
 	t_vec 	*file;
 
-	file = (t_vec*)ft_hmalloc(sizeof(t_vec));
+	file = (t_vec*)ft_vhmalloc(sizeof(t_vec), 1);
 	file->name = input;
 	file->path = get_full_path(path, input);
 	file->info = get_data(file->path);
@@ -41,7 +41,7 @@ t_vec	**new_vectors(int count)
 {
 	t_vec **files;
 
-	files = (t_vec**)ft_hmalloc(sizeof(t_vec) * (count + 1));
+	files = (t_vec**)ft_vhmalloc(sizeof(t_vec) * (count + 1), 1);
 	files[count] = 0;
 	return (files);
 }

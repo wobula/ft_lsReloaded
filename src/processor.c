@@ -43,6 +43,11 @@ t_vec **get_args(t_args *meta)
 	return (new);
 }
 
+void	recursive_mode(t_vec **files)
+{
+	ft_printf("Recursive mode activated\n");
+}
+
 int 	processor(t_args *meta)
 {
 	t_vec **files;
@@ -55,8 +60,8 @@ int 	processor(t_args *meta)
 		get_dir_contents(files[x]);
 	}
 	print_data(meta, files);
-	//if (OPT_R(meta) == true)
-	//{
-	//	recursive_mode(files);
-	//}
+	/*if (OPT_R(meta) == true)
+	{
+		recursive_mode(files);
+	}*/
 }

@@ -62,7 +62,7 @@ static void		ft_vecmemexpand(t_vheap_man **vheap_man, size_t get)
 	(*vheap_man)->count = total;
 }
 
-static t_vheap_man	*ft_vheap_singleton(void)
+t_vheap_man	*ft_vheap_singleton(void)
 {
 	static t_vheap_man	*vheap_man;
 
@@ -74,7 +74,7 @@ static t_vheap_man	*ft_vheap_singleton(void)
 	return (vheap_man);
 }
 
-t_heap_man *ft_vget_singleton(size_t vector)
+t_heap_man *ft_vget_singleton_node(size_t vector)
 {
 	t_vheap_man *vheap_man;
 

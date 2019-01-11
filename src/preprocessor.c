@@ -93,7 +93,7 @@ static void		extract_args(t_args *meta)
 static void		handler_args(t_args *meta)
 {
 	meta->arg_count = meta->argc - meta->opt_count - 1;
-	meta->args = (char**)ft_hmalloc(sizeof(char*) * (meta->arg_count + 1));
+	meta->args = (char**)ft_vhmalloc(sizeof(char*) * (meta->arg_count + 1), 0);
 	meta->args[meta->arg_count] = 0;
 	extract_args(meta);	
 }

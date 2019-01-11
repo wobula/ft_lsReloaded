@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls.c                                            :+:      :+:    :+:   */
+/*   postprocessor.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,15 +12,7 @@
 
 #include "../includes/ft_ls.h"
 
-int 		main(int argc, char **argv)
+void		postprocessor(t_args *meta)
 {
-	t_args 		meta;
-
-	if (preprocessor(&meta, argv, argc) == false)
-	{
-		return (1);
-	}
-	processor(&meta);
-	postprocessor(&meta);
-	return (0);
+	ft_vheap_clear();
 }

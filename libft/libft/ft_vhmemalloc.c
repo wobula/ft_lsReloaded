@@ -1,26 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls.c                                            :+:      :+:    :+:   */
+/*   ft_vhmemalloc.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gguiulfo <gguiulfo@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/30 15:58:34 by rschramm          #+#    #+#             */
-/*   Updated: 2017/02/11 12:51:04 by rschramm         ###   ########.fr       */
+/*   Created: 2017/06/24 08:21:08 by gguiulfo          #+#    #+#             */
+/*   Updated: 2017/11/22 14:15:18 by gguiulfo         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/ft_ls.h"
+#include "../includes/libft.h"
 
-int 		main(int argc, char **argv)
+void	*ft_vhmemalloc(size_t size, size_t channel)
 {
-	t_args 		meta;
+	void	*ptr;
 
-	if (preprocessor(&meta, argv, argc) == false)
-	{
-		return (1);
-	}
-	processor(&meta);
-	postprocessor(&meta);
-	return (0);
+	ptr = ft_vhmalloc(size, channel);
+	ft_bzero(ptr, size);
+	return (ptr);
 }

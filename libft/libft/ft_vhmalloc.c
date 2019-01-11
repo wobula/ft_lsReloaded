@@ -20,10 +20,10 @@ void		*ft_vhmalloc(size_t size, size_t x)
 
 	if ((new = malloc(size + sizeof(t_memnode))) == NULL)
 		return (NULL);
-	ptr = (char *)new + sizeof(t_memnode);
+	ptr = (void *)new + sizeof(t_memnode);
 	new->ptr = ptr;
 	new->next = NULL;
-	heap_man = ft_vget_singleton(x);
+	heap_man = ft_vget_singleton_node(x);
 	if (heap_man->first == NULL)
 	{
 		heap_man->first = new;
