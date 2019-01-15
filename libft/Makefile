@@ -86,6 +86,7 @@ LIBFT = libft/ft_bzero.c \
 	   libft/ft_lstadd.c \
 	   libft/ft_lstiter.c \
 	   libft/ft_lstmap.c \
+	   libft/ft_hshnew.c \
 	   libft/ft_vecmake.c \
 	   libft/ft_vecexpand.c \
 	   libft/ft_vecgetptr.c \

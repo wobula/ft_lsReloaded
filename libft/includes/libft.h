@@ -31,7 +31,22 @@ typedef struct				s_list
 	void					*content;
 	size_t					content_size;
 	struct s_list			*next;
+	struct s_list			*prev;
 }							t_list;
+
+typedef struct 				s_hshnode
+{
+	size_t					count;
+	struct s_list			*first;
+	struct s_list			*last;
+}							t_hshnode;
+
+typedef struct 				s_hsh
+{
+	size_t					size;
+	size_t 					count;
+	t_hshnode				**data;
+}							t_hsh;
 
 typedef struct s_memnode	t_memnode;
 typedef struct s_heap_man	t_heap_man;
@@ -158,5 +173,10 @@ char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *));
 t_list				*ft_lstnew(void const *content, size_t content_size);
+
+t_hsh				*ft_hshnew(size_t count, size_t size);
+bool				ft_hshremove(t_hsh *table, void *data);
+void				ft_hshadd(t_hsh *table, void *content);
+void				ft_hshprint(t_hsh *table);
 
 #endif

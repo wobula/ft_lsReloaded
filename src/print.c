@@ -23,10 +23,11 @@ void		print_file(t_vec *file)
 {
 	//get_padding(file, info);
 	ft_printf("%s ", file->info->protection);
+	ft_printf("%lld ", (long long)file->info->hlinks);
 	ft_printf("%s ", file->info->user);
 	ft_printf("%s ", file->info->group);
 	ft_printf("%lld ", (long long)file->info->size);
-	//ft_printf("%lld ", (long long)data->hlinks);
+
 	ft_printf("%.12s ", file->info->last_mod_eng + 4);
 	ft_printf("%s\n", file->name);
 }
