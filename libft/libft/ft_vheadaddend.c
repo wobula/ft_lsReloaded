@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls.c                                            :+:      :+:    :+:   */
+/*   ft_vheadaddend.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,17 +10,19 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/ft_ls.h"
+#include "../includes/libft.h"
 
-int 		main(int argc, char **argv)
+void	ft_vheadaddend(t_vhead **head, t_vlist *new)
 {
-	t_args 		meta;
-
-	if (preprocessor(&meta, argv, argc) == false)
+	if ((*head)->first == NULL)
 	{
-		return (1);
+		(*head)->first = new;
+		(*head)->last = new;
 	}
-	processor(&meta);
-	//postprocessor(&meta);
-	return (0);
+	else
+	{
+		new->prev = (*head)->last;
+		(*head)->last->next = new;
+		(*head)->last = new;
+	}
 }

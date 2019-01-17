@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls.c                                            :+:      :+:    :+:   */
+/*   ft_vheadnew                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,17 +10,14 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/ft_ls.h"
+#include "../includes/libft.h"
 
-int 		main(int argc, char **argv)
+t_vhead	*ft_vheadnew(size_t channel)
 {
-	t_args 		meta;
+	t_vhead *new;
 
-	if (preprocessor(&meta, argv, argc) == false)
-	{
-		return (1);
-	}
-	processor(&meta);
-	//postprocessor(&meta);
-	return (0);
+	new = ft_vhmemalloc(sizeof(t_vhead), channel);
+	new->first = NULL;
+	new->last = NULL;
+	return (new);
 }

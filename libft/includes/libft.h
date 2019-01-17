@@ -31,8 +31,21 @@ typedef struct				s_list
 	void					*content;
 	size_t					content_size;
 	struct s_list			*next;
-	struct s_list			*prev;
 }							t_list;
+
+typedef struct				s_vlist
+{
+	void					*content;
+	size_t					content_size;
+	struct s_vlist			*next;
+	struct s_vlist			*prev;
+}							t_vlist;
+
+typedef struct 				s_vhead
+{
+	struct s_vlist			*first;
+	struct s_vlist			*last;
+}							t_vhead;
 
 typedef struct 				s_hshnode
 {
@@ -173,6 +186,10 @@ char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *));
 t_list				*ft_lstnew(void const *content, size_t content_size);
+
+void				ft_vheadaddend(t_vhead **head, t_vlist *new);
+t_vhead				*ft_vheadnew(size_t channel);
+t_vlist				*ft_vlstnew(void const *content, size_t content_size, size_t channel);
 
 t_hsh				*ft_hshnew(size_t count, size_t size);
 bool				ft_hshremove(t_hsh *table, void *data);

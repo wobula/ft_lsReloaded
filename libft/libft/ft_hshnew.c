@@ -67,7 +67,7 @@ void	ft_hshadd(t_hsh *table, void *data)
 	{
 		ft_printf("Adding element to the next node node\n");
 		table->data[index]->last->next = ft_lstnew(data, sizeof(data));
-		table->data[index]->last->next->prev = table->data[index]->last;
+		//table->data[index]->last->next->prev = table->data[index]->last;
 		table->data[index]->last = table->data[index]->last->next;
 	}
 }

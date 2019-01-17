@@ -29,8 +29,6 @@
 
 #define OPT_L(x) (x->opts[108]) == true ? true : false
 #define OPT_R(x) (x->opts[82]) == true ? true : false
-#define VECTOR_FOLDER_CHECK(z) (z->info.folder) == true ? true : false
-#define RECURSIVE_CHECK(x, y) ((OPT_R(x)) && VECTOR_FOLDER_CHECK(y)) == true ? true : false
 #define FILE_OR_FOLDER(x) (x[0]) == 'd' ? true : false
 
 typedef struct s_args 		t_args;
@@ -44,14 +42,15 @@ struct 					s_args
 	int 				argc;
 	int					opt_count;
 	int					arg_count;
-	char** 				argv;
-	char**				args;
+	char 				**argv;
+	char				**args;
+	t_vhead				*sorted_files;
+	t_vhead				*sorted_folders;
 	bool				opts[127];
 };
 
 struct 					s_file
 {
-	bool				valid;
 	bool				folder;
 	char				protection[11];
 	char				*user;
