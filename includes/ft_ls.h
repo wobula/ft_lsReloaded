@@ -102,3 +102,5 @@ t_vec					**new_vectors(int count);
 void					add_to_vector(t_vec *folder, char *path);
 
 void					get_padding_info(t_vec **files);
+
+void					ft_sortbubblechar(t_vhead **head);

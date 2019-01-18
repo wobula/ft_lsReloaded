@@ -117,6 +117,8 @@ static void 	preprocessor_constructor(t_args *meta, char **argv, int argc)
 	meta->arg_count = 0;
 	meta->args = NULL;
 	meta->opt_count = 0;
+	meta->sorted_files = NULL;
+	meta->sorted_folders = NULL;
 	ft_bzero(meta->opts, 127);
 }
 

@@ -26,6 +26,7 @@ SRC = ./src/ls.c \
 	  ./src/processor.c \
 	  ./src/postprocessor.c \
 	  ./src/padding.c \
+	  ./src/sort.c \
 
 COMPILE = $(GCC) $(FLAGS) $(SRC) $(HEADERS) $(LIBFTHEAD) $(LIBFT) -shared -o $(NAME) -g
 TEST_MAIN = $(GCC) $(FLAGS) $(HEADERS) $(LINK) $(LIBFT) $(SRC) -o $(NAME) ./libft/*.o -g

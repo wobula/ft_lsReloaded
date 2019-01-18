@@ -39,7 +39,7 @@ void add_arg(t_vhead **head, char *arg)
 {
 	t_vlist *new;
 
-	new = ft_vlstnew(arg, sizeof(char*), 2);
+	new = ft_vlstpoint(arg, 2);
 	if ((*head) == NULL)
 	{
 		(*head) = ft_vheadnew(2);
@@ -67,36 +67,54 @@ void sort_files_from_folders(t_args *meta)
 	}
 }
 
-void print_list(t_vlist *tmp, char *file_folder)
+void print_lst(t_vhead *head, char *file_folder)
 {
+	t_vlist *tmp;
+	if (head == NULL)
+		return;
 	ft_printf("Printing list: %s\n", file_folder);
+	tmp = head->first;
 	while (tmp != NULL)
 	{
 		ft_printf("%s\n", tmp->content);
 		tmp = tmp->next;
 	}
+	ft_printf("completed\n");
 }
 
 void sort_args(t_args *meta)
 {
 	sort_files_from_folders(meta);
-	print_list(meta->sorted_files->first, "files");
-	print_list(meta->sorted_folders->first, "folders");
-	ft_printf("Finished printing lists\n");
-	//sort files alphabetically
-	//sort folders alphabetically
+	print_lst(meta->sorted_files, "files");
+	print_lst(meta->sorted_folders, "folders");
+	ft_printf("Files:\n");
+	ft_sortbubblechar(&meta->sorted_files);
+	ft_printf("Folders:\n");
+	ft_sortbubblechar(&meta->sorted_folders);
+	ft_printf("Files:\n");
+	print_lst(meta->sorted_files, "files");
+	ft_printf("\nFolders:\n\n");
+	print_lst(meta->sorted_folders, "folders");
 }
 
 void	process_sorted_args(t_args *meta)
 {
-	ft_printf("TBD: Process sorted args\n");
+	ft_printf("implement handle sorted args\n");
 }
 
 int 	processor(t_args *meta)
 {
-	if (meta->arg_count > 1)
+	if (meta->arg_count > 0)
+	{
 		sort_args(meta);
-	else
+		process_sorted_args(meta);
+	}
+	else if (meta->arg_count == 0)
+	{
 		get_data(".");
-	process_sorted_args(meta);
+	}
+	else
+	{
+		ft_printf("Implement '.'\n");
+	}
 }

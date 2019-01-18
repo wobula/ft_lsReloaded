@@ -95,6 +95,7 @@ LIBFT = libft/ft_bzero.c \
 	   libft/ft_vhmemalloc.c \
 	   libft/ft_vhstrdup.c \
 	   libft/ft_vlstnew.c \
+	   libft/ft_vlstpoint.c \
 	   libft/ft_vheadnew.c \
 	   libft/ft_vheadaddend.c \
 

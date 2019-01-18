@@ -190,6 +190,7 @@ t_list				*ft_lstnew(void const *content, size_t content_size);
 void				ft_vheadaddend(t_vhead **head, t_vlist *new);
 t_vhead				*ft_vheadnew(size_t channel);
 t_vlist				*ft_vlstnew(void const *content, size_t content_size, size_t channel);
+t_vlist				*ft_vlstpoint(void *content, size_t channel);
 
 t_hsh				*ft_hshnew(size_t count, size_t size);
 bool				ft_hshremove(t_hsh *table, void *data);
