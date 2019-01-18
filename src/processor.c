@@ -108,12 +108,8 @@ int 	processor(t_args *meta)
 		sort_args(meta);
 		process_sorted_args(meta);
 	}
-	else if (meta->arg_count == 0)
-	{
-		get_data(".");
-	}
 	else
 	{
-		ft_printf("Implement '.'\n");
+		get_data(".");
 	}
 }
