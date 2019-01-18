@@ -37,8 +37,6 @@ bool	head_check(t_vhead **head)
 	bool	sorted;
 
 	sorted = true;
-	if ((*head)->first->next == NULL)
-		return (sorted);
 	tmp = (*head)->first;
 	if (order_check(tmp, tmp->next) > 0)
 	{
@@ -54,8 +52,6 @@ bool	body_check(t_vhead **head)
 	bool	sorted;
 
 	sorted = true;
-	if ((*head)->first->next == NULL)
-		return (sorted);
 	tmp = (*head)->first->next;
 	while (tmp->next)
 	{
@@ -80,7 +76,7 @@ bool	sorter(t_vhead **head)
 
 void	ft_sortbubblechar(t_vhead **head)
 {
-	if ((*head) == NULL)
+	if ((*head) == NULL || (*head)->first == NULL || (*head)->first->next == NULL)
 		return;
 	while (sorter(head) == false)
 		;
