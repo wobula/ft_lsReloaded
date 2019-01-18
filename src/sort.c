@@ -31,21 +31,6 @@ t_vlist	*swap(t_vlist *first, t_vlist *second)
 	return (swap);
 }
 
-bool	head_check(t_vhead **head)
-{
-	t_vlist *tmp;
-	bool	sorted;
-
-	sorted = true;
-	tmp = (*head)->first;
-	if (order_check(tmp, tmp->next) > 0)
-	{
-		(*head)->first = swap(tmp, tmp->next);
-		sorted = false;
-	}
-	return (sorted);
-}
-
 bool	body_check(t_vhead **head)
 {
 	t_vlist *tmp;
@@ -65,19 +50,27 @@ bool	body_check(t_vhead **head)
 	return (sorted);
 }
 
-bool	sorter(t_vhead **head)
+void	head_check(t_vhead **head)
 {
-	bool sorted;
+	t_vlist *tmp;
 
-	sorted = head_check(head);
-	sorted = body_check(head);
-	return (sorted);
+	tmp = (*head)->first;
+	if (order_check(tmp, tmp->next) > 0)
+	{
+		(*head)->first = swap(tmp, tmp->next);
+	}
 }
 
 void	ft_sortbubblechar(t_vhead **head)
 {
-	if ((*head) == NULL || (*head)->first == NULL || (*head)->first->next == NULL)
+	bool sorted;
+
+	if ((*head)->first->next == NULL)
 		return;
-	while (sorter(head) == false)
-		;
+	sorted = false;
+	while (sorted == false)
+	{
+		head_check(head);
+		sorted = body_check(head);
+	}
 }

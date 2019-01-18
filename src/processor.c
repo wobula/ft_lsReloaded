@@ -72,7 +72,6 @@ void print_lst(t_vhead *head, char *file_folder)
 	t_vlist *tmp;
 	if (head == NULL)
 		return;
-	ft_printf("Printing list: %s\n", file_folder);
 	tmp = head->first;
 	while (tmp != NULL)
 	{
@@ -87,11 +86,10 @@ void sort_args(t_args *meta)
 	sort_files_from_folders(meta);
 	print_lst(meta->sorted_files, "files");
 	print_lst(meta->sorted_folders, "folders");
-	ft_printf("--Sorting Files:\n");
-	ft_sortbubblechar(&meta->sorted_files);
-	ft_printf("--Sorting Folders:\n");
-	ft_sortbubblechar(&meta->sorted_folders);
-	ft_printf("\n");
+	if (meta->sorted_files != NULL)
+		ft_sortbubblechar(&meta->sorted_files);
+	if (meta->sorted_folders != NULL)
+		ft_sortbubblechar(&meta->sorted_folders);
 	ft_printf("--Printing Files:\n");
 	print_lst(meta->sorted_files, "files");
 	ft_printf("--Printing Folders:\n");
