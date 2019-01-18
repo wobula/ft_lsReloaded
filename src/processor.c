@@ -12,7 +12,7 @@
 
 #include "../includes/ft_ls.h"
 
-t_vec	*get_dir_contents(t_vec *folder)
+/*t_vec	*get_dir_contents(t_vec *folder)
 {
 	DIR 			*dir;
 	struct dirent 	*dent;
@@ -28,7 +28,7 @@ t_vec	*get_dir_contents(t_vec *folder)
 	}
 	closedir(dir);
 	return (folder);
-}
+}*/
 
 void process_args(t_args *meta)
 {
@@ -84,16 +84,16 @@ void print_lst(t_vhead *head, char *file_folder)
 void sort_args(t_args *meta)
 {
 	sort_files_from_folders(meta);
-	print_lst(meta->sorted_files, "files");
-	print_lst(meta->sorted_folders, "folders");
+	//print_lst(meta->sorted_files, "files");
+	//print_lst(meta->sorted_folders, "folders");
 	if (meta->sorted_files != NULL)
 		ft_sortbubblechar(&meta->sorted_files);
 	if (meta->sorted_folders != NULL)
 		ft_sortbubblechar(&meta->sorted_folders);
-	ft_printf("--Printing Files:\n");
-	print_lst(meta->sorted_files, "files");
-	ft_printf("--Printing Folders:\n");
-	print_lst(meta->sorted_folders, "folders");
+	//ft_printf("--Printing Files:\n");
+	//print_lst(meta->sorted_files, "files");
+	//ft_printf("--Printing Folders:\n");
+	//print_lst(meta->sorted_folders, "folders");
 }
 
 void	process_sorted_args(t_args *meta)
@@ -110,6 +110,6 @@ int 	processor(t_args *meta)
 	}
 	else
 	{
-		get_data(".");
+		get_data("./", ".");
 	}
 }

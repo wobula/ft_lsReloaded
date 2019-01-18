@@ -51,26 +51,17 @@ struct 					s_args
 
 struct 					s_file
 {
-	bool				folder;
 	char				protection[11];
-	char				*user;
+	char				*full_path;
+	char				*owner;
 	char				*group;
 	char				*last_mod_eng;
 	uid_t				user_id;
 	gid_t				group_id;
 	long long			size;
-	nlink_t				hlinks;
+	long				hlinks;
 	time_t				last_modified;
 	t_file_pad			*this;
-};
-
-struct 					s_vec
-{
-	char				*name;
-	char				*path;
-	int 				count;
-	struct s_file		*info;
-	struct s_vec		**vector;
 };
 
 struct		 			s_file_pad
@@ -93,14 +84,7 @@ bool 					preprocessor(t_args *meta, char **argv, int argc);
 int						processor(t_args *meta);
 void					postprocessor(t_args *meta);
 
-t_file					*get_data(char *path);
-void					print_file(t_vec *file);
-void					print_data(t_args *meta, t_vec **files);
+int						get_data(char *path, char *file);
 
-t_vec					*new_vector(char *path, char *file);
-t_vec					**new_vectors(int count);
-void					add_to_vector(t_vec *folder, char *path);
-
-void					get_padding_info(t_vec **files);
 
 void					ft_sortbubblechar(t_vhead **head);

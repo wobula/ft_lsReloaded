@@ -12,70 +12,64 @@
 
 #include "../includes/ft_ls.h"
 
-void	get_perms(t_file *data, mode_t st_mode)
+void	permissions(char *buff, mode_t st_mode)
 {
 	int bits;
 
 	bits = (st_mode & S_IFMT);
-	data->protection[0] = TYPE_CHECK(bits);
-	data->protection[1] = st_mode & S_IRUSR ? 'r' : '-';
-	data->protection[2] = st_mode & S_IWUSR ? 'w' : '-';
-	data->protection[3] = st_mode & S_IXUSR ? 'x' : '-';
-	data->protection[4] = st_mode & S_IRGRP ? 'r' : '-';
-	data->protection[5] = st_mode & S_IWGRP ? 'w' : '-';
-	data->protection[6] = st_mode & S_IXGRP ? 'x' : '-';
-	data->protection[7] = st_mode & S_IROTH ? 'r' : '-';
-	data->protection[8] = st_mode & S_IWOTH ? 'w' : '-';
-	data->protection[9] = st_mode & S_IXOTH ? 'x' : '-';
-	data->protection[10] = '\0';
+	buff[0] = TYPE_CHECK(bits);
+	buff[1] = st_mode & S_IRUSR ? 'r' : '-';
+	buff[2] = st_mode & S_IWUSR ? 'w' : '-';
+	buff[3] = st_mode & S_IXUSR ? 'x' : '-';
+	buff[4] = st_mode & S_IRGRP ? 'r' : '-';
+	buff[5] = st_mode & S_IWGRP ? 'w' : '-';
+	buff[6] = st_mode & S_IXGRP ? 'x' : '-';
+	buff[7] = st_mode & S_IROTH ? 'r' : '-';
+	buff[8] = st_mode & S_IWOTH ? 'w' : '-';
+	buff[9] = st_mode & S_IXOTH ? 'x' : '-';
+	buff[10] = '\0';
 }
 
-void	get_folder_value(t_file *data)
-{
-	data->folder = FILE_OR_FOLDER(data->protection);
-}
-
-void	get_time(t_file *data, time_t last_mod)
-{
-	char *tmp;
-
-	tmp = ctime(&last_mod);
-	data->last_mod_eng = ft_vhstrdup(tmp, 1);
-}
-
-void	get_user_details(t_file *data, uid_t user_id, gid_t group_id)
+typedef struct s_ownerinfo
 {
 	struct passwd 	*pwd;
-	struct group 	*gwd;
+	struct group	*gwd;
+}				t_ownerinfo;
 
-	pwd = getpwuid(user_id);
-	gwd = getgrgid(group_id);
-	data->user = pwd->pw_name;
-	data->group = gwd->gr_name;
+void print_data(struct stat *sb, char *perms, char *file)
+{
+	t_ownerinfo data;
+
+	data.pwd = getpwuid(sb->st_uid);
+	data.gwd = getgrgid(sb->st_gid);
+	ft_printf("%s ", perms);
+	ft_printf("%ld ", (long)sb->st_nlink);
+	ft_printf("%s ", data.pwd->pw_name);
+	ft_printf("%s ", data.gwd->gr_name);
+	ft_printf("%lld ", (long long)sb->st_size);
+	ft_printf("%.12s ", (ctime(&sb->st_mtime)) + 4);
+	ft_printf("%s\n", file);
 }
 
-void	get_size(t_file *data, off_t size)
+char *construct_path(char *path, char *file)
 {
-	data->size = (long long)size;
+	char *full_path;
+
+	full_path = ft_vhstrjoin(path, "/", 2);
+	full_path = ft_vhstrjoin(full_path, file, 2);
+	return (full_path);
 }
 
-void	get_links(t_file *data, nlink_t hlinks)
+//return values: -1 for invalid, 0 for file, 1 for folder.
+int	get_data(char *path, char *file)
 {
-	data->hlinks = (long long)hlinks;
-}
-
-t_file	*get_data(char *path)
-{
-	t_file 		*data;
+	char		perms[11];
+	char		*full_path;
 	struct stat sb;
 
-	data = (t_file*)ft_vhmemalloc(sizeof(t_file), 1);
-	lstat(path, &sb);
-	get_perms(data, sb.st_mode);
-	get_time(data, sb.st_mtime);
-	get_user_details(data, sb.st_uid, sb.st_gid);
-	get_size(data, sb.st_size);
-	get_links(data, sb.st_nlink);
-	get_folder_value(data);
-	return (data);
+	full_path = construct_path(path, file);
+	lstat(full_path, &sb);
+	permissions((char*)&perms, sb.st_mode);
+	print_data(&sb, (char*)&perms, file);
+	return ((perms[0] == 'd') ? 1 : 0);
 }

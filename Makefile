@@ -20,12 +20,9 @@ HEADERS = -I ./includes/
 FLAGS += -fPIC
 SRC = ./src/ls.c \
 	  ./src/preprocessor.c \
-	  ./src/vector.c \
 	  ./src/get_data.c \
-	  ./src/print.c \
 	  ./src/processor.c \
 	  ./src/postprocessor.c \
-	  ./src/padding.c \
 	  ./src/sort.c \
 
 COMPILE = $(GCC) $(FLAGS) $(SRC) $(HEADERS) $(LIBFTHEAD) $(LIBFT) -shared -o $(NAME) -g
