@@ -14,7 +14,6 @@
 
 int 	order_check(t_vlist *first, t_vlist *second)
 {
-	ft_printf("Comparing string1: %s, string 2: %s\n", first->content, second->content);
 	return (ft_strcmp(first->content, second->content));
 }
 
@@ -24,25 +23,65 @@ t_vlist	*swap(t_vlist *first, t_vlist *second)
 
 	swap = second;
 	swap->prev = first->prev;
+	(first->prev) ? (first->prev->next = swap) : false;
 	first->next = swap->next;
+	(swap->next) ? (swap->next->prev = first) : false;
 	swap->next = first;
 	first->prev = swap;
 	return (swap);
 }
 
-void	head_check(t_vhead **head)
+bool	head_check(t_vhead **head)
 {
 	t_vlist *tmp;
+	bool	sorted;
 
+	sorted = true;
+	if ((*head)->first->next == NULL)
+		return (sorted);
 	tmp = (*head)->first;
-	//if (tmp->first->next)
+	if (order_check(tmp, tmp->next) > 0)
+	{
+		(*head)->first = swap(tmp, tmp->next);
+		sorted = false;
+	}
+	return (sorted);
+}
+
+bool	body_check(t_vhead **head)
+{
+	t_vlist *tmp;
+	bool	sorted;
+
+	sorted = true;
+	if ((*head)->first->next == NULL)
+		return (sorted);
+	tmp = (*head)->first->next;
+	while (tmp->next)
+	{
+		if (order_check(tmp, tmp->next) > 0)
+		{
+			sorted = false;
+			tmp = swap(tmp, tmp->next);
+		}
+		tmp = tmp->next;
+	}
+	return (sorted);
+}
+
+bool	sorter(t_vhead **head)
+{
+	bool sorted;
+
+	sorted = head_check(head);
+	sorted = body_check(head);
+	return (sorted);
 }
 
 void	ft_sortbubblechar(t_vhead **head)
 {
-	ft_printf("Sort bubblechar\n");
 	if ((*head) == NULL)
 		return;
-	ft_printf("Bubble sorting...\n");
-	head_check(head);
+	while (sorter(head) == false)
+		;
 }

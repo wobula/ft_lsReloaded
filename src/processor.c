@@ -79,7 +79,7 @@ void print_lst(t_vhead *head, char *file_folder)
 		ft_printf("%s\n", tmp->content);
 		tmp = tmp->next;
 	}
-	ft_printf("completed\n");
+	ft_printf("\n");
 }
 
 void sort_args(t_args *meta)
@@ -87,13 +87,14 @@ void sort_args(t_args *meta)
 	sort_files_from_folders(meta);
 	print_lst(meta->sorted_files, "files");
 	print_lst(meta->sorted_folders, "folders");
-	ft_printf("Files:\n");
+	ft_printf("--Sorting Files:\n");
 	ft_sortbubblechar(&meta->sorted_files);
-	ft_printf("Folders:\n");
+	ft_printf("--Sorting Folders:\n");
 	ft_sortbubblechar(&meta->sorted_folders);
-	ft_printf("Files:\n");
+	ft_printf("\n");
+	ft_printf("--Printing Files:\n");
 	print_lst(meta->sorted_files, "files");
-	ft_printf("\nFolders:\n\n");
+	ft_printf("--Printing Folders:\n");
 	print_lst(meta->sorted_folders, "folders");
 }
 
