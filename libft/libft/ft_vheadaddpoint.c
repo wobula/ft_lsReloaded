@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_ls.c                                            :+:      :+:    :+:   */
+/*   ft_vheadaddpoint.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -10,17 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/ft_ls.h"
+#include "../includes/libft.h"
 
-int 		main(int argc, char **argv)
+void	ft_vheadaddpoint(t_vhead **head, void *ptr, size_t channel)
 {
-	t_args 		meta;
+	t_vlist *new;
 
-	if (preprocessor(&meta, argv, argc) == false)
-	{
-		return (1);
-	}
-	processor(&meta);
-	postprocessor();
-	return (0);
+	new = ft_vlstpoint(ptr, channel);
+	ft_vheadaddend(head, new);
+	(*head)->count++;
 }

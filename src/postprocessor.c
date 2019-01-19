@@ -12,7 +12,7 @@
 
 #include "../includes/ft_ls.h"
 
-void		postprocessor(t_args *meta)
+void		postprocessor()
 {
 	ft_vheap_clear();
 }

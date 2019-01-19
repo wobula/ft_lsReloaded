@@ -62,7 +62,6 @@ bool	get_folder_data(char *path)
 	struct dirent 	*dent;
 	char			*folder;
 	t_vhead			*head;
-	t_vlist			*lst;
 
 	head = NULL;
 	if (!(dir = get_directory_pointer(path)))
@@ -70,10 +69,9 @@ bool	get_folder_data(char *path)
 	head = ft_vheadnew(2);
 	while ((dent = readdir(dir)) != NULL)
 	{
-		if ((folder = get_file_data(path, dent->d_name)) != NULL && dent->d_name[0] != '.')
+		if (dent->d_name[0] != '.' && (folder = get_file_data(path, dent->d_name)))
 		{
-			lst = ft_vlstpoint(folder, 2);
-			ft_vheadaddend(&head, lst);
+			ft_vheadaddpoint(&head, folder, 2);
 		}
 	}
 	write(1, "\n", 1);

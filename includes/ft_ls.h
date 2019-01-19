@@ -83,7 +83,7 @@ struct 					s_max_pad
 
 bool 					preprocessor(t_args *meta, char **argv, int argc);
 int						processor(t_args *meta);
-void					postprocessor(t_args *meta);
+void					postprocessor();
 
 char					*get_file_data(char *path, char *file);
 bool					get_folder_data(char *path);

@@ -17,6 +17,7 @@ t_vhead	*ft_vheadnew(size_t channel)
 	t_vhead *new;
 
 	new = ft_vhmemalloc(sizeof(t_vhead), channel);
+	new->count = 0;
 	new->first = NULL;
 	new->last = NULL;
 	return (new);

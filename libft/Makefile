@@ -98,6 +98,7 @@ LIBFT = libft/ft_bzero.c \
 	   libft/ft_vlstpoint.c \
 	   libft/ft_vheadnew.c \
 	   libft/ft_vheadaddend.c \
+	   libft/ft_vheadaddpoint.c \
 
 
 PRINTF = printf/ft_printf.c \

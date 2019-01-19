@@ -45,6 +45,7 @@ typedef struct 				s_vhead
 {
 	struct s_vlist			*first;
 	struct s_vlist			*last;
+	size_t					count;
 }							t_vhead;
 
 typedef struct 				s_hshnode
@@ -188,7 +189,9 @@ t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *));
 t_list				*ft_lstnew(void const *content, size_t content_size);
 
 void				ft_vheadaddend(t_vhead **head, t_vlist *new);
+void				ft_vheadaddpoint(t_vhead **head, void *ptr, size_t channel);
 t_vhead				*ft_vheadnew(size_t channel);
+
 t_vlist				*ft_vlstnew(void const *content, size_t content_size, size_t channel);
 t_vlist				*ft_vlstpoint(void *content, size_t channel);
 
