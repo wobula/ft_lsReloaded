@@ -12,27 +12,13 @@
 
 #include "../includes/ft_ls.h"
 
-void	print_list_directories(t_vhead *head)
-{
-	t_vlist *lst;
-
-	ft_printf("Inside print list directories\n");
-	if (head->first == NULL)
-		return;
-	lst = head->first;
-	while (lst)
-	{
-		ft_printf("->folders: %s\n", lst->content);
-		lst = lst->next;
-	}
-}
-
-void	recurse(t_vhead *head)
+void		recurse(t_vhead *head)
 {
 	t_vlist *tmp;
 
 	if (!head || !head->first)
 		return;
+	ft_sortbubblechar(&head);
 	tmp = head->first;
 	while (tmp)
 	{
@@ -41,7 +27,7 @@ void	recurse(t_vhead *head)
 	}
 }
 
-DIR 	*get_directory_pointer(char *path)
+DIR 		*get_directory_pointer(char *path)
 {
 	DIR *dir;
 	int err;
@@ -56,26 +42,59 @@ DIR 	*get_directory_pointer(char *path)
 	return (dir);
 }
 
-bool	get_folder_data(char *path)
+t_vhead		*build_directory_structure(DIR *dir, char *path)
 {
-	DIR 			*dir;
 	struct dirent 	*dent;
-	char			*folder;
 	t_vhead			*head;
+	char			*folder;
 
-	head = NULL;
-	if (!(dir = get_directory_pointer(path)))
-		return (false);
 	head = ft_vheadnew(2);
 	while ((dent = readdir(dir)) != NULL)
 	{
-		if (dent->d_name[0] != '.' && (folder = get_file_data(path, dent->d_name)))
-		{
-			ft_vheadaddpoint(&head, folder, 2);
-		}
+		if (dent->d_name[0] == '.')
+			continue;
+		ft_vheadaddpoint(&head, dent->d_name, 2);
 	}
+	return (head);
+}
+
+t_vhead		*print_directory_contents(t_vhead *head, char *path)
+{
+	t_vhead *recursion;
+	t_vlist *tmp;
+	char	*folder;
+
+
+	if (!head)
+		return (NULL);
+	recursion = ft_vheadnew(2);
+	tmp = head->first;
+	while (tmp)
+	{
+		if ((folder = get_file_data(path, tmp->content)) != NULL)
+		{
+			ft_vheadaddpoint(&recursion, folder, 2);
+		}
+		tmp = tmp->next;
+	}
+	return (recursion);
+}
+
+bool		get_folder_data(char *path)
+{
+	DIR 			*dir;
+	t_vhead			*head;
+	t_vhead			*recursion;
+
+	head = NULL;
+	ft_printf("%s:\n", path);
+	if (!(dir = get_directory_pointer(path)))
+		return (false);
+	head = build_directory_structure(dir, path);
+	ft_sortbubblechar(&head);
+	recursion = print_directory_contents(head, path);
 	write(1, "\n", 1);
 	closedir(dir);
-	recurse(head);
+	recurse(recursion);
 	return (true);
 }

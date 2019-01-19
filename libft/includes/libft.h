@@ -129,12 +129,6 @@ int					ft_hfree(void *ptr);
 int					ft_heap_clear(void);
 t_heap_man			*ft_heap_singleton(void);
 
-t_heap_man			*ft_vget_singleton_node(size_t channel);
-t_vheap_man			*ft_vheap_singleton(void);
-void				*ft_vhmalloc(size_t size, size_t channel);
-void				*ft_vhmemalloc(size_t size, size_t channel);
-int					ft_vheap_clear(void);
-
 void				**ft_vecgetptr_dynamic(t_vector *this, size_t get);
 void				**ft_vecgetptr(t_vector *this, size_t get);
 t_vector			*ft_vecmake(size_t size);
@@ -187,6 +181,12 @@ char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
 char				*ft_strsub(char const *s, unsigned int start, size_t len);
 t_list				*ft_lstmap(t_list *lst, t_list *(*f)(t_list *));
 t_list				*ft_lstnew(void const *content, size_t content_size);
+
+t_heap_man			*ft_vget_singleton_node(size_t channel);
+t_vheap_man			*ft_vheap_singleton(void);
+void				*ft_vhmalloc(size_t size, size_t channel);
+void				*ft_vhmemalloc(size_t size, size_t channel);
+int					ft_vheap_clear(void);
 
 void				ft_vheadaddend(t_vhead **head, t_vlist *new);
 void				ft_vheadaddpoint(t_vhead **head, void *ptr, size_t channel);

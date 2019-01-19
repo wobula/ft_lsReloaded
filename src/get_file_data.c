@@ -36,7 +36,7 @@ typedef struct s_ownerinfo
 	struct group	*gwd;
 }				t_ownerinfo;
 
-void print_data(struct stat *sb, char *perms, char *file)
+void 	print_data(struct stat *sb, char *perms, char *file)
 {
 	t_ownerinfo data;
 
@@ -51,7 +51,7 @@ void print_data(struct stat *sb, char *perms, char *file)
 	ft_printf("%s\n", file);
 }
 
-char *construct_path(char *path, char *file)
+char	*construct_path(char *path, char *file)
 {
 	char *full_path;
 
