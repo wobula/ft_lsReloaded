@@ -90,7 +90,8 @@ bool		get_folder_data(char *path)
 	ft_printf("%s:\n", path);
 	if (!(dir = get_directory_pointer(path)))
 		return (false);
-	head = build_directory_structure(dir, path);
+	if ((head = build_directory_structure(dir, path))->first == NULL)
+		return (false);
 	ft_sortbubblechar(&head);
 	recursion = print_directory_contents(head, path);
 	write(1, "\n", 1);
