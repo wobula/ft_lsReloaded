@@ -12,26 +12,17 @@
 
 #include "../includes/ft_ls.h"
 
-void 	process_files(t_vlist *start)
+void 	process_args(t_vlist *start, bool folder)
 {
 	t_vlist *tmp;
 
 	tmp = start;
 	while (tmp)
 	{
-		get_file_data(NULL, tmp->content);
-		tmp = tmp->next;
-	}
-}
-
-void 	process_folders(t_vlist *start)
-{
-	t_vlist *tmp;
-
-	tmp = start;
-	while (tmp)
-	{
-		get_folder_data(tmp->content);
+		if (folder == false)
+			get_file_data(NULL, tmp->content);
+		else
+			get_folder_data(tmp->content);
 		tmp = tmp->next;
 	}
 }
@@ -84,11 +75,11 @@ int 	processor(t_args *meta)
 		sort_args(meta);
 		if (meta->sorted_files != NULL)
 		{
-			process_files(meta->sorted_files->first);
+			process_args(meta->sorted_files->first, false);
 		}
 		if (meta->sorted_folders != NULL)
 		{
-			process_folders(meta->sorted_folders->first);
+			process_args(meta->sorted_folders->first, true);
 		}
 	}
 	else
