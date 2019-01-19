@@ -12,7 +12,7 @@
 
 #include "../includes/ft_ls.h"
 
-void process_files(t_vlist *start)
+void 	process_files(t_vlist *start)
 {
 	t_vlist *tmp;
 
@@ -24,9 +24,10 @@ void process_files(t_vlist *start)
 	}
 }
 
-void process_folders(t_vlist *start)
+void 	process_folders(t_vlist *start)
 {
 	t_vlist *tmp;
+
 	tmp = start;
 	while (tmp)
 	{
@@ -35,7 +36,7 @@ void process_folders(t_vlist *start)
 	}
 }
 
-void add_arg(t_vhead **head, char *arg)
+void 	add_arg(t_vhead **head, char *arg)
 {
 	t_vlist *new;
 
@@ -47,7 +48,7 @@ void add_arg(t_vhead **head, char *arg)
 	ft_vheadaddend(head, new);
 }
 
-void sort_files_from_folders(t_args *meta)
+void 	sort_files_from_folders(t_args *meta)
 {
 	struct stat sb;
 	int x;
@@ -67,7 +68,7 @@ void sort_files_from_folders(t_args *meta)
 	}
 }
 
-void sort_args(t_args *meta)
+void 	sort_args(t_args *meta)
 {
 	sort_files_from_folders(meta);
 	if (meta->sorted_files != NULL)
@@ -92,6 +93,6 @@ int 	processor(t_args *meta)
 	}
 	else
 	{
-		get_file_data("./", ".");
+		get_folder_data(".");
 	}
 }

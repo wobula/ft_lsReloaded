@@ -63,7 +63,6 @@ struct 					s_file
 	long long			size;
 	long				hlinks;
 	time_t				last_modified;
-	t_file_pad			*this;
 };
 
 struct		 			s_file_pad

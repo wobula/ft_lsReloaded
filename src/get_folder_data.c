@@ -41,6 +41,21 @@ void	recurse(t_vhead *head)
 	}
 }
 
+DIR 	*get_directory_pointer(char *path)
+{
+	DIR *dir;
+	int err;
+
+	if (!(dir = opendir(path)))
+	{
+		err = errno;
+		if (err == EACCES)
+			NO_FOLDER_ACCESS(path);
+		return (NULL);
+	}
+	return (dir);
+}
+
 bool	get_folder_data(char *path)
 {
 	DIR 			*dir;
@@ -48,27 +63,17 @@ bool	get_folder_data(char *path)
 	char			*folder;
 	t_vhead			*head;
 	t_vlist			*lst;
-	int err;
 
 	head = NULL;
-	if (!(dir = opendir(path)))
-	{
-		err = errno;
-		if (err == EACCES)
-			NO_FOLDER_ACCESS(path);
+	if (!(dir = get_directory_pointer(path)))
 		return (false);
-	}
-	ft_printf("%s: \n", path);
-	if (dir != NULL)
+	head = ft_vheadnew(2);
+	while ((dent = readdir(dir)) != NULL)
 	{
-		head = ft_vheadnew(2);
-		while ((dent = readdir(dir)) != NULL)
+		if ((folder = get_file_data(path, dent->d_name)) != NULL && dent->d_name[0] != '.')
 		{
-			if ((folder = get_file_data(path, dent->d_name)) != NULL && dent->d_name[0] != '.')
-			{
-				lst = ft_vlstpoint(folder, 2);
-				ft_vheadaddend(&head, lst);
-			}
+			lst = ft_vlstpoint(folder, 2);
+			ft_vheadaddend(&head, lst);
 		}
 	}
 	write(1, "\n", 1);
