@@ -61,7 +61,7 @@ char *construct_path(char *path, char *file)
 }
 
 //return values: -1 for invalid, 0 for file, 1 for folder.
-int	get_data(char *path, char *file)
+char	*get_data(char *path, char *file)
 {
 	char		perms[11];
 	char		*full_path;
@@ -71,5 +71,5 @@ int	get_data(char *path, char *file)
 	lstat(full_path, &sb);
 	permissions((char*)&perms, sb.st_mode);
 	print_data(&sb, (char*)&perms, file);
-	return ((perms[0] == 'd') ? 1 : 0);
+	return ((perms[0] == 'd') ? full_path : NULL);
 }

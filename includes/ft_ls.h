@@ -84,7 +84,7 @@ bool 					preprocessor(t_args *meta, char **argv, int argc);
 int						processor(t_args *meta);
 void					postprocessor(t_args *meta);
 
-int						get_data(char *path, char *file);
+char					*get_data(char *path, char *file);
 
 
 void					ft_sortbubblechar(t_vhead **head);
