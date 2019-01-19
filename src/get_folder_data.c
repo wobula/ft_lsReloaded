@@ -1,0 +1,78 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   get_dir_contents.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/11/30 15:58:34 by rschramm          #+#    #+#             */
+/*   Updated: 2017/02/11 12:51:04 by rschramm         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../includes/ft_ls.h"
+
+void	print_list_directories(t_vhead *head)
+{
+	t_vlist *lst;
+
+	ft_printf("Inside print list directories\n");
+	if (head->first == NULL)
+		return;
+	lst = head->first;
+	while (lst)
+	{
+		ft_printf("->folders: %s\n", lst->content);
+		lst = lst->next;
+	}
+}
+
+void	recurse(t_vhead *head)
+{
+	t_vlist *tmp;
+
+	if (!head || !head->first)
+		return;
+	tmp = head->first;
+	while (tmp)
+	{
+		get_folder_data(tmp->content);
+		tmp = tmp->next;
+	}
+}
+
+bool	get_folder_data(char *path)
+{
+	DIR 			*dir;
+	struct dirent 	*dent;
+	char			*folder;
+	t_vhead			*head;
+	t_vlist			*lst;
+	int err;
+
+	head = NULL;
+	if (!(dir = opendir(path)))
+	{
+		err = errno;
+		if (err == EACCES)
+			NO_FOLDER_ACCESS(path);
+		return (false);
+	}
+	ft_printf("%s: \n", path);
+	if (dir != NULL)
+	{
+		head = ft_vheadnew(2);
+		while ((dent = readdir(dir)) != NULL)
+		{
+			if ((folder = get_file_data(path, dent->d_name)) != NULL && dent->d_name[0] != '.')
+			{
+				lst = ft_vlstpoint(folder, 2);
+				ft_vheadaddend(&head, lst);
+			}
+		}
+	}
+	write(1, "\n", 1);
+	closedir(dir);
+	recurse(head);
+	return (true);
+}

@@ -12,27 +12,27 @@
 
 #include "../includes/ft_ls.h"
 
-/*t_vec	*get_dir_contents(t_vec *folder)
+void process_files(t_vlist *start)
 {
-	DIR 			*dir;
-	struct dirent 	*dent;
+	t_vlist *tmp;
 
-	dir = opendir(folder->path);
-	if (dir != NULL)
+	tmp = start;
+	while (tmp)
 	{
-		while ((dent = readdir(dir)) != NULL)
-		{
-			//add_to_vector(folder, dent->d_name);
-			ft_printf("%s\n", dent->d_name);
-		}
+		get_file_data(NULL, tmp->content);
+		tmp = tmp->next;
 	}
-	closedir(dir);
-	return (folder);
-}*/
+}
 
-void process_args(t_args *meta)
+void process_folders(t_vlist *start)
 {
-	ft_printf("TBD: process args\n");
+	t_vlist *tmp;
+	tmp = start;
+	while (tmp)
+	{
+		get_folder_data(tmp->content);
+		tmp = tmp->next;
+	}
 }
 
 void add_arg(t_vhead **head, char *arg)
@@ -67,38 +67,13 @@ void sort_files_from_folders(t_args *meta)
 	}
 }
 
-void print_lst(t_vhead *head, char *file_folder)
-{
-	t_vlist *tmp;
-	if (head == NULL)
-		return;
-	tmp = head->first;
-	while (tmp != NULL)
-	{
-		ft_printf("%s\n", tmp->content);
-		tmp = tmp->next;
-	}
-	ft_printf("\n");
-}
-
 void sort_args(t_args *meta)
 {
 	sort_files_from_folders(meta);
-	//print_lst(meta->sorted_files, "files");
-	//print_lst(meta->sorted_folders, "folders");
 	if (meta->sorted_files != NULL)
 		ft_sortbubblechar(&meta->sorted_files);
 	if (meta->sorted_folders != NULL)
 		ft_sortbubblechar(&meta->sorted_folders);
-	//ft_printf("--Printing Files:\n");
-	//print_lst(meta->sorted_files, "files");
-	//ft_printf("--Printing Folders:\n");
-	//print_lst(meta->sorted_folders, "folders");
-}
-
-void	process_sorted_args(t_args *meta)
-{
-	ft_printf("implement handle sorted args\n");
 }
 
 int 	processor(t_args *meta)
@@ -106,10 +81,17 @@ int 	processor(t_args *meta)
 	if (meta->arg_count > 0)
 	{
 		sort_args(meta);
-		process_sorted_args(meta);
+		if (meta->sorted_files != NULL)
+		{
+			process_files(meta->sorted_files->first);
+		}
+		if (meta->sorted_folders != NULL)
+		{
+			process_folders(meta->sorted_folders->first);
+		}
 	}
 	else
 	{
-		get_data("./", ".");
+		get_file_data("./", ".");
 	}
 }

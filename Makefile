@@ -20,10 +20,11 @@ HEADERS = -I ./includes/
 FLAGS += -fPIC
 SRC = ./src/ls.c \
 	  ./src/preprocessor.c \
-	  ./src/get_data.c \
+	  ./src/get_file_data.c \
+	  ./src/get_folder_data.c \
 	  ./src/processor.c \
 	  ./src/postprocessor.c \
-	  ./src/sort.c \
+	  ./src/bubblesort.c \
 
 COMPILE = $(GCC) $(FLAGS) $(SRC) $(HEADERS) $(LIBFTHEAD) $(LIBFT) -shared -o $(NAME) -g
 TEST_MAIN = $(GCC) $(FLAGS) $(HEADERS) $(LINK) $(LIBFT) $(SRC) -o $(NAME) ./libft/*.o -g

@@ -55,20 +55,31 @@ char *construct_path(char *path, char *file)
 {
 	char *full_path;
 
-	full_path = ft_vhstrjoin(path, "/", 2);
-	full_path = ft_vhstrjoin(full_path, file, 2);
+	if (!path)
+		return (file);
+	if (ft_strcmp(path, "/") == 0)
+	{
+		full_path = ft_vhstrjoin(path, file, 2);
+	}
+	else
+	{
+		full_path = ft_vhstrjoin(path, "/", 2);
+		full_path = ft_vhstrjoin(full_path, file, 2);
+	}
 	return (full_path);
 }
 
-//return values: -1 for invalid, 0 for file, 1 for folder.
-char	*get_data(char *path, char *file)
+char	*get_file_data(char *path, char *file)
 {
 	char		perms[11];
 	char		*full_path;
 	struct stat sb;
 
 	full_path = construct_path(path, file);
-	lstat(full_path, &sb);
+	if (lstat(full_path, &sb) == -1)
+	{
+		return (NULL);
+	}
 	permissions((char*)&perms, sb.st_mode);
 	print_data(&sb, (char*)&perms, file);
 	return ((perms[0] == 'd') ? full_path : NULL);

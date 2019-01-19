@@ -3,6 +3,7 @@
 #include <pwd.h>
 #include <grp.h>
 #include <time.h>
+#include <errno.h>
 #include "../libft/includes/libft.h"
 
 #define OPT_CHECK(x)\
@@ -22,10 +23,11 @@
 				 (x) == S_IFCHR ? 'c' : 'b'\
 
 #define INVALID_OPT(x)\
-				 	ft_printf("ls invalid option -- '%c'\n", x);\
-				 	ft_printf("Try 'ls --halp meh' for more information.\n");\
+				 	ft_printf("ft_ls invalid option -- '%c'\n", x);\
+				 	ft_printf("Try 'ft_ls --halp meh' for more information.\n");\
 
-#define INVALID_FILE(x) ft_printf("ls: cannot access '%s': No such file or directory\n", x)
+#define INVALID_FILE(x) ft_printf("ft_ls: cannot access '%s': No such file or directory\n", x)
+#define NO_FOLDER_ACCESS(x) ft_printf("ft_ls: cannot open directory '%s': Permission denied\n", x);
 
 #define OPT_L(x) (x->opts[108]) == true ? true : false
 #define OPT_R(x) (x->opts[82]) == true ? true : false
@@ -84,7 +86,8 @@ bool 					preprocessor(t_args *meta, char **argv, int argc);
 int						processor(t_args *meta);
 void					postprocessor(t_args *meta);
 
-char					*get_data(char *path, char *file);
+char					*get_file_data(char *path, char *file);
+bool					get_folder_data(char *path);
 
 
 void					ft_sortbubblechar(t_vhead **head);
