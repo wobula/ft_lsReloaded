@@ -30,12 +30,10 @@ void		recurse(t_vhead *head)
 DIR 		*get_directory_pointer(char *path)
 {
 	DIR *dir;
-	int err;
 
 	if (!(dir = opendir(path)))
 	{
-		err = errno;
-		if (err == EACCES)
+		if (errno == EACCES)
 			NO_FOLDER_ACCESS(path);
 		return (NULL);
 	}

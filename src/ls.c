@@ -12,6 +12,12 @@
 
 #include "../includes/ft_ls.h"
 
+//Preprocessor: parses arguments from options; validates both.
+
+//Processor: Prints file info.  Prints folders.
+
+//Postprocessor: frees all allocated memory.
+
 int 		main(int argc, char **argv)
 {
 	t_args 		meta;
