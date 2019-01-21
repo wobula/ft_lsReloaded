@@ -41,44 +41,12 @@ typedef struct s_max_pad	t_max_pad;
 
 struct 					s_args 
 {
-	int 				argc;
 	int					opt_count;
 	int					arg_count;
-	char 				**argv;
 	char				**args;
 	t_vhead				*sorted_files;
 	t_vhead				*sorted_folders;
 	bool				opts[127];
-};
-
-struct 					s_file
-{
-	char				protection[11];
-	char				*full_path;
-	char				*owner;
-	char				*group;
-	char				*last_mod_eng;
-	uid_t				user_id;
-	gid_t				group_id;
-	long long			size;
-	long				hlinks;
-	time_t				last_modified;
-};
-
-struct		 			s_file_pad
-{
-	size_t 				user_pad;
-	size_t 				group_pad;
-	size_t 				file_size_pad;
-	size_t  			digit_count;
-};
-
-struct 					s_max_pad
-{
-	size_t				user_pad;
-	size_t				group_pad;
-	size_t				file_size_length;
-	size_t				digit_count;
 };
 
 bool 					preprocessor(t_args *meta, char **argv, int argc);
