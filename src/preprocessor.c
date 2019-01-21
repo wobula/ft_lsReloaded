@@ -12,10 +12,9 @@
 
 #include "../includes/ft_ls.h"
 
-static void		extract_opt(t_args *meta, char *arg)
+static void	extract_opt(t_args *meta, char *arg)
 {
 	int x;
-
 
 	x = 0;
 	while (arg[++x] != '\0')
@@ -24,22 +23,25 @@ static void		extract_opt(t_args *meta, char *arg)
 	}
 }
 
-static void 	handler_options(t_args *meta, char **argv, int argc)
+static bool get_opts(t_args *meta)
 {
 	int x;
 
 	x = 0;
-	while (++x < argc)
+	while (++x < meta->argc)
 	{
-		if (argv[x][0] == '-')
+		if (meta->argv[x][0] == '\0')
+			return (false);
+		if (meta->argv[x][0] == '-')
 		{
 			meta->opt_count++;
-			extract_opt(meta, argv[x]);
+			extract_opt(meta, meta->argv[x]);
 		}
 	}
+	return (true);
 }
 
-static bool		validate_opts(t_args *meta)
+static bool	validate_opts(t_args *meta)
 {
 	int x;
 
@@ -58,41 +60,37 @@ static bool		validate_opts(t_args *meta)
 	return (true);
 }
 
-static void		extract_args(t_args *meta, char **argv, int argc)
+static bool	extract_args(t_args *meta)
 {
 	int x;
 	int curr;
 
 	x = 0;
 	curr = 0;
-	while (++x < argc)
+	while (++x < meta->argc)
 	{
-		if (argv[x][0] != '-')
+		if (meta->argv[x][0] == '\0')
+			return (false);
+		if (meta->argv[x][0] != '-')
 		{
-			meta->args[curr] = argv[x];
+			meta->args[curr] = meta->argv[x];
 			curr++;
 		}
 	}
+	return (true);
 }
 
-static void		handler_args(t_args *meta, int argc)
+static bool	point_args(t_args *meta)
 {
-	meta->arg_count = argc - meta->opt_count - 1;
+	meta->arg_count = meta->argc - meta->opt_count - 1;
 	meta->args = (char**)ft_vhmalloc(sizeof(char*) * (meta->arg_count + 1), 0);
+	if (!meta->args)
+		return (false);
 	meta->args[meta->arg_count] = 0;
+	return (true);
 }
 
-static void 	preprocessor_constructor(t_args *meta, char **argv, int argc)
-{
-	meta->arg_count = 0;
-	meta->args = NULL;
-	meta->opt_count = 0;
-	meta->sorted_files = NULL;
-	meta->sorted_folders = NULL;
-	ft_bzero(meta->opts, 127);
-}
-
-static bool		validate_args(t_args *meta)
+static bool	validate_args(t_args *meta)
 {
 	int 		x;
 	struct stat sb;
@@ -109,15 +107,37 @@ static bool		validate_args(t_args *meta)
 	return (true);
 }
 
-bool 			preprocessor(t_args *meta, char **argv, int argc)
+typedef bool (*pre)(t_args *);
+
+void		preprocessor_constructor(t_args *meta, pre ptr[], char **argv, int argc)
 {
-	preprocessor_constructor(meta, argv, argc);
-	handler_options(meta, argv, argc);
-	if (!validate_opts(meta))
-		return (false);
-	handler_args(meta, argc);
-	extract_args(meta, argv, argc);
-	if (!validate_args(meta))
-		return (false);
+	meta->argv = argv;
+	meta->argc = argc;
+	meta->arg_count = 0;
+	meta->opt_count = 0;
+	meta->sorted_files = NULL;
+	meta->sorted_folders = NULL;
+	ft_bzero(meta->opts, 127);
+	ptr[0] = &get_opts;
+	ptr[1] = &validate_opts;
+	ptr[2] = &point_args;
+	ptr[3] = &extract_args;
+	ptr[4] = &validate_args; 
+}
+
+bool 		preprocessor(t_args *meta, char **argv, int argc)
+{
+	pre 	function[5];
+	int 	x;
+
+	x = -1;
+	preprocessor_constructor(meta, function, argv, argc);
+	while (++x < 5)
+	{
+		if (function[x](meta) == false)
+		{
+			return (false);
+		}
+	}
 	return (true);
 }

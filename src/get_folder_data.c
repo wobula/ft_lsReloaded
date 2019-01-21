@@ -117,7 +117,7 @@ void		evaluate_file(t_padding *info, char *path, char *filename)
 	int 		x;
 	long long	size;
 	long		links;
-	char *full_path;
+	char 		*full_path;
 
 	x = 0;
 	full_path = construct_path(path, filename);
@@ -149,17 +149,31 @@ void		evaluate_file(t_padding *info, char *path, char *filename)
 	}
 }
 
+void		padding_constructor(t_padding *info)
+{
+	info->file_size = 0;
+	info->owner = 0;
+	info->group = 0;
+	info->links = 0;
+}
+
 void		get_padding_info(t_vhead *head, t_padding *info, char *path)
 {
 	t_vlist *tmp;
 
 	tmp = head->first;
 	ft_printf("Inside get padding info\n");
+	padding_constructor(info);
 	while (tmp)
 	{
 		evaluate_file(info, path, tmp->content);
 		tmp = tmp->next;
 	}
+	ft_printf("Padding results:\n");
+	ft_printf("largest file size: %d\n", info->file_size);
+	ft_printf("largest owner: %d\n", info->owner);
+	ft_printf("largest group: %d\n", info->group);
+	ft_printf("largest links: %d\n", info->links);
 }
 
 bool		get_folder_data(t_args *meta, char *path)
@@ -175,7 +189,7 @@ bool		get_folder_data(t_args *meta, char *path)
 	if ((head = build_directory_structure(dir, path))->first == NULL)
 		return (false);
 	ft_sortbubblechar(&head);
-	//get_padding_info(head, &info, path);
+	get_padding_info(head, &info, path);
 	print_folder_contents(meta, head, path);
 	write(1, "\n", 1);
 	closedir(dir);

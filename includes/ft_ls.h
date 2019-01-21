@@ -40,7 +40,9 @@ struct 					s_args
 {
 	int					opt_count;
 	int					arg_count;
+	int 				argc;
 	char				**args;
+	char				**argv;
 	t_vhead				*sorted_files;
 	t_vhead				*sorted_folders;
 	bool				opts[127];
