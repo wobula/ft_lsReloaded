@@ -96,10 +96,76 @@ void		print_folder_contents(t_args *meta, t_vhead *head, char *path)
 	}
 }
 
+typedef struct s_ownerinfo
+{
+	struct passwd 	*pwd;
+	struct group	*gwd;
+}				t_ownerinfo;
+
+/*
+	data.pwd = getpwuid(sb->st_uid);
+	data.gwd = getgrgid(sb->st_gid);
+	ft_printf("%s ", data.pwd->pw_name);
+	ft_printf("%s ", data.gwd->gr_name);
+*/
+
+void		evaluate_file(t_padding *info, char *path, char *filename)
+{
+	struct stat sb;
+	t_ownerinfo data;
+	int 		x;
+	long long	size;
+	long		links;
+	char *full_path;
+
+	x = 0;
+	full_path = construct_path(path, filename);
+	ft_printf("Inside evaluate_file: %s\n", filename);
+	lstat(filename, &sb);
+	if ((x = ft_strlen(filename) > info->file_name))
+		info->file_name = x;
+	data.pwd = getpwuid(sb.st_uid);
+	data.gwd = getgrgid(sb.st_gid);
+	if ((x = ft_strlen(data.pwd->pw_name)) > info->owner)
+		info->owner = x;
+	if ((x = ft_strlen(data.gwd->gr_name)) > info->group)
+		info->group = x;
+	size = (long long)sb.st_size;
+	x = 0;
+	while (size > 0)
+	{
+		size = size / 10;
+		x++;
+	}
+	if (x > info->file_size)
+		info->file_size = x;
+	links = (long)sb.st_nlink;
+	x = 0;
+	while (links > 0)
+	{
+		links = links / 10;
+		x++;
+	}
+}
+
+void		get_padding_info(t_vhead *head, t_padding *info, char *path)
+{
+	t_vlist *tmp;
+
+	tmp = head->first;
+	ft_printf("Inside get padding info\n");
+	while (tmp)
+	{
+		evaluate_file(info, path, tmp->content);
+		tmp = tmp->next;
+	}
+}
+
 bool		get_folder_data(t_args *meta, char *path)
 {
 	DIR 			*dir;
 	t_vhead			*head;
+	t_padding		info;
 
 	head = NULL;
 	ft_printf("%s:\n", path);
@@ -108,6 +174,7 @@ bool		get_folder_data(t_args *meta, char *path)
 	if ((head = build_directory_structure(dir, path))->first == NULL)
 		return (false);
 	ft_sortbubblechar(&head);
+	get_padding_info(head, &info, path);
 	print_folder_contents(meta, head, path);
 	write(1, "\n", 1);
 	closedir(dir);

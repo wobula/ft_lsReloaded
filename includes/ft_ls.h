@@ -34,6 +34,7 @@
 #define FILE_OR_FOLDER(x) (x[0]) == 'd' ? true : false
 
 typedef struct s_args 		t_args;
+typedef struct s_padding	t_padding;
 
 struct 					s_args 
 {
@@ -43,6 +44,15 @@ struct 					s_args
 	t_vhead				*sorted_files;
 	t_vhead				*sorted_folders;
 	bool				opts[127];
+};
+
+struct 					s_padding
+{
+	int 				file_name;
+	int 				owner;
+	int 				group;
+	int 				file_size;
+	int 				links;
 };
 
 bool 					preprocessor(t_args *meta, char **argv, int argc);
