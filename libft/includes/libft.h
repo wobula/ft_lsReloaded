@@ -193,6 +193,7 @@ void				ft_vheadaddend(t_vhead **head, t_vlist *new);
 void				ft_vheadaddpoint(t_vhead **head, void *ptr, size_t channel);
 t_vhead				*ft_vheadnew(size_t channel);
 
+t_vlist				*ft_vlstmap(t_vlist *lst, t_vlist *(*f)(t_vlist *));
 t_vlist				*ft_vlstnew(void const *content, size_t content_size, size_t channel);
 t_vlist				*ft_vlstpoint(void *content, size_t channel);
 

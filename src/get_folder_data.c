@@ -15,7 +15,7 @@
 
 bool		recurse(t_args *meta, t_vhead *head)
 {
-	t_vlist *tmp;
+	t_vlist 	*tmp;
 	struct stat sb;
 
 	if (!head || !head->first)
@@ -35,12 +35,11 @@ bool		recurse(t_args *meta, t_vhead *head)
 DIR 		*get_directory_pointer(char *path)
 {
 	DIR *dir;
-	int err;
 
 	if (!(dir = opendir(path)))
 	{
-		err = errno;
 		ft_printf("ft_ls: cannot open directory '%s': %s\n", path, strerror(errno));
+		closedir(dir);
 		return (NULL);
 	}
 	return (dir);
@@ -59,6 +58,8 @@ t_vhead		*build_directory_structure(DIR *dir, char *path)
 			continue;
 		ft_vheadaddpoint(&head, ft_vhstrdup(dent->d_name, 2), 2);
 	}
+	if (head->first == NULL)
+		closedir(dir);
 	return (head);
 }
 
@@ -120,9 +121,9 @@ void		evaluate_file(t_padding *info, char *path, char *filename)
 
 	x = 0;
 	full_path = construct_path(path, filename);
-	ft_printf("Inside evaluate_file: %s\n", filename);
-	lstat(filename, &sb);
-	if ((x = ft_strlen(filename) > info->file_name))
+	ft_printf("Inside evaluate_file: %s\n", full_path);
+	lstat(full_path, &sb);
+	if ((x = ft_strlen(full_path) > info->file_name))
 		info->file_name = x;
 	data.pwd = getpwuid(sb.st_uid);
 	data.gwd = getgrgid(sb.st_gid);
@@ -174,7 +175,7 @@ bool		get_folder_data(t_args *meta, char *path)
 	if ((head = build_directory_structure(dir, path))->first == NULL)
 		return (false);
 	ft_sortbubblechar(&head);
-	get_padding_info(head, &info, path);
+	//get_padding_info(head, &info, path);
 	print_folder_contents(meta, head, path);
 	write(1, "\n", 1);
 	closedir(dir);

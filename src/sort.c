@@ -12,12 +12,12 @@
 
 #include "../includes/ft_ls.h"
 
-int 	order_check(t_vlist *first, t_vlist *second)
+static int 	order_check(t_vlist *first, t_vlist *second)
 {
 	return (ft_strcmp(first->content, second->content));
 }
 
-t_vlist	*swap(t_vlist *first, t_vlist *second)
+static t_vlist	*swap(t_vlist *first, t_vlist *second)
 {
 	t_vlist *swap;
 
@@ -31,46 +31,42 @@ t_vlist	*swap(t_vlist *first, t_vlist *second)
 	return (swap);
 }
 
-bool	body_check(t_vhead **head)
+static t_vlist	*compare(t_vlist *first, bool *sorted)
 {
-	t_vlist *tmp;
-	bool	sorted;
-
-	sorted = true;
-	tmp = (*head)->first->next;
-	while (tmp->next)
+	if (order_check(first, first->next) < 0)
 	{
-		if (order_check(tmp, tmp->next) > 0)
-		{
-			sorted = false;
-			tmp = swap(tmp, tmp->next);
-		}
-		tmp = tmp->next;
+		*sorted = false;
+		first = swap(first, first->next);
 	}
-	return (sorted);
+	return (first);
 }
 
-void	head_check(t_vhead **head)
+static t_vlist	*bubblemap(t_vlist *lst, t_vlist *(*f)(t_vlist *, bool *), bool *sorted)
 {
-	t_vlist *tmp;
+	t_vlist *blah;
 
-	tmp = (*head)->first;
-	if (order_check(tmp, tmp->next) > 0)
+	if (lst->next)
 	{
-		(*head)->first = swap(tmp, tmp->next);
+		blah = f(lst, sorted);
+		blah->next = bubblemap(blah->next, f, sorted);
+		return (blah);
 	}
+	return (lst);
 }
 
-void	ft_sortbubblechar(t_vhead **head)
+void	ft_sortbubblechar_alt(t_vhead **head)
 {
 	bool sorted;
+	t_vlist *(*f)(t_vlist *, bool *);
+	f = &compare;
 
-	if ((*head)->first->next == NULL)
-		return;
 	sorted = false;
+	int x = 0;
 	while (sorted == false)
 	{
-		head_check(head);
-		sorted = body_check(head);
+		sorted = true;
+		(*head)->first = bubblemap((*head)->first, f, &sorted);
+		x++;
+		ft_printf("iteration #:%d\n\n", x);
 	}
 }

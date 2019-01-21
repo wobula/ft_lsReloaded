@@ -25,6 +25,7 @@ SRC = ./src/ls.c \
 	  ./src/postprocessor.c \
 	  ./src/bubblesort.c \
 	  ./src/print.c \
+	  ./src/sort.c \
 
 COMPILE = $(GCC) $(FLAGS) $(SRC) $(HEADERS) $(LIBFTHEAD) $(LIBFT) -shared -o $(NAME) -g
 TEST_MAIN = $(GCC) $(FLAGS) $(HEADERS) $(LINK) $(LIBFT) $(SRC) -o $(NAME) ./libft/*.o -g

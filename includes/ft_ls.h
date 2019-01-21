@@ -63,3 +63,5 @@ bool					get_folder_data(t_args *meta, char *path);
 bool					print_selector(t_args *meta, char *full_path, char *file);
 void					ft_sortbubblechar(t_vhead **head);
 char					*construct_path(char *path, char *file);
+
+void					ft_sortbubblechar_alt(t_vhead **head);
