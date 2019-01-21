@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_data.c                                         :+:      :+:    :+:   */
+/*   print.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rschramm <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "../includes/ft_ls.h"
 
-void	permissions(char *buff, mode_t st_mode)
+void	permissions(char buff[], mode_t st_mode)
 {
 	int bits;
 
@@ -51,36 +51,24 @@ void 	print_data(struct stat *sb, char *perms, char *file)
 	ft_printf("%s\n", file);
 }
 
-char	*construct_path(char *path, char *file)
+void	print_selector(t_args *meta, char *full_path, char *file)
 {
-	char *full_path;
+	char		perms[11];
+	char		*lstat_path;
+	struct stat sb;
 
-	if (!path)
-		return (file);
-	if (ft_strcmp(path, "/") == 0)
+	lstat_path = (full_path == NULL) ? file : full_path;
+	if (lstat(lstat_path, &sb) == -1)
 	{
-		full_path = ft_vhstrjoin(path, file, 2);
+		return;
+	}
+	if (OPT_L(meta) == true)
+	{
+		permissions(perms, sb.st_mode);
+		print_data(&sb, perms, file);
 	}
 	else
 	{
-		full_path = ft_vhstrjoin(path, "/", 2);
-		full_path = ft_vhstrjoin(full_path, file, 2);
+		ft_printf("%s\n", file);
 	}
-	return (full_path);
-}
-
-char	*get_file_data(char *path, char *file)
-{
-	char		perms[11];
-	char		*full_path;
-	struct stat sb;
-
-	full_path = construct_path(path, file);
-	if (lstat(full_path, &sb) == -1)
-	{
-		return (NULL);
-	}
-	permissions((char*)&perms, sb.st_mode);
-	print_data(&sb, (char*)&perms, file);
-	return ((perms[0] == 'd') ? full_path : NULL);
 }

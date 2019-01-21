@@ -12,26 +12,29 @@
 
 #include "../includes/ft_ls.h"
 
-void 	process_args(t_vlist *start, bool folder)
+void 	process_args(t_args *meta, t_vhead *head, bool folder)
 {
 	t_vlist *tmp;
 
-	tmp = start;
+	if (!head || !head->first)
+		return;
+	tmp = head->first;
 	while (tmp)
 	{
 		if (folder == false)
-			get_file_data(NULL, tmp->content);
-		else
-			get_folder_data(tmp->content);
+			print_selector(meta, NULL, tmp->content);
+		/*else
+			get_folder_data(tmp->content);*/
 		tmp = tmp->next;
 	}
 }
 
-void 	add_arg(t_vhead **head, char *arg)
+void 	add_arg(t_vhead **head, char *arg, bool folder)
 {
 	t_vlist *new;
 
 	new = ft_vlstpoint(arg, 2);
+	new->safe = folder;
 	if ((*head) == NULL)
 	{
 		(*head) = ft_vheadnew(2);
@@ -42,19 +45,20 @@ void 	add_arg(t_vhead **head, char *arg)
 void 	sort_files_from_folders(t_args *meta)
 {
 	struct stat sb;
-	int x;
+	bool		folder;
+	int 		x;
 
 	x = -1;
 	while (++x < meta->arg_count)
 	{
 		lstat(meta->args[x], &sb);
-		if (S_ISDIR(sb.st_mode) == true)
+		if ((folder = S_ISDIR(sb.st_mode)) == true)
 		{
-			add_arg(&meta->sorted_folders, meta->args[x]);
+			add_arg(&meta->sorted_folders, meta->args[x], folder);
 		}
 		else
 		{
-			add_arg(&meta->sorted_files, meta->args[x]);
+			add_arg(&meta->sorted_files, meta->args[x], folder);
 		}
 	}
 }
@@ -73,17 +77,11 @@ int 	processor(t_args *meta)
 	if (meta->arg_count > 0)
 	{
 		sort_args(meta);
-		if (meta->sorted_files != NULL)
-		{
-			process_args(meta->sorted_files->first, false);
-		}
-		if (meta->sorted_folders != NULL)
-		{
-			process_args(meta->sorted_folders->first, true);
-		}
+		process_args(meta, meta->sorted_files, false);
+		//process_args(meta, meta->sorted_folders, true);
 	}
 	else
 	{
-		get_folder_data(".");
+		//get_folder_data(".");
 	}
 }

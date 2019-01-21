@@ -53,8 +53,11 @@ bool 					preprocessor(t_args *meta, char **argv, int argc);
 int						processor(t_args *meta);
 void					postprocessor();
 
-char					*get_file_data(char *path, char *file);
+//char					*get_file_data(char *path, char *file);
 bool					get_folder_data(char *path);
 
-
 void					ft_sortbubblechar(t_vhead **head);
+
+char					*construct_path(char *path, char *file);
+
+void					print_selector(t_args *meta, char *full_path, char *file);

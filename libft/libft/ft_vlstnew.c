@@ -21,6 +21,7 @@ t_vlist	*ft_vlstnew(void const *content, size_t content_size, size_t channel)
 		return (NULL);
 	new->next = NULL;
 	new->prev = NULL;
+	new->safe = false;
 	if (content != NULL && content_size != 0)
 	{
 		new->content = ft_vhmemalloc(content_size, channel);

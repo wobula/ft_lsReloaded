@@ -35,6 +35,7 @@ typedef struct				s_list
 
 typedef struct				s_vlist
 {
+	bool					safe;
 	void					*content;
 	size_t					content_size;
 	struct s_vlist			*next;

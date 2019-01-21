@@ -12,6 +12,24 @@
 
 #include "../includes/ft_ls.h"
 
+/*char	*construct_path(char *path, char *file)
+{
+	char *full_path;
+
+	if (!path)
+		return (file);
+	if (ft_strcmp(path, "/") == 0)
+	{
+		full_path = ft_vhstrjoin(path, file, 2);
+	}
+	else
+	{
+		full_path = ft_vhstrjoin(path, "/", 2);
+		full_path = ft_vhstrjoin(full_path, file, 2);
+	}
+	return (full_path);
+}
+
 void		recurse(t_vhead *head)
 {
 	t_vlist *tmp;
@@ -58,7 +76,7 @@ t_vhead		*build_directory_structure(DIR *dir, char *path)
 	return (head);
 }
 
-t_vhead		*print_directory_contents(t_vhead *head, char *path)
+t_vhead		*print_directory_contents(t_args *meta, t_vhead *head, char *path)
 {
 	t_vhead *recursion;
 	t_vlist *tmp;
@@ -71,7 +89,7 @@ t_vhead		*print_directory_contents(t_vhead *head, char *path)
 	tmp = head->first;
 	while (tmp)
 	{
-		if ((folder = get_file_data(path, tmp->content)) != NULL)
+		print_selector(path, tmp->content)) != NULL)
 		{
 			ft_vheadaddpoint(&recursion, folder, 2);
 		}
@@ -98,4 +116,4 @@ bool		get_folder_data(char *path)
 	closedir(dir);
 	recurse(recursion);
 	return (true);
-}
+}*/
