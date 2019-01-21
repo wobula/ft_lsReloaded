@@ -22,9 +22,9 @@ void 	process_args(t_args *meta, t_vhead *head, bool folder)
 	while (tmp)
 	{
 		if (folder == false)
-			print_selector(meta, NULL, tmp->content);
-		/*else
-			get_folder_data(tmp->content);*/
+			print_selector(meta, tmp->content, tmp->content);
+		else
+			get_folder_data(meta, tmp->content);
 		tmp = tmp->next;
 	}
 }
@@ -78,7 +78,7 @@ int 	processor(t_args *meta)
 	{
 		sort_args(meta);
 		process_args(meta, meta->sorted_files, false);
-		//process_args(meta, meta->sorted_folders, true);
+		process_args(meta, meta->sorted_folders, true);
 	}
 	else
 	{

@@ -54,11 +54,9 @@ void 	print_data(struct stat *sb, char *perms, char *file)
 void	print_selector(t_args *meta, char *full_path, char *file)
 {
 	char		perms[11];
-	char		*lstat_path;
 	struct stat sb;
 
-	lstat_path = (full_path == NULL) ? file : full_path;
-	if (lstat(lstat_path, &sb) == -1)
+	if (lstat(full_path, &sb) == -1)
 	{
 		return;
 	}
