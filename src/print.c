@@ -51,14 +51,14 @@ void 	print_data(struct stat *sb, char *perms, char *file)
 	ft_printf("%s\n", file);
 }
 
-void	print_selector(t_args *meta, char *full_path, char *file)
+bool	print_selector(t_args *meta, char *full_path, char *file)
 {
 	char		perms[11];
 	struct stat sb;
 
 	if (lstat(full_path, &sb) == -1)
 	{
-		return;
+		return (false);
 	}
 	if (OPT_L(meta) == true)
 	{
@@ -69,4 +69,5 @@ void	print_selector(t_args *meta, char *full_path, char *file)
 	{
 		ft_printf("%s\n", file);
 	}
+	return (S_ISDIR(sb.st_mode));
 }

@@ -82,6 +82,6 @@ int 	processor(t_args *meta)
 	}
 	else
 	{
-		//get_folder_data(".");
+		get_folder_data(meta, ".");
 	}
 }

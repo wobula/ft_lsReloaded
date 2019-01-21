@@ -11,44 +11,26 @@
 /* ************************************************************************** */
 
 #include "../includes/ft_ls.h"
+#include <stdlib.h>
 
-/*
-void		recurse(t_vhead *head)
+bool		recurse(t_args *meta, t_vhead *head)
 {
 	t_vlist *tmp;
+	struct stat sb;
 
 	if (!head || !head->first)
-		return;
-	ft_sortbubblechar(&head);
+		return (true);
 	tmp = head->first;
 	while (tmp)
 	{
-		get_folder_data(tmp->content);
-		tmp = tmp->next;
-	}
-}*/
-
-/*t_vhead		*print_directory_contents(t_args *meta, t_vhead *head, char *path)
-{
-	t_vhead *recursion;
-	t_vlist *tmp;
-	char	*folder;
-
-
-	if (!head)
-		return (NULL);
-	recursion = ft_vheadnew(2);
-	tmp = head->first;
-	while (tmp)
-	{
-		print_selector(path, tmp->content)) != NULL)
+		if (tmp->safe == true)
 		{
-			ft_vheadaddpoint(&recursion, folder, 2);
+			get_folder_data(meta, tmp->content);
 		}
 		tmp = tmp->next;
 	}
-	return (recursion);
-}*/
+	return (true);
+}
 
 DIR 		*get_directory_pointer(char *path)
 {
@@ -58,8 +40,7 @@ DIR 		*get_directory_pointer(char *path)
 	if (!(dir = opendir(path)))
 	{
 		err = errno;
-		if (err == EACCES)
-			NO_FOLDER_ACCESS(path);
+		ft_printf("ft_ls: cannot open directory '%s': %s\n", path, strerror(errno));
 		return (NULL);
 	}
 	return (dir);
@@ -76,14 +57,12 @@ t_vhead		*build_directory_structure(DIR *dir, char *path)
 	{
 		if (dent->d_name[0] == '.')
 			continue;
-		ft_vheadaddpoint(&head, dent->d_name, 2);
+		ft_vheadaddpoint(&head, ft_vhstrdup(dent->d_name, 2), 2);
 	}
-	if (head->first == NULL)
-		ft_printf("No first\n");
 	return (head);
 }
 
-char	*construct_path(char *path, char *file)
+char		*construct_path(char *path, char *file)
 {
 	char *full_path;
 
@@ -110,13 +89,14 @@ void		print_folder_contents(t_args *meta, t_vhead *head, char *path)
 	while (tmp)
 	{
 		full_path = construct_path(path, tmp->content);
-		print_selector(meta, full_path, tmp->content);
-		path = NULL;
+		tmp->safe = print_selector(meta, full_path, tmp->content);
+		tmp->content = full_path;
+		full_path = NULL;
 		tmp = tmp->next;
 	}
 }
 
-void		get_folder_data(t_args *meta, char *path)
+bool		get_folder_data(t_args *meta, char *path)
 {
 	DIR 			*dir;
 	t_vhead			*head;
@@ -124,15 +104,14 @@ void		get_folder_data(t_args *meta, char *path)
 	head = NULL;
 	ft_printf("%s:\n", path);
 	if (!(dir = get_directory_pointer(path)))
-		return;
+		return (false);
 	if ((head = build_directory_structure(dir, path))->first == NULL)
-		return;
+		return (false);
 	ft_sortbubblechar(&head);
 	print_folder_contents(meta, head, path);
-/*
-	recursion = print_directory_contents(head, path);
 	write(1, "\n", 1);
-	closedir(dir);*/
-	//recurse(recursion);
-	return;
+	closedir(dir);
+	if (OPT_R(meta) != false)
+		return (recurse(meta, head));
+	return (true);
 }
