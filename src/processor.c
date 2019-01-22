@@ -12,24 +12,31 @@
 
 #include "../includes/ft_ls.h"
 
-void 	process_args(t_args *meta, t_vhead *head, bool folder)
+static void	process_files(t_args *meta)
 {
 	t_vlist *tmp;
 
-	if (!head || !head->first)
-		return;
-	tmp = head->first;
+	tmp = meta->sorted_files->first;
 	while (tmp)
 	{
-		if (folder == false)
-			print_selector(meta, tmp->content, tmp->content);
-		else
-			get_folder_data(meta, tmp->content);
+		print_selector(meta, tmp->content, tmp->content);
 		tmp = tmp->next;
 	}
 }
 
-void 	add_arg(t_vhead **head, char *arg, bool folder)
+static void	process_folders(t_args *meta)
+{
+	t_vlist *tmp;
+
+	tmp = meta->sorted_folders->first;
+	while (tmp)
+	{
+		get_folder_data(meta, tmp->content);
+		tmp = tmp->next;
+	}
+}
+
+static void add_arg(t_vhead **head, char *arg, bool folder)
 {
 	t_vlist *new;
 
@@ -42,7 +49,7 @@ void 	add_arg(t_vhead **head, char *arg, bool folder)
 	ft_vheadaddend(head, new);
 }
 
-void 	sort_files_from_folders(t_args *meta)
+static void	sort_files_from_folders(t_args *meta)
 {
 	struct stat sb;
 	bool		folder;
@@ -53,35 +60,58 @@ void 	sort_files_from_folders(t_args *meta)
 	{
 		lstat(meta->args[x], &sb);
 		if ((folder = S_ISDIR(sb.st_mode)) == true)
-		{
 			add_arg(&meta->sorted_folders, meta->args[x], folder);
-		}
 		else
-		{
 			add_arg(&meta->sorted_files, meta->args[x], folder);
-		}
 	}
 }
 
-void 	sort_args(t_args *meta)
+static void	sort_folders(t_args *meta)
 {
-	sort_files_from_folders(meta);
-	if (meta->sorted_files != NULL)
-		ft_sortbubblechar(&meta->sorted_files);
-	if (meta->sorted_folders != NULL)
-		ft_sortbubblechar(&meta->sorted_folders);
+	ft_sortbubblechar(&meta->sorted_folders);
 }
 
-int 	processor(t_args *meta)
+static void	sort_files(t_args *meta)
 {
-	if (meta->arg_count > 0)
+	ft_sortbubblechar(&meta->sorted_files);
+}
+
+static void	no_args(t_args *meta)
+{
+	get_folder_data(meta, ".");
+}
+
+typedef void (*process)(t_args*);
+
+static void	processor_constructor(t_args *meta, process function[])
+{
+	int x;
+
+	x = -1;
+	ft_bzerotype(function, 6, sizeof(process*));
+	if (meta->arg_count == 0)
 	{
-		sort_args(meta);
-		process_args(meta, meta->sorted_files, false);
-		process_args(meta, meta->sorted_folders, true);
+		function[++x] = &no_args;
+		return;
 	}
-	else
+	function[++x] = &sort_files_from_folders;
+	function[++x] = (meta->files > 0) ? &sort_files : NULL;
+	function[++x] = (meta->files > 0) ? &process_files : NULL;
+	function[++x] = (meta->folders > 0) ? &sort_folders : NULL;
+	function[++x] = (meta->folders > 0) ? &process_folders : NULL;
+}
+
+int 		processor(t_args *meta)
+{
+	process function[6];
+	int 	x;
+
+	processor_constructor(meta, function);
+	x = -1;
+	while (++x < 6)
 	{
-		get_folder_data(meta, ".");
+		if (function[x] != NULL)
+			function[x](meta);
 	}
+	return (0);
 }

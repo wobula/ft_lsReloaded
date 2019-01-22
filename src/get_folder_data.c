@@ -169,11 +169,11 @@ void		get_padding_info(t_vhead *head, t_padding *info, char *path)
 		evaluate_file(info, path, tmp->content);
 		tmp = tmp->next;
 	}
-	ft_printf("Padding results:\n");
-	ft_printf("largest file size: %d\n", info->file_size);
-	ft_printf("largest owner: %d\n", info->owner);
-	ft_printf("largest group: %d\n", info->group);
-	ft_printf("largest links: %d\n", info->links);
+	//ft_printf("Padding results:\n");
+	//ft_printf("largest file size: %d\n", info->file_size);
+	//ft_printf("largest owner: %d\n", info->owner);
+	//ft_printf("largest group: %d\n", info->group);
+	//ft_printf("largest links: %d\n", info->links);
 }
 
 bool		get_folder_data(t_args *meta, char *path)

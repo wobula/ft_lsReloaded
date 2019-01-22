@@ -38,6 +38,8 @@ typedef struct s_padding	t_padding;
 
 struct 					s_args 
 {
+	size_t				files;
+	size_t				folders;
 	int					opt_count;
 	int					arg_count;
 	int 				argc;

@@ -13,6 +13,7 @@
 NAME = libftprintf.a
 
 LIBFT = libft/ft_bzero.c \
+	   libft/ft_bzerotype.c \
 	   libft/ft_atoi.c \
 	   libft/ft_itoa.c \
 	   libft/ft_isalpha.c \

@@ -107,10 +107,29 @@ static bool	validate_args(t_args *meta)
 	return (true);
 }
 
+static 	bool count_files_folders(t_args *meta)
+{
+	int 		x;
+	struct stat sb;
+
+	x = -1;
+	while (++x < meta->arg_count)
+	{
+		lstat(meta->args[x], &sb);
+		if (S_ISDIR(sb.st_mode) == true)
+			meta->folders++;
+		else
+			meta->files++;
+	}
+	return (true);
+}
+
 typedef bool (*pre)(t_args *);
 
 void		preprocessor_constructor(t_args *meta, pre ptr[], char **argv, int argc)
 {
+	meta->files = 0;
+	meta->folders = 0;
 	meta->argv = argv;
 	meta->argc = argc;
 	meta->arg_count = 0;
@@ -122,17 +141,18 @@ void		preprocessor_constructor(t_args *meta, pre ptr[], char **argv, int argc)
 	ptr[1] = &validate_opts;
 	ptr[2] = &point_args;
 	ptr[3] = &extract_args;
-	ptr[4] = &validate_args; 
+	ptr[4] = &validate_args;
+	ptr[5] = &count_files_folders;
 }
 
 bool 		preprocessor(t_args *meta, char **argv, int argc)
 {
-	pre 	function[5];
+	pre 	function[6];
 	int 	x;
 
 	x = -1;
 	preprocessor_constructor(meta, function, argv, argc);
-	while (++x < 5)
+	while (++x < 6)
 	{
 		if (function[x](meta) == false)
 		{

@@ -99,6 +99,7 @@ int					ft_dprintf(int fd, const char *format, ...);
 int					get_next_line(const int fd, char **line);
 
 void				ft_bzero(void *s, size_t n);
+void				ft_bzerotype(void *s, size_t n, size_t type_size);
 int					ft_atoi(const char *str);
 int					ft_isalnum(int c);
 int					ft_isalpha(int c);
