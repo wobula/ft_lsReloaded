@@ -111,6 +111,7 @@ typedef struct s_ownerinfo
 	ft_printf("%s ", data.gwd->gr_name);
 */
 
+// ToDO: FIX THIS BULLSHIT
 void		evaluate_file(t_padding *info, char *path, char *filename)
 {
 	struct stat sb;
