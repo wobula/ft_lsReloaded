@@ -51,7 +51,19 @@ void 	print_data(struct stat *sb, char *perms, char *file)
 	ft_printf("%s\n", file);
 }
 
-bool	print_selector(t_args *meta, char *full_path, char *file)
+bool	print_boring(char *full_path, char *file)
+{
+	struct stat sb;
+
+	if (lstat (full_path, &sb) == -1)
+	{
+		return (false);
+	}
+	ft_printf("%s\n", file);
+	return (S_ISDIR(sb.st_mode));
+}
+
+bool	print_wide(char *full_path, char *file)
 {
 	char		perms[11];
 	struct stat sb;
@@ -60,14 +72,7 @@ bool	print_selector(t_args *meta, char *full_path, char *file)
 	{
 		return (false);
 	}
-	if (OPT_L(meta) == true)
-	{
-		permissions(perms, sb.st_mode);
-		print_data(&sb, perms, file);
-	}
-	else
-	{
-		ft_printf("%s\n", file);
-	}
+	permissions(perms, sb.st_mode);
+	print_data(&sb, perms, file);
 	return (S_ISDIR(sb.st_mode));
 }

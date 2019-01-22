@@ -57,6 +57,7 @@ struct 					s_padding
 	int 				group;
 	int 				file_size;
 	int 				links;
+	long long			blocks;
 };
 
 bool 					preprocessor(t_args *meta, char **argv, int argc);
@@ -64,7 +65,8 @@ int						processor(t_args *meta);
 void					postprocessor();
 
 bool					get_folder_data(t_args *meta, char *path);
-bool					print_selector(t_args *meta, char *full_path, char *file);
+bool					print_wide(char *full_path, char *file);
+bool					print_boring(char *full_path, char *file);
 void					ft_sortbubblechar(t_vhead **head);
 char					*construct_path(char *path, char *file);
 

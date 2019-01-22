@@ -15,11 +15,13 @@
 static void	process_files(t_args *meta)
 {
 	t_vlist *tmp;
+	bool (*print)(char*, char*);
 
+	print = (OPT_L(meta) == true) ? &print_wide : print_boring;
 	tmp = meta->sorted_files->first;
 	while (tmp)
 	{
-		print_selector(meta, tmp->content, tmp->content);
+		print(tmp->content, tmp->content);
 		tmp = tmp->next;
 	}
 }
@@ -87,8 +89,8 @@ static void	processor_constructor(t_args *meta, process function[])
 {
 	int x;
 
-	x = -1;
 	ft_bzerotype(function, 6, sizeof(process*));
+	x = -1;
 	if (meta->arg_count == 0)
 	{
 		function[++x] = &no_args;

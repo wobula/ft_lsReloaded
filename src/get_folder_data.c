@@ -58,8 +58,7 @@ t_vhead		*build_directory_structure(DIR *dir, char *path)
 			continue;
 		ft_vheadaddpoint(&head, ft_vhstrdup(dent->d_name, 2), 2);
 	}
-	if (head->first == NULL)
-		closedir(dir);
+	closedir(dir);
 	return (head);
 }
 
@@ -84,13 +83,15 @@ char		*construct_path(char *path, char *file)
 void		print_folder_contents(t_args *meta, t_vhead *head, char *path)
 {
 	t_vlist *tmp;
+	bool 	(*print)(char *, char *);
 	char	*full_path;
 
+	print = (OPT_L(meta) == true) ? &print_wide : &print_boring;
 	tmp = head->first;
 	while (tmp)
 	{
 		full_path = construct_path(path, tmp->content);
-		tmp->safe = print_selector(meta, full_path, tmp->content);
+		tmp->safe = print(full_path, tmp->content);
 		tmp->content = full_path;
 		full_path = NULL;
 		tmp = tmp->next;
@@ -116,6 +117,7 @@ void		evaluate_file(t_padding *info, char *path, char *filename)
 	t_ownerinfo data;
 	int 		x;
 	long long	size;
+	long long	blocks;
 	long		links;
 	char 		*full_path;
 
@@ -147,6 +149,7 @@ void		evaluate_file(t_padding *info, char *path, char *filename)
 		links = links / 10;
 		x++;
 	}
+	info->blocks += (long long)sb.st_blocks;
 }
 
 void		padding_constructor(t_padding *info)
@@ -162,7 +165,6 @@ void		get_padding_info(t_vhead *head, t_padding *info, char *path)
 	t_vlist *tmp;
 
 	tmp = head->first;
-	ft_printf("Inside get padding info\n");
 	padding_constructor(info);
 	while (tmp)
 	{
@@ -176,24 +178,84 @@ void		get_padding_info(t_vhead *head, t_padding *info, char *path)
 	//ft_printf("largest links: %d\n", info->links);
 }
 
+typedef struct s_folder
+{
+	t_args 		*meta;
+	char		*path;
+	DIR 		*dir;
+	t_vhead 	*head;
+	t_padding 	spacing;
+}				t_folder;
+
+bool		sort_dir(t_folder *data)
+{
+	if (data->head->first != NULL)
+		ft_sortbubblechar(&data->head);
+	return (true);
+}
+
+bool		build_dir(t_folder *data)
+{
+	data->head = build_directory_structure(data->dir, data->path);
+	return (true);
+}
+
+bool		get_dir(t_folder *data)
+{
+	data->dir = get_directory_pointer(data->path);
+	if (data->dir == NULL)
+		return (false);
+	return (true);
+}
+
+bool		print_dir(t_folder *data)
+{
+	print_folder_contents(data->meta, data->head, data->path);
+	return (true);
+}
+
+bool		recurse_dir(t_folder *data)
+{
+	recurse(data->meta, data->head);
+	return (true);
+}
+
+typedef bool (*folder)(t_folder*);
+
+void		folder_constructor(t_args *meta, t_folder *data, folder f[], char *path)
+{
+	data->meta = meta;
+	data->path = path;
+	data->dir = NULL;
+	data->head = NULL;
+	data->spacing.file_size = 0;
+	data->spacing.owner = 0;
+	data->spacing.group = 0;
+	data->spacing.links = 0;
+	f[0] = &get_dir;
+	f[1] = &build_dir;
+	f[2] = &sort_dir;
+	f[3] = (OPT_L(meta)) ? NULL : NULL; //&inspect_dir
+	f[4] = &print_dir;
+	f[5] = (OPT_R(meta)) ? &recurse_dir : NULL;
+	f[6] = NULL;
+}
+
 bool		get_folder_data(t_args *meta, char *path)
 {
-	DIR 			*dir;
-	t_vhead			*head;
-	t_padding		info;
+	t_folder 	data;
+	folder 		function[8];
+	int 		x;
 
-	head = NULL;
-	ft_printf("%s:\n", path);
-	if (!(dir = get_directory_pointer(path)))
-		return (false);
-	if ((head = build_directory_structure(dir, path))->first == NULL)
-		return (false);
-	ft_sortbubblechar(&head);
-	get_padding_info(head, &info, path);
-	print_folder_contents(meta, head, path);
-	write(1, "\n", 1);
-	closedir(dir);
-	if (OPT_R(meta) != false)
-		return (recurse(meta, head));
+	folder_constructor(meta, &data, function, path);
+	x = -1;
+	while (++x < 7)
+	{
+		if (function[x] != NULL)
+		{
+			if (function[x](&data) == false)
+				return (false);
+		}
+	}
 	return (true);
 }
