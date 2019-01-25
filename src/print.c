@@ -51,7 +51,7 @@ void 	print_data(struct stat *sb, char *perms, char *file)
 	ft_printf("%s\n", file);
 }
 
-bool	print_boring(char *full_path, char *file)
+bool	print_boring(t_padding *info, char *full_path, char *file)
 {
 	struct stat sb;
 
@@ -63,7 +63,7 @@ bool	print_boring(char *full_path, char *file)
 	return (S_ISDIR(sb.st_mode));
 }
 
-bool	print_wide(char *full_path, char *file)
+bool	print_wide(t_padding *info, char *full_path, char *file)
 {
 	char		perms[11];
 	struct stat sb;

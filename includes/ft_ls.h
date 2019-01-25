@@ -4,6 +4,7 @@
 #include <grp.h>
 #include <time.h>
 #include <errno.h>
+#include <stdlib.h>
 #include "../libft/includes/libft.h"
 
 #define OPT_CHECK(x)\
@@ -65,9 +66,12 @@ int						processor(t_args *meta);
 void					postprocessor();
 
 bool					get_folder_data(t_args *meta, char *path);
-bool					print_wide(char *full_path, char *file);
-bool					print_boring(char *full_path, char *file);
+bool					print_wide(t_padding *info, char *full_path, char *file);
+bool					print_boring(t_padding *info, char *full_path, char *file);
 void					ft_sortbubblechar(t_vhead **head);
 char					*construct_path(char *path, char *file);
+void					evaluate_file(t_padding *info, char *path, char *filename);
 
 void					ft_sortbubblechar_alt(t_vhead **head);
+
+void					get_padding_info(t_vhead *head, t_padding *info, char *path);

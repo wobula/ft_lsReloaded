@@ -24,6 +24,7 @@ SRC = ./src/ls.c \
 	  ./src/processor.c \
 	  ./src/postprocessor.c \
 	  ./src/bubblesort.c \
+	  ./src/padding.c \
 	  ./src/print.c \
 	  ./src/sort.c \
 

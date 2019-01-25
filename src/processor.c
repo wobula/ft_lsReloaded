@@ -15,13 +15,15 @@
 static void	process_files(t_args *meta)
 {
 	t_vlist *tmp;
-	bool (*print)(char*, char*);
-
+	t_padding info;
+	bool (*print)(t_padding *, char*, char*);
+//get_padding_info(data->head, &data->info, data->path);
+	get_padding_info(meta->sorted_files, &info, NULL);
 	print = (OPT_L(meta) == true) ? &print_wide : print_boring;
 	tmp = meta->sorted_files->first;
 	while (tmp)
 	{
-		print(tmp->content, tmp->content);
+		print(&info, tmp->content, tmp->content);
 		tmp = tmp->next;
 	}
 }
