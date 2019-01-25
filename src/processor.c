@@ -17,7 +17,6 @@ static void	process_files(t_args *meta)
 	t_vlist *tmp;
 	t_padding info;
 	bool (*print)(t_padding *, char*, char*);
-//get_padding_info(data->head, &data->info, data->path);
 	get_padding_info(meta->sorted_files, &info, NULL);
 	print = (OPT_L(meta) == true) ? &print_wide : print_boring;
 	tmp = meta->sorted_files->first;

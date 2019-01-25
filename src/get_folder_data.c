@@ -99,10 +99,12 @@ void		print_folder_contents(t_args *meta, t_padding *info, t_vhead *head, char *
 
 void		padding_constructor(t_padding *info)
 {
+	info->file_name = 0;
 	info->file_size = 0;
 	info->owner = 0;
 	info->group = 0;
 	info->links = 0;
+	info->blocks = 0;
 }
 
 void		get_padding_info(t_vhead *head, t_padding *info, char *path)
@@ -150,7 +152,9 @@ bool		get_dir(t_folder *data)
 
 bool		print_dir(t_folder *data)
 {
-	ft_printf("%s:\n", data->path);
+	if (data->head && data->head->first && data->head->first->next)
+		ft_printf("%s:\n", data->path);
+	ft_printf("total %lld\n", data->info.blocks);
 	print_folder_contents(data->meta, &data->info, data->head, data->path);
 	write(1, "\n", 1);
 	return (true);
@@ -180,10 +184,11 @@ void		folder_constructor(t_args *meta, t_folder *data, folder f[], char *path)
 	data->info.owner = 0;
 	data->info.group = 0;
 	data->info.links = 0;
+	data->info.blocks = 0;
 	f[0] = &get_dir;
 	f[1] = &build_dir;
 	f[2] = &sort_dir;
-	f[3] = (OPT_L(meta)) ? &inspect_dir : NULL; //&inspect_dir
+	f[3] = (OPT_L(meta)) ? &inspect_dir : NULL;
 	f[4] = &print_dir;
 	f[5] = (OPT_R(meta)) ? &recurse_dir : NULL;
 	f[6] = NULL;

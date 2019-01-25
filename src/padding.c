@@ -12,11 +12,11 @@
 
 #include "../includes/ft_ls.h"
 
-void		get_file_name(t_padding *info, char *full_path)
+void		get_file_name(t_padding *info, char *file)
 {
 	int x;
 
-	x = ft_strlen(full_path);
+	x = ft_strlen(file);
 	if (x > info->file_name)
 		info->file_name = x;
 }
@@ -80,10 +80,10 @@ void		evaluate_file(t_padding *info, char *path, char *file)
 	char 	*full_path;
 
 	full_path = construct_path(path, file);
-	get_file_name(info, full_path);
+	get_file_name(info, file);
 	lstat(full_path, &sb);
 	get_owner_group(info, &sb);
 	get_file_size(info, &sb);
 	get_link_size(info, &sb);
-	info->blocks += (long long)sb.st_blocks;
+	info->blocks += (long long)sb.st_blocks / 2;
 }
