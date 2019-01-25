@@ -83,7 +83,7 @@ static bool	extract_args(t_args *meta)
 static bool	point_args(t_args *meta)
 {
 	meta->arg_count = meta->argc - meta->opt_count - 1;
-	meta->args = (char**)ft_vhmalloc(sizeof(char*) * (meta->arg_count + 1), 0);
+	meta->args = (char**)ft_vhmemalloc(sizeof(char*) * (meta->arg_count + 1), 0);
 	if (!meta->args)
 		return (false);
 	meta->args[meta->arg_count] = 0;
@@ -145,7 +145,7 @@ void		preprocessor_constructor(t_args *meta, pre ptr[], char **argv, int argc)
 	ptr[5] = &count_files_folders;
 }
 
-bool 		preprocessor(t_args *meta, char **argv, int argc)
+int 		preprocessor(t_args *meta, char **argv, int argc)
 {
 	pre 	function[6];
 	int 	x;
@@ -156,8 +156,8 @@ bool 		preprocessor(t_args *meta, char **argv, int argc)
 	{
 		if (function[x](meta) == false)
 		{
-			return (false);
+			return (0);
 		}
 	}
-	return (true);
+	return (1);
 }

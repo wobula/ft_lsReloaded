@@ -15,12 +15,12 @@
 int 		main(int argc, char **argv)
 {
 	t_args 		meta;
+	int			ret;
 
-	if (preprocessor(&meta, argv, argc) == false)
+	if ((ret = preprocessor(&meta, argv, argc)) == 1)
 	{
-		return (1);
+		processor(&meta);
 	}
-	processor(&meta);
 	postprocessor();
-	return (0);
+	return (ret);
 }

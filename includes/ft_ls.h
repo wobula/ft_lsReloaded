@@ -61,7 +61,7 @@ struct 					s_padding
 	long long			blocks;
 };
 
-bool 					preprocessor(t_args *meta, char **argv, int argc);
+int 					preprocessor(t_args *meta, char **argv, int argc);
 int						processor(t_args *meta);
 void					postprocessor();
 
