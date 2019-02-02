@@ -12,18 +12,18 @@
 
 #include "../includes/ft_ls.h"
 
-static void	process_files(t_args *meta)
+static void	process_files(t_vhead *head, bool opts[])
 {
 	t_vlist *tmp;
-	t_padding info;
+	t_padding data;
 	bool (*print)(t_padding *, char*, char*);
 
-	get_padding_info(meta->sorted_files, &info, NULL);
-	print = (OPT_L(meta) == true) ? &print_wide : &print_boring;
-	tmp = meta->sorted_files->first;
+	get_padding_info(head, &data, NULL);
+	print = (OPT_L(opts) == true) ? &print_wide : &print_boring;
+	tmp = head->first;
 	while (tmp)
 	{
-		print(&info, tmp->content, tmp->content);
+		print(&data, tmp->content, tmp->content);
 		tmp = tmp->next;
 	}
 }
@@ -35,7 +35,7 @@ static void	process_folders(t_args *meta)
 	tmp = meta->sorted_folders->first;
 	while (tmp)
 	{
-		get_folder_data(meta, tmp->content);
+		get_folder_data(meta->opts, tmp->content);
 		tmp = tmp->next;
 	}
 }
@@ -70,52 +70,13 @@ static void	sort_files_from_folders(t_args *meta)
 	}
 }
 
-static void	sort_folders(t_args *meta)
-{
-	ft_sortbubblechar(&meta->sorted_folders);
-}
-
-static void	sort_files(t_args *meta)
-{
-	ft_sortbubblechar(&meta->sorted_files);
-}
-
-static void	no_args(t_args *meta)
-{
-	get_folder_data(meta, ".");
-}
-
-typedef void (*process)(t_args*);
-
-static void	processor_constructor(t_args *meta, process function[])
-{
-	int x;
-
-	ft_bzerotype(function, 6, sizeof(process*));
-	x = -1;
-	if (meta->arg_count == 0)
-	{
-		function[++x] = &no_args;
-		return;
-	}
-	function[++x] = &sort_files_from_folders;
-	function[++x] = (meta->files > 0) ? &sort_files : NULL;
-	function[++x] = (meta->files > 0) ? &process_files : NULL;
-	function[++x] = (meta->folders > 0) ? &sort_folders : NULL;
-	function[++x] = (meta->folders > 0) ? &process_folders : NULL;
-}
-
 int 		processor(t_args *meta)
 {
-	process function[6];
-	int 	x;
-
-	processor_constructor(meta, function);
-	x = -1;
-	while (++x < 6)
-	{
-		if (function[x] != NULL)
-			function[x](meta);
-	}
+	sort_files_from_folders(meta);
+	(meta->files == 0 && meta->folders == 0) ? get_folder_data(meta->opts, ".") : false;
+	(meta->files > 1) ? ft_sortbubblechar(&meta->sorted_files) : false;
+	(meta->files > 0) ? process_files(meta->sorted_files, meta->opts) : false;
+	(meta->folders > 1) ? ft_sortbubblechar(&meta->sorted_folders) : false;
+	(meta->folders > 0) ? process_folders(meta) : false;
 	return (0);
 }

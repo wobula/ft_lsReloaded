@@ -30,8 +30,8 @@
 #define INVALID_FILE(x) ft_printf("ft_ls: cannot access '%s': No such file or directory\n", x)
 #define NO_FOLDER_ACCESS(x) ft_printf("ft_ls: cannot open directory '%s': Permission denied\n", x);
 
-#define OPT_L(x) (x->opts[108]) == true ? true : false
-#define OPT_R(x) (x->opts[82]) == true ? true : false
+#define OPT_L(x) (x[108] == true) ? true : false
+#define OPT_R(x) (x[82] == true) ? true : false
 #define FILE_OR_FOLDER(x) (x[0]) == 'd' ? true : false
 
 typedef struct s_args 		t_args;
@@ -65,7 +65,7 @@ int 					preprocessor(t_args *meta, char **argv, int argc);
 int						processor(t_args *meta);
 void					postprocessor();
 
-bool					get_folder_data(t_args *meta, char *path);
+bool					get_folder_data(bool opts[], char *path);
 bool					print_wide(t_padding *info, char *full_path, char *file);
 bool					print_boring(t_padding *info, char *full_path, char *file);
 void					ft_sortbubblechar(t_vhead **head);
