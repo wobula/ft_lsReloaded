@@ -12,14 +12,30 @@
 
 #include "../includes/ft_ls.h"
 
+static void	padding_constructor(t_padding *info)
+{
+	info->file_size = 0;
+	info->file_name = 0;
+	info->owner = 0;
+	info->group = 0;
+	info->links = 0;
+	info->blocks = 0;
+}
+
 static void	process_files(t_vhead *head, bool opts[])
 {
 	t_vlist *tmp;
 	t_padding data;
 	bool (*print)(t_padding *, char*, char*);
 
-	get_padding_info(head, &data, NULL);
 	print = (OPT_L(opts) == true) ? &print_wide : &print_boring;
+	tmp = head->first;
+	padding_constructor(&data);
+	while (tmp)
+	{
+		evaluate_file(&data, NULL, tmp->content);
+		tmp = tmp->next;
+	}
 	tmp = head->first;
 	while (tmp)
 	{
@@ -76,6 +92,7 @@ int 		processor(t_args *meta)
 	(meta->files == 0 && meta->folders == 0) ? get_folder_data(meta->opts, ".") : false;
 	(meta->files > 1) ? ft_sortbubblechar(&meta->sorted_files) : false;
 	(meta->files > 0) ? process_files(meta->sorted_files, meta->opts) : false;
+	(meta->files > 0 && meta->folders > 0) ? ft_printf("\n") : false;
 	(meta->folders > 1) ? ft_sortbubblechar(&meta->sorted_folders) : false;
 	(meta->folders > 0) ? process_folders(meta) : false;
 	return (0);

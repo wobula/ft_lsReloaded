@@ -41,7 +41,7 @@ DIR 		*get_directory_pointer(char *path)
 	return (dir);
 }
 
-t_vhead		*build_directory_structure(DIR *dir, char *path)
+t_vhead		*build_directory_structure(DIR *dir,t_padding *data, char *path)
 {
 	struct dirent 	*dent;
 	t_vhead			*head;
@@ -52,6 +52,7 @@ t_vhead		*build_directory_structure(DIR *dir, char *path)
 	{
 		if (dent->d_name[0] == '.')
 			continue;
+		evaluate_file(data, path, dent->d_name);
 		ft_vheadaddpoint(&head, ft_vhstrdup(dent->d_name, 2), 2);
 	}
 	closedir(dir);
@@ -94,21 +95,9 @@ void		print_folder_contents(t_vhead *head, t_padding *data, bool opts[], char *p
 	}
 }
 
-void		get_padding_info(t_vhead *head, t_padding *info, char *path)
-{
-	t_vlist *tmp;
-
-	tmp = head->first;
-	while (tmp)
-	{
-		evaluate_file(info, path, tmp->content);
-		tmp = tmp->next;
-	}
-}
-
 bool		print_dir(t_vhead *head, t_padding *info, bool opts[], char *path)
 {
-	if (head->first)
+	if (head->first && head->first->next)
 		ft_printf("%s:\n", path);
 	ft_printf("total %lld\n", info->blocks);
 	print_folder_contents(head, info, opts, path);
@@ -135,8 +124,7 @@ bool		get_folder_data(bool opts[], char *path)
 	padding_constructor(&info);
 	if ((dir = get_directory_pointer(path)) == false)
 		return (false);
-	head = build_directory_structure(dir, path);
-	get_padding_info(head, &info, path);
+	head = build_directory_structure(dir, &info, path);
 	if (head->first && head->first->next)
 		ft_sortbubblechar(&head);
 	print_dir(head, &info, opts, path);
