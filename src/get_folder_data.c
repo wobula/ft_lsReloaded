@@ -94,22 +94,11 @@ void		print_folder_contents(t_vhead *head, t_padding *data, bool opts[], char *p
 	}
 }
 
-void		padding_constructor(t_padding *info)
-{
-	info->file_name = 0;
-	info->file_size = 0;
-	info->owner = 0;
-	info->group = 0;
-	info->links = 0;
-	info->blocks = 0;
-}
-
 void		get_padding_info(t_vhead *head, t_padding *info, char *path)
 {
 	t_vlist *tmp;
 
 	tmp = head->first;
-	padding_constructor(info);
 	while (tmp)
 	{
 		evaluate_file(info, path, tmp->content);
@@ -127,9 +116,10 @@ bool		print_dir(t_vhead *head, t_padding *info, bool opts[], char *path)
 	return (true);
 }
 
-void		folder_constructor(t_padding *info)
+void		padding_constructor(t_padding *info)
 {
 	info->file_size = 0;
+	info->file_name = 0;
 	info->owner = 0;
 	info->group = 0;
 	info->links = 0;
@@ -142,7 +132,7 @@ bool		get_folder_data(bool opts[], char *path)
 	t_vhead		*head;
 	DIR 		*dir;
 
-	folder_constructor(&info);
+	padding_constructor(&info);
 	if ((dir = get_directory_pointer(path)) == false)
 		return (false);
 	head = build_directory_structure(dir, path);

@@ -12,6 +12,23 @@
 
 #include "../includes/libft.h"
 
+typedef void (*dispatch)(t_print *, t_spec *);
+
+static void dispatch_constructor(dispatch functions[])
+{
+	functions[(int)'s'] = &format_string;
+	functions[(int)'S'] = &format_string;
+	functions[(int)'d'] = &format_decimal;
+	functions[(int)'c'] = &format_char;
+	functions[(int)'C'] = &format_char;
+	functions[(int)'%'] = &format_percent;
+	functions[(int)'p'] = &format_pointer;
+	functions[(int)'o'] = &format_octal;
+	functions[(int)'x'] = &format_hex;
+	functions[(int)'X'] = &format_hex;
+	functions[(int)'u'] = &format_udecimal;
+}
+
 static void	constructor(t_print *ptr, t_spec *this)
 {
 	this->left_align = false;
@@ -35,25 +52,12 @@ static void	constructor(t_print *ptr, t_spec *this)
 static void	activate_frankenstein(t_print *ptr, int *xptr)
 {
 	t_spec this;
+	dispatch functions[127];
 
 	constructor(ptr, &this);
+	dispatch_constructor(functions);
 	gather_flags(&this, ptr->format, xptr);
-	if (this.type == 's' || this.type == 'S')
-		format_string(ptr, &this);
-	else if (this.type == 'd')
-		format_decimal(ptr, &this);
-	else if (this.type == 'c' || this.type == 'C')
-		format_char(ptr, &this);
-	else if (this.type == '%')
-		format_percent(&this);
-	else if (this.type == 'p')
-		format_pointer(ptr, &this);
-	else if (this.type == 'o')
-		format_octal(ptr, &this);
-	else if (this.type == 'x' || this.type == 'X')
-		format_hex(ptr, &this);
-	else if (this.type == 'u')
-		format_udecimal(ptr, &this);
+	functions[(int)this.type](ptr, &this);
 }
 
 static void	print_buffer(t_print *ptr, int start, int x)

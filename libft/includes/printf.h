@@ -80,7 +80,7 @@ void						conversions(t_print *ptr, t_spec *this);
 void						conversions_u(t_print *ptr, t_spec *this);
 
 void						format_char(t_print *ptr, t_spec *this);
-void						format_percent(t_spec *this);
+void						format_percent(t_print *ptr, t_spec *this);
 void						format_string(t_print *ptr, t_spec *this);
 void						format_decimal(t_print *ptr, t_spec *this);
 void						format_udecimal(t_print *ptr, t_spec *this);
